@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --tfw-burgundy: #4c1315;
+  --tfw-burgundy-deep: #280c0d;
+  --tfw-burgundy-light: #6e1c1f;
+  --tfw-cream: #fbf7ee;
+  --tfw-cream-warm: #f6f0e2;
+  --tfw-gold: #ad9b58;
+  --tfw-gold-light: #c8b87a;
+  --tfw-olive: #323217;
+  --tfw-rose-pale: #fcf4f2;
+  --tfw-border: rgba(76, 19, 21, 0.12);
+  --tfw-border-gold: rgba(173, 155, 88, 0.35);
+}
+
+body {
+  background-color: var(--tfw-cream);
+  color: var(--tfw-burgundy-deep);
+  font-family: 'Lora', Georgia, serif;
+}
+
+.font-serif-display {
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.font-body {
+  font-family: 'Lora', Georgia, serif;
+}
+
+/* Custom Draggable Video Scrubber */
+.video-scrubber-light {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(76, 19, 21, 0.15);
+  outline: none;
+  touch-action: manipulation;
+}
+
+.video-scrubber-light::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4c1315;
+  border: 2px solid #ad9b58;
+  box-shadow: 0 2px 8px rgba(76, 19, 21, 0.35);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.video-scrubber-light:active::-webkit-slider-thumb {
+  transform: scale(1.25);
+  background: #6e1c1f;
+}
+
+.video-scrubber-light::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4c1315;
+  border: 2px solid #ad9b58;
+  box-shadow: 0 2px 8px rgba(76, 19, 21, 0.35);
+  cursor: pointer;
+}
+
+.video-scrubber-dark {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.3);
+  outline: none;
+  touch-action: manipulation;
+}
+
+.video-scrubber-dark::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ad9b58;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.video-scrubber-dark:active::-webkit-slider-thumb {
+  transform: scale(1.3);
+  background: #c8b87a;
+}
+
+.video-scrubber-dark::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ad9b58;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
+
