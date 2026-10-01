@@ -15,6 +15,7 @@ export interface Post {
   scheduled_at?: string | null;
   status: PostStatus;
   feedback?: string | null;
+  editor_notes?: string | null;
   live_post_url?: string | null;
   is_published?: boolean;
   published_at?: string | null;
@@ -44,6 +45,7 @@ export interface CreatePostInput {
   media_urls?: string[];
   media_type: MediaType;
   caption?: string;
+  editor_notes?: string;
   scheduled_at?: string;
 }
 

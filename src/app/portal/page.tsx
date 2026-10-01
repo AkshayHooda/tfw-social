@@ -1040,6 +1040,21 @@ export default function UnifiedInfluencerPortal() {
                               </p>
                             </div>
 
+                            {/* Note to Romany from Editor */}
+                            {post.editor_notes && (
+                              <div className="p-4 sm:p-5 rounded-2xl bg-[#fdf8f4] border-2 border-[#ad9b58]/50 text-left mb-5 shadow-xs">
+                                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#ad9b58]/20">
+                                  <Sparkles className="w-4 h-4 text-[#ad9b58]" />
+                                  <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
+                                    Note from Akshay (Editor)
+                                  </span>
+                                </div>
+                                <p className="text-xs sm:text-sm text-[#4c1315] font-medium leading-relaxed whitespace-pre-wrap">
+                                  {post.editor_notes}
+                                </p>
+                              </div>
+                            )}
+
                             {/* Full Editorial Caption Card */}
                             <div className="p-5 sm:p-6 rounded-2xl bg-[#fbf7ee] border border-[#4c1315]/15 text-left mb-5">
                               <div className="flex items-center justify-between pb-3 border-b border-[#4c1315]/10 mb-3">

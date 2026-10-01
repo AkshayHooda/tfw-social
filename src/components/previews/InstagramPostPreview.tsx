@@ -315,6 +315,14 @@ export function InstagramPostPreview({ post }: Props) {
                 className="relative z-10 max-w-full max-h-full object-contain shadow-sm transition-opacity duration-150"
               />
 
+              {/* Note to Romany pill badge (Top Left) */}
+              {post.editor_notes && (
+                <div className="absolute top-3.5 left-3.5 z-30 max-w-[70%] px-3 py-1.5 rounded-xl bg-[#4c1315]/90 backdrop-blur-md text-[#fbf7ee] text-[11px] font-medium shadow-lg border border-[#ad9b58]/40 pointer-events-none line-clamp-2">
+                  <span className="font-bold text-[#ad9b58] mr-1">Note:</span>
+                  {post.editor_notes}
+                </div>
+              )}
+
               {/* Carousel Slide Counter Badge (Top Right) */}
               {slides.length > 1 && (
                 <div className="absolute top-3.5 right-3.5 z-30 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white text-xs font-bold flex items-center gap-1.5 shadow-lg border border-white/20 pointer-events-none">
