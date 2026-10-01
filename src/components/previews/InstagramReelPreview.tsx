@@ -166,10 +166,7 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
             </div>
           </div>
         ) : (
-          <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 pt-3 pb-2 bg-gradient-to-b from-black/60 to-transparent text-white">
-            <span className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-black/60 text-[#ad9b58] border border-[#ad9b58]/40 backdrop-blur-sm">
-              Unobstructed Video
-            </span>
+          <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-end px-4 pt-3 pb-2 text-white">
             <div className="flex items-center gap-2">
               <button
                 type="button"

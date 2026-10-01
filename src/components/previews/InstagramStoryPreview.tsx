@@ -182,10 +182,7 @@ export function InstagramStoryPreview({ post, cleanMode = false }: Props) {
             </div>
           </div>
         ) : (
-          <div className="absolute top-0 left-0 right-0 z-30 p-3 pt-3 flex items-center justify-between text-white bg-gradient-to-b from-black/60 to-transparent">
-            <span className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-black/60 text-[#ad9b58] border border-[#ad9b58]/40 backdrop-blur-sm">
-              Story Unobstructed
-            </span>
+          <div className="absolute top-0 left-0 right-0 z-30 p-3 pt-3 flex items-center justify-end text-white">
             <button
               type="button"
               onClick={toggleAudio}

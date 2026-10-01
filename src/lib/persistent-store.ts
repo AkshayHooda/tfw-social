@@ -3,6 +3,8 @@ import { Post, CreatePostInput, PerformanceSummary, ContentIdea, CreateIdeaInput
 import { randomUUID } from 'crypto';
 
 const POSTS_BLOB_PATH = 'data/posts.json';
+import defaultPostsData from './default-posts.json';
+const defaultPosts: Post[] = defaultPostsData as unknown as Post[];
 const SUMMARIES_BLOB_PATH = 'data/summaries.json';
 const SETTINGS_BLOB_PATH = 'data/settings.json';
 const IDEAS_BLOB_PATH = 'data/ideas.json';
@@ -34,7 +36,7 @@ const defaultSummaries: PerformanceSummary[] = [
   }
 ];
 
-let inMemoryPosts: Post[] = [];
+let inMemoryPosts: Post[] = [...defaultPosts];
 let inMemorySummaries: PerformanceSummary[] = [...defaultSummaries];
 let inMemorySettings: SystemSettings = { ...defaultSettings };
 let inMemoryIdeas: ContentIdea[] = [];
@@ -42,6 +44,9 @@ let isHydrated = false;
 
 async function hydrateFromBlob() {
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    if (inMemoryPosts.length === 0) {
+      inMemoryPosts = [...defaultPosts];
+    }
     return;
   }
 
@@ -53,10 +58,15 @@ async function hydrateFromBlob() {
       const res = await fetch(`${postsBlob.url}?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
-        if (Array.isArray(data)) {
-          inMemoryPosts = data;
+        if (Array.isArray(data) && data.length > 0) {
+          inMemoryPosts = data.filter(
+            (p: Post) => p.media_type !== 'video' && 
+            !(typeof p.media_url === 'string' && (p.media_url.endsWith('.mp4') || p.media_url.includes('/media/vid_')))
+          );
         }
       }
+    } else if (inMemoryPosts.length === 0) {
+      inMemoryPosts = [...defaultPosts];
     }
 
     const summariesBlob = blobs.find(b => b.pathname === SUMMARIES_BLOB_PATH);
