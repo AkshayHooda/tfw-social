@@ -16,6 +16,7 @@ import {
   Calendar, 
   FileVideo, 
   FileImage, 
+  Layers,
   RefreshCw,
   Video,
   Image as ImageIcon,
@@ -74,7 +75,10 @@ export default function EditorDashboard() {
 
   // Admin & Post Management State
   const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const [previewingMediaPost, setPreviewingMediaPost] = useState<Post | null>(null);
+  const [activeSlideIndex, setActiveSlideIndex] = useState<number>(0);
   const [editCaption, setEditCaption] = useState('');
+  const [editEditorNotes, setEditEditorNotes] = useState('');
   const [editPlatform, setEditPlatform] = useState<PlatformType>('instagram_reel');
   const [editScheduledAt, setEditScheduledAt] = useState('');
   const [isUpdatingPost, setIsUpdatingPost] = useState(false);
@@ -377,6 +381,7 @@ export default function EditorDashboard() {
   const handleStartEdit = (post: Post) => {
     setEditingPost(post);
     setEditCaption(post.caption || '');
+    setEditEditorNotes(post.editor_notes || '');
     setEditPlatform(post.platform);
     setEditScheduledAt(post.scheduled_at ? new Date(post.scheduled_at).toISOString().slice(0, 16) : '');
   };
@@ -393,6 +398,7 @@ export default function EditorDashboard() {
         body: JSON.stringify({
           id: editingPost.id,
           caption: editCaption.trim() || null,
+          editor_notes: editEditorNotes.trim() ? editEditorNotes : null,
           platform: editPlatform,
           scheduled_at: editScheduledAt ? new Date(editScheduledAt).toISOString() : null,
         }),
@@ -1023,13 +1029,38 @@ export default function EditorDashboard() {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
-                          <div className="w-12 h-12 rounded-xl bg-[#280c0d] flex items-center justify-center flex-shrink-0 border border-[#ad9b58]/30 overflow-hidden">
-                            {p.media_type === 'video' ? (
-                              <FileVideo className="w-5 h-5 text-[#ad9b58]" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPreviewingMediaPost(p);
+                              setActiveSlideIndex(0);
+                            }}
+                            className="w-14 h-14 rounded-xl bg-[#280c0d] flex items-center justify-center flex-shrink-0 border border-[#ad9b58]/40 overflow-hidden relative group cursor-pointer hover:ring-2 hover:ring-[#ad9b58] transition"
+                            title="Click to view full graphics & slides"
+                          >
+                            {p.media_url ? (
+                              p.media_type === 'video' ? (
+                                <video src={p.media_url} className="w-full h-full object-cover pointer-events-none" />
+                              ) : (
+                                <img src={p.media_url} alt="Post preview" className="w-full h-full object-cover" />
+                              )
                             ) : (
-                              <FileImage className="w-5 h-5 text-[#ad9b58]" />
+                              p.media_type === 'video' ? (
+                                <FileVideo className="w-6 h-6 text-[#ad9b58]" />
+                              ) : (
+                                <FileImage className="w-6 h-6 text-[#ad9b58]" />
+                              )
                             )}
-                          </div>
+                            {p.media_urls && p.media_urls.length > 1 && (
+                              <span className="absolute bottom-1 right-1 bg-black/80 text-[9px] font-bold text-white px-1.5 py-0.2 rounded-full flex items-center gap-0.5">
+                                <Layers className="w-2.5 h-2.5 text-[#ad9b58]" />
+                                {p.media_urls.length}
+                              </span>
+                            )}
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                              <Eye className="w-4 h-4 text-white" />
+                            </div>
+                          </button>
                           <div>
                             <div className="flex items-center gap-2">
                               <h3 className="font-serif-display font-bold text-[#4c1315] text-sm">
@@ -1090,13 +1121,97 @@ export default function EditorDashboard() {
                         </div>
                       </div>
 
-                      {/* Client Feedback Note if available */}
-                      {p.feedback && (
-                        <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900">
-                          <strong className="block font-bold mb-0.5">Client Feedback Notes:</strong>
-                          <p className="whitespace-pre-wrap">{p.feedback}</p>
+                      {/* Notes to Romany (Editor Notes) */}
+                      {p.editor_notes && (
+                        <div className="p-3.5 rounded-xl bg-[#fdf8f4] border border-[#ad9b58]/40 text-xs text-[#4c1315] space-y-1">
+                          <strong className="font-bold flex items-center gap-1.5 text-[#4c1315]">
+                            <span className="w-2 h-2 rounded-full bg-[#ad9b58]"></span>
+                            Your Note to Romany:
+                          </strong>
+                          <p className="whitespace-pre-wrap leading-relaxed text-[#4c1315]/90">{p.editor_notes}</p>
                         </div>
                       )}
+
+                      {/* Client Feedback Note if available */}
+                      {p.feedback && (
+                        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <strong className="font-bold flex items-center gap-1.5 text-amber-950">
+                              <AlertCircle className="w-4 h-4 text-amber-600" />
+                              Client Feedback Notes:
+                            </strong>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setPreviewingMediaPost(p);
+                                setActiveSlideIndex(0);
+                              }}
+                              className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-200/60 hover:bg-amber-200 text-amber-900 transition flex items-center gap-1 cursor-pointer"
+                            >
+                              <Eye className="w-3 h-3" />
+                              <span>View Associated Graphics ({p.media_urls?.length || 1} slides)</span>
+                            </button>
+                          </div>
+                          <p className="whitespace-pre-wrap leading-relaxed">{p.feedback}</p>
+                        </div>
+                      )}
+
+                      {/* Attached Graphics Carousel Strip */}
+                      {p.media_urls && p.media_urls.length > 1 ? (
+                        <div className="bg-[#fbf7ee] p-2.5 rounded-xl border border-[#4c1315]/15 space-y-1.5">
+                          <div className="flex items-center justify-between text-[11px] text-[#4c1315]/80 font-bold px-1">
+                            <span className="flex items-center gap-1">
+                              <Layers className="w-3.5 h-3.5 text-[#ad9b58]" />
+                              Attached Carousel Slides ({p.media_urls.length})
+                            </span>
+                            <span className="text-[10px] text-[#4c1315]/60 font-normal">Click any slide to enlarge</span>
+                          </div>
+                          <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5">
+                            {p.media_urls.map((slideUrl, sIdx) => (
+                              <button
+                                key={sIdx}
+                                type="button"
+                                onClick={() => {
+                                  setPreviewingMediaPost(p);
+                                  setActiveSlideIndex(sIdx);
+                                }}
+                                className="relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border border-[#4c1315]/20 hover:border-[#ad9b58] hover:ring-2 hover:ring-[#ad9b58] transition group cursor-pointer"
+                              >
+                                <img src={slideUrl} alt={`Slide ${sIdx + 1}`} className="w-full h-full object-cover" />
+                                <span className="absolute bottom-0.5 left-0.5 bg-black/75 text-[9px] text-white font-bold px-1 rounded">
+                                  #{sIdx + 1}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ) : p.media_url && p.media_type === 'image' ? (
+                        <div className="flex items-center gap-3 bg-[#fbf7ee] p-2 rounded-xl border border-[#4c1315]/15">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPreviewingMediaPost(p);
+                              setActiveSlideIndex(0);
+                            }}
+                            className="w-12 h-12 rounded-lg overflow-hidden border border-[#4c1315]/20 hover:ring-2 hover:ring-[#ad9b58] flex-shrink-0 cursor-pointer"
+                          >
+                            <img src={p.media_url} alt="Attached Graphic" className="w-full h-full object-cover" />
+                          </button>
+                          <div className="text-xs text-[#4c1315]">
+                            <span className="font-bold block">1 Attached Graphic</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setPreviewingMediaPost(p);
+                                setActiveSlideIndex(0);
+                              }}
+                              className="text-[11px] text-[#ad9b58] hover:underline flex items-center gap-1 font-semibold"
+                            >
+                              <Eye className="w-3 h-3" /> Click to view full image
+                            </button>
+                          </div>
+                        </div>
+                      ) : null}
 
                       {/* Caption snippet */}
                       {p.caption && (
@@ -1323,6 +1438,20 @@ export default function EditorDashboard() {
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-bold text-[#4c1315]/80 mb-1.5 flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#ad9b58]"></span>
+                  Note to Romany (Shows on Review Portal)
+                </label>
+                <textarea
+                  rows={3}
+                  value={editEditorNotes}
+                  onChange={(e) => setEditEditorNotes(e.target.value)}
+                  placeholder="Add or edit instructions, pose explanations, or notes for Romany..."
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#fbf7ee] border border-[#4c1315]/20 text-xs text-[#280c0d] focus:outline-none focus:border-[#ad9b58] resize-none"
+                />
+              </div>
+
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-[#4c1315]/10">
                 <button
                   type="button"
@@ -1475,6 +1604,157 @@ export default function EditorDashboard() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MEDIA ASSET & CAROUSEL SLIDES VIEWER MODAL */}
+      {previewingMediaPost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="bg-[#fbf7ee] rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col border-2 border-[#4c1315]/20 shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 bg-white border-b border-[#4c1315]/15 flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#4c1315] text-[#fbf7ee]">
+                    {previewingMediaPost.creator_name}
+                  </span>
+                  <span className="text-xs font-serif-display font-bold text-[#4c1315]">
+                    {previewingMediaPost.creator_handle || previewingMediaPost.platform.replace('_', ' ').toUpperCase()}
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#4c1315]/60 mt-0.5">
+                  {previewingMediaPost.media_urls && previewingMediaPost.media_urls.length > 1
+                    ? `Carousel Slide ${activeSlideIndex + 1} of ${previewingMediaPost.media_urls.length}`
+                    : '1 Editorial Graphic / Video'}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href={`/review/${previewingMediaPost.token}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-1.5 rounded-xl text-xs font-bold font-serif-display bg-[#ad9b58]/20 text-[#4c1315] hover:bg-[#ad9b58]/30 border border-[#ad9b58]/40 transition flex items-center gap-1.5"
+                >
+                  <span>Open Client Review View</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-[#ad9b58]" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setPreviewingMediaPost(null)}
+                  className="p-1.5 rounded-full text-[#4c1315]/60 hover:text-[#4c1315] hover:bg-[#4c1315]/10 text-lg font-bold transition cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              {/* Media Player / Slide Preview */}
+              <div className="md:col-span-7 flex flex-col items-center justify-center bg-neutral-900 rounded-2xl p-3 relative min-h-[380px] sm:min-h-[440px] overflow-hidden shadow-inner">
+                {previewingMediaPost.media_type === 'video' ? (
+                  <video
+                    src={previewingMediaPost.media_url}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="max-h-[60vh] max-w-full rounded-xl object-contain shadow-md"
+                  />
+                ) : (
+                  <div className="relative flex items-center justify-center w-full h-full">
+                    <img
+                      src={
+                        previewingMediaPost.media_urls && previewingMediaPost.media_urls.length > 0
+                          ? previewingMediaPost.media_urls[activeSlideIndex] || previewingMediaPost.media_url
+                          : previewingMediaPost.media_url
+                      }
+                      alt="Active Slide"
+                      className="max-h-[60vh] max-w-full rounded-xl object-contain shadow-md"
+                    />
+
+                    {/* Prev / Next controls for carousel */}
+                    {previewingMediaPost.media_urls && previewingMediaPost.media_urls.length > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setActiveSlideIndex(prev => Math.max(0, prev - 1))}
+                          disabled={activeSlideIndex === 0}
+                          className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black text-white disabled:opacity-30 transition cursor-pointer shadow-lg"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setActiveSlideIndex(prev => Math.min(previewingMediaPost.media_urls!.length - 1, prev + 1))}
+                          disabled={activeSlideIndex === previewingMediaPost.media_urls.length - 1}
+                          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/60 hover:bg-black text-white disabled:opacity-30 transition cursor-pointer shadow-lg"
+                        >
+                          ›
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* Bottom Slide Thumbnails Strip */}
+                {previewingMediaPost.media_urls && previewingMediaPost.media_urls.length > 1 && (
+                  <div className="flex items-center gap-2 mt-3 overflow-x-auto max-w-full py-1 px-2 bg-black/40 rounded-xl">
+                    {previewingMediaPost.media_urls.map((slide, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setActiveSlideIndex(idx)}
+                        className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition flex-shrink-0 cursor-pointer ${
+                          activeSlideIndex === idx ? 'border-[#ad9b58] ring-2 ring-[#ad9b58]/50' : 'border-white/30 opacity-60 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={slide} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Right Column: Feedback, Notes & Caption */}
+              <div className="md:col-span-5 space-y-4">
+                {previewingMediaPost.feedback && (
+                  <div className="p-4 rounded-2xl bg-amber-50 border-2 border-amber-200 text-xs text-amber-950 space-y-2 shadow-xs">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900 border-b border-amber-200 pb-1.5">
+                      <AlertCircle className="w-4 h-4 text-amber-600" />
+                      <span>Client Instructions &amp; Feedback</span>
+                    </div>
+                    <p className="whitespace-pre-wrap leading-relaxed font-medium">
+                      {previewingMediaPost.feedback}
+                    </p>
+                  </div>
+                )}
+
+                <div className="p-4 rounded-2xl bg-white border border-[#4c1315]/15 space-y-2 shadow-xs">
+                  <span className="text-[10px] font-bold text-[#4c1315]/70 uppercase tracking-wider block">
+                    Post Caption &amp; Copy
+                  </span>
+                  <p className="text-xs text-[#280c0d] leading-relaxed whitespace-pre-wrap max-h-48 overflow-y-auto">
+                    {previewingMediaPost.caption || 'No caption entered yet.'}
+                  </p>
+                </div>
+
+                <div className="pt-2 flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const post = previewingMediaPost;
+                      setPreviewingMediaPost(null);
+                      handleStartEdit(post);
+                    }}
+                    className="px-4 py-2 rounded-xl text-xs font-bold font-serif-display bg-[#4c1315] hover:bg-[#6e1c1f] text-[#fbf7ee] transition flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Edit3 className="w-3.5 h-3.5 text-[#ad9b58]" />
+                    <span>Edit Post &amp; Caption</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
