@@ -60,8 +60,13 @@ async function hydrateFromBlob() {
         const data = await res.json();
         if (Array.isArray(data) && data.length > 0) {
           inMemoryPosts = data.filter(
-            (p: Post) => p.media_type !== 'video' && 
-            !(typeof p.media_url === 'string' && (p.media_url.endsWith('.mp4') || p.media_url.includes('/media/vid_')))
+            (p: Post) => {
+              // Only filter out old legacy sample videos with /media/vid_
+              if (typeof p.media_url === 'string' && p.media_url.includes('/media/vid_')) {
+                return false;
+              }
+              return true;
+            }
           );
         }
       }
@@ -185,6 +190,8 @@ export const persistentStore = {
       media_url: data.media_url,
       media_type: data.media_type,
       caption: data.caption || null,
+      editor_notes: data.editor_notes || null,
+      media_urls: data.media_urls && data.media_urls.length > 0 ? data.media_urls : null,
       scheduled_at: data.scheduled_at || null,
       status: 'pending',
       feedback: null,

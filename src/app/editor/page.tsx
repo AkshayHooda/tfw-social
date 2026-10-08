@@ -64,8 +64,9 @@ export default function EditorDashboard() {
   const [creatorHandle, setCreatorHandle] = useState('thefinancewoman');
   const [caption, setCaption] = useState('');
   const [scheduledAt, setScheduledAt] = useState('');
-  const [mediaFile, setMediaFile] = useState<File | null>(null);
-  const [mediaPreviewUrl, setMediaPreviewUrl] = useState<string | null>(null);
+  const [mediaFiles, setMediaFiles] = useState<File[]>([]);
+  const [mediaPreviewUrls, setMediaPreviewUrls] = useState<string[]>([]);
+  const [editorNotes, setEditorNotes] = useState('');
   const [mediaType, setMediaType] = useState<MediaType>('video');
   const [directMediaUrl, setDirectMediaUrl] = useState('');
 
@@ -145,9 +146,9 @@ export default function EditorDashboard() {
     }
   }, []);
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const [resPosts, resIdeas] = await Promise.all([
         fetch(`/api/posts?t=${Date.now()}`, { cache: 'no-store' }),
         fetch(`/api/ideas?t=${Date.now()}`, { cache: 'no-store' }),
@@ -163,9 +164,18 @@ export default function EditorDashboard() {
     } catch (err) {
       console.error('Failed to fetch posts or ideas:', err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
+
+  // Background Auto-Poll for real-time approvals across all devices
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const interval = setInterval(() => {
+      fetchPosts(true);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
 
   const handleConvertToDraft = (idea: ContentIdea) => {
     setCreatorName(idea.creator_name || 'The Finance Woman');
@@ -222,14 +232,17 @@ export default function EditorDashboard() {
     }
   };
 
-  const handleFileChange = (file: File) => {
-    setMediaFile(file);
-    const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.mov');
+  const handleFilesChange = (filesList: FileList | File[]) => {
+    const files = Array.from(filesList);
+    if (files.length === 0) return;
+    setMediaFiles(files);
+    const first = files[0];
+    const isVideo = first.type.startsWith('video/') || first.name.endsWith('.mp4') || first.name.endsWith('.mov');
     setMediaType(isVideo ? 'video' : 'image');
     if (!isVideo && platform === 'instagram_reel') {
       setPlatform('instagram_post');
     }
-    setMediaPreviewUrl(URL.createObjectURL(file));
+    setMediaPreviewUrls(files.map(f => URL.createObjectURL(f)));
   };
 
   const copyToClipboard = (token: string) => {
@@ -247,8 +260,8 @@ export default function EditorDashboard() {
       return;
     }
 
-    if (!mediaFile && !directMediaUrl.trim()) {
-      alert('Please upload a media file (video or image) or provide a media URL');
+    if (mediaFiles.length === 0 && !directMediaUrl.trim()) {
+      alert('Please upload a media file (video or images for carousel) or provide a media URL');
       return;
     }
 
@@ -256,43 +269,47 @@ export default function EditorDashboard() {
 
     try {
       let finalMediaUrl = directMediaUrl.trim();
+      let uploadedUrls: string[] = [];
 
-      if (mediaFile) {
-        setUploadProgress(15);
-        const presignRes = await fetch('/api/upload-url', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            filename: mediaFile.name,
-            contentType: mediaFile.type || 'application/octet-stream',
-          }),
-        });
-        const presignData = await presignRes.json();
-        if (!presignRes.ok) throw new Error(presignData.error || 'Failed to get upload URL');
-
-        setUploadProgress(40);
-
-        if (presignData.type === 'blob') {
-          const newBlob = await upload(`media/${Date.now()}-${mediaFile.name}`, mediaFile, {
-            access: 'public',
-            handleUploadUrl: '/api/upload',
-            onUploadProgress: (progress) => {
-              setUploadProgress(Math.round(progress.percentage));
-            },
+      if (mediaFiles.length > 0) {
+        for (let idx = 0; idx < mediaFiles.length; idx++) {
+          const f = mediaFiles[idx];
+          setUploadProgress(Math.round(((idx) / mediaFiles.length) * 80) + 10);
+          
+          const presignRes = await fetch('/api/upload-url', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filename: f.name,
+              contentType: f.type || 'application/octet-stream',
+            }),
           });
-          finalMediaUrl = newBlob.url;
-        } else if (presignData.type === 'r2' || presignData.signedUrl) {
-          const uploadRes = await fetch(presignData.signedUrl, {
-            method: 'PUT',
-            headers: { 'Content-Type': mediaFile.type },
-            body: mediaFile,
-          });
-          if (!uploadRes.ok) throw new Error('Direct upload failed');
-          finalMediaUrl = presignData.publicUrl;
-        } else {
-          finalMediaUrl = mediaPreviewUrl || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe';
+          const presignData = await presignRes.json();
+          if (!presignRes.ok) throw new Error(presignData.error || 'Failed to get upload URL');
+
+          let itemUrl = '';
+          if (presignData.type === 'blob') {
+            const newBlob = await upload(`media/${Date.now()}-${f.name}`, f, {
+              access: 'public',
+              handleUploadUrl: '/api/upload',
+            });
+            itemUrl = newBlob.url;
+          } else if (presignData.type === 'r2' || presignData.signedUrl) {
+            const uploadRes = await fetch(presignData.signedUrl, {
+              method: 'PUT',
+              headers: { 'Content-Type': f.type },
+              body: f,
+            });
+            if (!uploadRes.ok) throw new Error('Direct upload failed');
+            itemUrl = presignData.publicUrl;
+          } else {
+            itemUrl = mediaPreviewUrls[idx] || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe';
+          }
+          uploadedUrls.push(itemUrl);
         }
-        setUploadProgress(85);
+
+        finalMediaUrl = uploadedUrls[0] || '';
+        setUploadProgress(90);
       }
 
       const postRes = await fetch('/api/posts', {
@@ -303,8 +320,10 @@ export default function EditorDashboard() {
           creator_handle: creatorHandle.trim().replace(/^@/, '') || null,
           platform,
           media_url: finalMediaUrl,
+          media_urls: uploadedUrls.length > 1 ? uploadedUrls : (uploadedUrls.length === 1 ? [uploadedUrls[0]] : undefined),
           media_type: mediaType,
           caption: caption.trim() || null,
+          editor_notes: editorNotes.trim() || null,
           scheduled_at: scheduledAt ? new Date(scheduledAt).toISOString() : null,
         }),
       });
@@ -315,8 +334,9 @@ export default function EditorDashboard() {
       await fetchPosts();
       setCaption('');
       setScheduledAt('');
-      setMediaFile(null);
-      setMediaPreviewUrl(null);
+      setMediaFiles([]);
+      setMediaPreviewUrls([]);
+      setEditorNotes('');
       setDirectMediaUrl('');
       setUploadProgress(null);
 
@@ -593,7 +613,7 @@ export default function EditorDashboard() {
 
             <button
               type="button"
-              onClick={fetchPosts}
+              onClick={() => fetchPosts()}
               className="p-2 rounded-xl text-[#4c1315]/70 hover:text-[#4c1315] hover:bg-[#4c1315]/10 transition"
               title="Refresh posts"
             >
@@ -858,8 +878,8 @@ export default function EditorDashboard() {
               {/* Media Uploader: Drag & Drop */}
               <div>
                 <label className="block text-xs font-bold text-[#4c1315]/80 mb-1.5 flex items-center justify-between">
-                  <span>Attach Media Asset (Video or Image)</span>
-                  <span className="text-[11px] text-[#4c1315]/60 font-normal">.mp4, .mov, .jpg, .png</span>
+                  <span>Attach Media Asset (Video or Carousel Images)</span>
+                  <span className="text-[11px] text-[#4c1315]/60 font-normal">Select 1-10 files for carousel (.mp4, .jpg, .png)</span>
                 </label>
 
                 <div
@@ -867,8 +887,8 @@ export default function EditorDashboard() {
                   onDragOver={(e) => e.preventDefault()}
                   onDrop={(e) => {
                     e.preventDefault();
-                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-                      handleFileChange(e.dataTransfer.files[0]);
+                    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                      handleFilesChange(e.dataTransfer.files);
                     }
                   }}
                   className="border-2 border-dashed border-[#4c1315]/25 hover:border-[#ad9b58] rounded-2xl p-5 text-center cursor-pointer transition bg-[#fbf7ee]/60 hover:bg-[#fbf7ee]"
@@ -876,17 +896,17 @@ export default function EditorDashboard() {
                   <input
                     ref={fileInputRef}
                     type="file"
+                    multiple
                     accept="video/mp4,video/quicktime,image/jpeg,image/png"
                     className="hidden"
                     onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        handleFileChange(e.target.files[0]);
+                      if (e.target.files && e.target.files.length > 0) {
+                        handleFilesChange(e.target.files);
                       }
                     }}
-
                   />
 
-                  {mediaFile ? (
+                  {mediaFiles.length > 0 ? (
                     <div className="flex flex-col items-center">
                       {mediaType === 'video' ? (
                         <FileVideo className="w-8 h-8 text-[#4c1315] mb-2" />
@@ -894,20 +914,24 @@ export default function EditorDashboard() {
                         <FileImage className="w-8 h-8 text-[#ad9b58] mb-2" />
                       )}
                       <p className="text-xs font-bold text-[#4c1315] truncate max-w-[240px]">
-                        {mediaFile.name}
+                        {mediaFiles.length > 1
+                          ? `${mediaFiles.length} Carousel Slides Attached`
+                          : mediaFiles[0].name}
                       </p>
                       <p className="text-[11px] text-[#4c1315]/60 mt-0.5">
-                        {(mediaFile.size / (1024 * 1024)).toFixed(2)} MB • Click to change file
+                        {mediaFiles.length > 1
+                          ? mediaFiles.map(f => f.name).slice(0, 3).join(', ') + (mediaFiles.length > 3 ? '...' : '')
+                          : `${(mediaFiles[0].size / (1024 * 1024)).toFixed(2)} MB • Click to change`}
                       </p>
                     </div>
                   ) : (
                     <div className="flex flex-col items-center">
                       <UploadCloud className="w-8 h-8 text-[#ad9b58] mb-2" />
                       <p className="text-xs font-semibold text-[#4c1315]">
-                        Drag and drop creative asset here, or <span className="text-[#ad9b58] underline">browse files</span>
+                        Drag and drop creative assets here, or <span className="text-[#ad9b58] underline">browse files</span>
                       </p>
                       <p className="text-[11px] text-[#4c1315]/60 mt-1">
-                        High-definition video reel or editorial image
+                        High-definition video reel or multi-slide carousel images (hold Ctrl/Cmd to select multiple)
                       </p>
                     </div>
                   )}
@@ -934,6 +958,21 @@ export default function EditorDashboard() {
                     className="w-full px-3 py-2 text-xs rounded-xl bg-[#fbf7ee] border border-[#4c1315]/15 text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#ad9b58]"
                   />
                 </div>
+              </div>
+
+              {/* Note for Romany */}
+              <div>
+                <label className="block text-xs font-bold text-[#4c1315]/80 mb-1.5 flex items-center justify-between">
+                  <span>Note for Romany / Reviewer (Optional)</span>
+                  <span className="text-[11px] text-[#ad9b58] font-bold">Appears prominently in client review portal</span>
+                </label>
+                <textarea
+                  rows={2}
+                  value={editorNotes}
+                  onChange={(e) => setEditorNotes(e.target.value)}
+                  placeholder="E.g. Hi Romany, following your feedback I tried new colour variations..."
+                  className="w-full px-3.5 py-2 rounded-xl bg-[#fbf7ee] border border-[#4c1315]/20 text-xs text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#ad9b58] resize-none"
+                />
               </div>
 
               {/* Caption */}

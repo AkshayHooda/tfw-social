@@ -53,12 +53,15 @@ export async function POST(request: Request) {
         .from('posts')
         .insert([
           {
+            token: (await import('crypto')).randomUUID(),
             creator_name: body.creator_name,
             creator_handle: body.creator_handle || null,
             platform: body.platform,
             media_url: body.media_url,
             media_type: body.media_type,
             caption: body.caption || null,
+            editor_notes: body.editor_notes || null,
+            media_urls: body.media_urls && body.media_urls.length > 0 ? body.media_urls : null,
             scheduled_at: body.scheduled_at || null,
             status: 'pending',
           },
@@ -108,7 +111,19 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Post id is required' }, { status: 400 });
     }
 
-    const success = await persistentStore.deleteById(id);
+    let success = false;
+
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase
+        .from('posts')
+        .delete()
+        .eq('id', id);
+      if (!error) success = true;
+    }
+
+    const blobDeleted = await persistentStore.deleteById(id);
+    if (blobDeleted) success = true;
+
     if (!success) {
       return NextResponse.json({ error: 'Post not found or could not be deleted' }, { status: 404 });
     }
@@ -138,7 +153,28 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Post id is required' }, { status: 400 });
     }
 
-    const updated = await persistentStore.updateById(id, updates);
+    let updated = null;
+
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('posts')
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (!error && data) {
+        updated = data;
+      }
+    }
+
+    if (!updated) {
+      updated = await persistentStore.updateById(id, updates);
+    }
+
     if (!updated) {
       return NextResponse.json({ error: 'Post not found or could not be updated' }, { status: 404 });
     }
