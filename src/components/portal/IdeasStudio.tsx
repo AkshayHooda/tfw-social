@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ContentIdea, IdeaCategory, IdeaPriority, IdeaStage } from '@/types/post';
+import { ContentIdea, IdeaCategory, IdeaPriority, IdeaStage, Post } from '@/types/post';
 import { 
   Lightbulb, 
   Video, 
@@ -34,6 +34,7 @@ import { upload } from '@vercel/blob/client';
 
 interface IdeasStudioProps {
   ideas: ContentIdea[];
+  posts?: Post[];
   selectedBrand: 'all' | 'The Finance Woman' | 'In Business Together';
   onIdeaCreated: (newIdea: ContentIdea) => void;
   onIdeaUpdated?: (updatedIdea: ContentIdea) => void;
@@ -41,7 +42,19 @@ interface IdeasStudioProps {
   onNavigateToTab?: (tab: 'review' | 'calendar') => void;
 }
 
-export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated, onIdeaDeleted, onNavigateToTab }: IdeasStudioProps) {
+export function getEffectiveIdeaStage(idea: ContentIdea): IdeaStage {
+  if (idea.stage) return idea.stage;
+  const st = (idea.status as string) || '';
+  if (st === 'in_production' || st === 'drafted') return 'editing';
+  if (st === 'review') return 'review';
+  if (st === 'published') return 'posted';
+  if (st === 'scheduled') return 'scheduled';
+  if (st === 'approved') return 'approved';
+  if (idea.raw_video_url) return 'filmed';
+  return 'idea';
+}
+
+export function IdeasStudio({ ideas, posts = [], selectedBrand, onIdeaCreated, onIdeaUpdated, onIdeaDeleted, onNavigateToTab }: IdeasStudioProps) {
   // Form State
   const [submissionMode, setSubmissionMode] = useState<'idea' | 'raw_video'>('idea');
   const [brand, setBrand] = useState<'The Finance Woman' | 'In Business Together'>(
@@ -299,18 +312,43 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
 
   const displayIdeas = filteredIdeas.filter(i => {
     if (activeFilterStage === 'all') return true;
-    return (i.stage || 'idea') === activeFilterStage;
+    return getEffectiveIdeaStage(i) === activeFilterStage;
   });
 
   const stagesList = [
     { key: 'idea', label: 'Idea Logged', icon: '💡' },
-    { key: 'filmed', label: 'Raw Footage Ready', icon: '📹' },
     { key: 'editing', label: 'In Editing', icon: '✂️' },
     { key: 'review', label: 'In Review', icon: '👀' },
     { key: 'approved', label: 'Approved', icon: '✅' },
     { key: 'scheduled', label: 'Scheduled', icon: '📅' },
     { key: 'posted', label: 'Posted Live', icon: '🚀' },
   ];
+
+  const filteredPosts = posts.filter(p => {
+    if (selectedBrand === 'all') return true;
+    const combined = `${p.creator_name || ''} ${p.creator_handle || ''} ${p.caption || ''}`.toLowerCase();
+    const isIBT = combined.includes('in business together') || combined.includes('business together') || combined.includes('damian');
+    if (selectedBrand === 'The Finance Woman') return !isIBT;
+    if (selectedBrand === 'In Business Together') return isIBT;
+    return true;
+  });
+
+  const getStageCount = (stageKey: string) => {
+    const ideasCount = filteredIdeas.filter(i => getEffectiveIdeaStage(i) === stageKey).length;
+    if (stageKey === 'scheduled') {
+      return filteredPosts.filter(p => p.status === 'approved' && !p.is_published).length;
+    }
+    if (stageKey === 'approved') {
+      return filteredPosts.filter(p => p.status === 'approved').length;
+    }
+    if (stageKey === 'posted') {
+      return filteredPosts.filter(p => p.is_published).length;
+    }
+    if (stageKey === 'review') {
+      return filteredPosts.filter(p => p.status === 'pending').length;
+    }
+    return ideasCount;
+  };
 
   return (
     <div className="space-y-8">
@@ -328,10 +366,10 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/30">
-                End-to-End Content Flow
+                Direct Content Flow
               </span>
               <span className="text-xs text-[#4c1315]/70 font-medium">
-                Idea ➔ Filmed ➔ Edited ➔ Approved ➔ Scheduled ➔ Live
+                Idea Logged ➔ In Editing ➔ In Review ➔ Approved ➔ Scheduled ➔ Live
               </span>
             </div>
             <h2 className="text-2xl font-serif-display font-bold text-[#4c1315]">
@@ -350,7 +388,7 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
         </div>
 
         {/* Horizontal Lifecycle Steps Display */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 pt-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-2">
           {stagesList.map((s, idx) => (
             <div 
               key={s.key} 
@@ -368,7 +406,7 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
               <span className={`text-[9px] mt-1 px-1.5 py-0.2 rounded-full font-mono ${
                 activeFilterStage === s.key ? 'bg-white/20' : 'bg-[#4c1315]/10 text-[#4c1315]'
               }`}>
-                {filteredIdeas.filter(i => (i.stage || 'idea') === s.key).length}
+                {getStageCount(s.key)}
               </span>
             </div>
           ))}
@@ -701,7 +739,7 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
               <div className="space-y-3.5 max-h-[650px] overflow-y-auto pr-1">
                 {displayIdeas.map((idea) => {
                   const isIBT = (idea.creator_name || '').toLowerCase().includes('business');
-                  const stage = idea.stage || 'idea';
+                  const stage = getEffectiveIdeaStage(idea);
 
                   const stageDisplay = 
                     stage === 'filmed' ? '📹 Raw Video Ready' :
@@ -736,6 +774,10 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
 
                           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${stageColor}`}>
                             {stageDisplay}
+                          </span>
+
+                          <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/30">
+                            {idea.category === 'carousel' ? '🎠 Carousel' : idea.category === 'reel' ? '📹 Reel' : idea.category ? idea.category.replace('_', ' ') : '📹 Reel'}
                           </span>
 
                           {idea.priority === 'urgent' && (
@@ -825,20 +867,6 @@ export function IdeasStudio({ ideas, selectedBrand, onIdeaCreated, onIdeaUpdated
                       {/* Action Links & Edit/Approve/Reject Controls */}
                       <div className="pt-2.5 border-t border-[#4c1315]/10 flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
-                          {/* Approve Button */}
-                          {stage !== 'approved' && stage !== 'scheduled' && stage !== 'posted' && (
-                            <button
-                              type="button"
-                              onClick={() => handleApproveIdea(idea)}
-                              disabled={isProcessingAction}
-                              className="px-2.5 py-1 rounded-lg text-[11px] font-bold font-serif-display bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 transition flex items-center gap-1 cursor-pointer active:scale-95 disabled:opacity-50"
-                              title="Approve this concept for production"
-                            >
-                              <ThumbsUp className="w-3 h-3 text-emerald-700" />
-                              <span>Approve</span>
-                            </button>
-                          )}
-
                           {/* Edit Button */}
                           <button
                             type="button"
