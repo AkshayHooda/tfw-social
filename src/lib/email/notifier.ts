@@ -15,10 +15,11 @@ export async function sendNotificationEmail(payload: NotificationPayload) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://tfw-social.vercel.app';
 
   const actionDisplay = 
-    payload.action === 'approved' ? '✅ Post Approved by Client' :
-    payload.action === 'rejected' ? '❌ Post Disapproved' :
-    payload.action === 'changes_requested' ? '⚠️ Edits / Changes Requested' :
-    '🚀 New Post Queued for Client Review';
+    payload.action === 'approved' 
+      ? (payload.feedback ? '✅ Post Approved by Client (with Note / Reply)' : '✅ Post Approved by Client')
+      : payload.action === 'rejected' ? '❌ Post Disapproved'
+      : payload.action === 'changes_requested' ? '⚠️ Edits / Changes Requested'
+      : '🚀 New Post Queued for Client Review';
 
   const reviewUrl = payload.token ? `${baseUrl}/review/${payload.token}` : `${baseUrl}/portal`;
   const isNewSubmission = payload.action === 'pending_review' || payload.action === 'new_upload';
@@ -40,9 +41,11 @@ export async function sendNotificationEmail(payload: NotificationPayload) {
         ${payload.caption ? `<div style="margin: 14px 0; padding: 12px; background: #f6f0e2; border-left: 3px solid #ad9b58; font-style: italic; font-size: 13px;">“${payload.caption}”</div>` : ''}
 
         ${payload.feedback ? `
-          <div style="margin: 16px 0; padding: 14px; background: #fdf2f2; border: 1px solid #f8b4b4; border-radius: 6px;">
-            <strong style="color: #9b1c1c; display: block; margin-bottom: 6px;">Client Notes & Requested Changes:</strong>
-            <p style="margin: 0; color: #771d1d; white-space: pre-wrap; font-size: 14px;">${payload.feedback}</p>
+          <div style="margin: 16px 0; padding: 14px; background: ${payload.action === 'approved' ? '#f0fdf4' : '#fdf2f2'}; border: 1px solid ${payload.action === 'approved' ? '#86efac' : '#f8b4b4'}; border-radius: 6px;">
+            <strong style="color: ${payload.action === 'approved' ? '#15803d' : '#9b1c1c'}; display: block; margin-bottom: 6px;">
+              ${payload.action === 'approved' ? '💬 Romany\'s Approval Note / Reply to Editor:' : 'Client Notes & Requested Changes:'}
+            </strong>
+            <p style="margin: 0; color: ${payload.action === 'approved' ? '#14532d' : '#771d1d'}; white-space: pre-wrap; font-size: 14px;">${payload.feedback}</p>
           </div>
         ` : ''}
 

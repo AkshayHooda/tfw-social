@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ContentIdea } from '@/types/post';
+import { getEffectiveIdeaStage } from '@/components/portal/IdeasStudio';
 import { 
   Lightbulb, 
   Video, 
@@ -37,6 +38,7 @@ export function ClientIdeasBacklog({
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [filterBrand, setFilterBrand] = useState<'all' | 'The Finance Woman' | 'In Business Together'>(selectedBrand);
   const [filterStage, setFilterStage] = useState<string>('all');
+  const [savedFeedbackId, setSavedFeedbackId] = useState<string | null>(null);
 
   const filteredIdeas = ideas.filter(i => {
     if (filterBrand !== 'all') {
@@ -45,7 +47,7 @@ export function ClientIdeasBacklog({
       if (filterBrand === 'In Business Together' && !name.includes('business')) return false;
     }
     if (filterStage !== 'all') {
-      if ((i.stage || 'idea') !== filterStage) return false;
+      if (getEffectiveIdeaStage(i) !== filterStage) return false;
     }
     return true;
   });
@@ -57,6 +59,8 @@ export function ClientIdeasBacklog({
         stage: newStage as any, 
         status: newStage === 'review' || newStage === 'approved' ? 'drafted' : 'in_production' 
       });
+      setSavedFeedbackId(idea.id);
+      setTimeout(() => setSavedFeedbackId(null), 2500);
     } finally {
       setUpdatingId(null);
     }
@@ -131,15 +135,6 @@ export function ClientIdeasBacklog({
           }`}
         >
           💡 Concept Only
-        </button>
-        <button
-          type="button"
-          onClick={() => setFilterStage('filmed')}
-          className={`px-3 py-1 rounded-full font-bold transition cursor-pointer ${
-            filterStage === 'filmed' ? 'bg-blue-600 text-white' : 'bg-blue-50 text-blue-800 border border-blue-200'
-          }`}
-        >
-          📹 Raw Video Ready
         </button>
         <button
           type="button"
@@ -298,13 +293,22 @@ export function ClientIdeasBacklog({
                       className="px-2.5 py-1 rounded-lg bg-white border border-[#4c1315]/20 text-xs font-semibold text-[#4c1315]"
                     >
                       <option value="idea">💡 Idea Logged</option>
-                      <option value="filmed">📹 Raw Footage Ready</option>
                       <option value="editing">✂️ In Editing</option>
                       <option value="review">👀 Queued for Review</option>
                       <option value="approved">✅ Approved</option>
                       <option value="scheduled">📅 Scheduled</option>
                       <option value="posted">🚀 Posted Live</option>
                     </select>
+
+                    {updatingId === idea.id && (
+                      <span className="text-[10px] text-[#ad9b58] font-bold animate-pulse">Saving...</span>
+                    )}
+
+                    {savedFeedbackId === idea.id && (
+                      <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 font-bold animate-in fade-in">
+                        Saved ✓
+                      </span>
+                    )}
                   </div>
 
                   <button

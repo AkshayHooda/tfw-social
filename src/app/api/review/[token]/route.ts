@@ -3,6 +3,9 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { persistentStore } from '@/lib/persistent-store';
 import { ReviewActionInput } from '@/types/post';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ token: string }> }
@@ -31,7 +34,14 @@ export async function GET(
       return NextResponse.json({ error: 'Post not found or invalid review link' }, { status: 404 });
     }
 
-    return NextResponse.json({ post });
+    return NextResponse.json(
+      { post },
+      {
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        },
+      }
+    );
   } catch (err: unknown) {
     console.error('Error fetching review post:', err);
     return NextResponse.json(

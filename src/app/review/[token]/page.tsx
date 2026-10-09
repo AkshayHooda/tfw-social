@@ -6,7 +6,7 @@ import { InstagramReelPreview } from '@/components/previews/InstagramReelPreview
 import { InstagramPostPreview } from '@/components/previews/InstagramPostPreview';
 import { InstagramStoryPreview } from '@/components/previews/InstagramStoryPreview';
 import { LinkedInPreview } from '@/components/previews/LinkedInPreview';
-import { CheckCircle2, AlertCircle, Sparkles, Clock, MessageSquare, Loader2, Check, XCircle, SlidersHorizontal, Copy } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Sparkles, Clock, MessageSquare, Loader2, Check, XCircle, SlidersHorizontal, Copy, Send } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ReviewPage({ params }: { params: Promise<{ token: string }> }) {
@@ -25,6 +25,10 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
   const [showFeedbackBox, setShowFeedbackBox] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
 
+  // Editor note reply & approval feedback state
+  const [editorNoteReply, setEditorNoteReply] = useState('');
+  const [replySavedMessage, setReplySavedMessage] = useState<string | null>(null);
+
   // Confirmation screen
   const [confirmedStatus, setConfirmedStatus] = useState<'approved' | 'changes_requested' | 'rejected' | null>(null);
 
@@ -32,12 +36,15 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
     async function fetchPost() {
       try {
         setLoading(true);
-        const res = await fetch(`/api/review/${token}`);
+        const res = await fetch(`/api/review/${token}?t=${Date.now()}`, { cache: 'no-store' });
         const data = await res.json();
         if (!res.ok || !data.post) {
           throw new Error(data.error || 'Failed to load post');
         }
         setPost(data.post);
+        if (data.post.feedback) {
+          setEditorNoteReply(data.post.feedback);
+        }
         if (data.post.platform === 'instagram_post' || data.post.platform === 'instagram_feed' || data.post.media_type === 'image') {
           setPreviewFormat('feed');
         } else {
@@ -74,7 +81,10 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
       const res = await fetch(`/api/review/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'approved' }),
+        body: JSON.stringify({
+          status: 'approved',
+          feedback: editorNoteReply.trim() || undefined,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to approve');
@@ -84,6 +94,34 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
       triggerConfetti();
     } catch (err: unknown) {
       alert(err instanceof Error ? err.message : 'Failed to submit approval');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSendNoteOnly = async () => {
+    if (!editorNoteReply.trim()) {
+      alert('Please write a note or reply first.');
+      return;
+    }
+    try {
+      setSubmitting(true);
+      const res = await fetch(`/api/review/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: post?.status === 'approved' ? 'approved' : 'pending',
+          feedback: editorNoteReply.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send note');
+
+      setPost(data.post);
+      setReplySavedMessage('Reply sent to Akshay by email!');
+      setTimeout(() => setReplySavedMessage(null), 4000);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Failed to send note');
     } finally {
       setSubmitting(false);
     }
@@ -170,12 +208,25 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
           <Check className="w-10 h-10 stroke-[3]" />
         </div>
         <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40 mb-3 font-serif-display">
-          <Sparkles className="w-3.5 h-3.5 text-[#ad9b58]" /> Post Approved & Locked
+          <Sparkles className="w-3.5 h-3.5 text-[#ad9b58]" /> Post Approved & Scheduled
         </span>
         <h1 className="text-2xl sm:text-3xl font-serif-display font-bold text-[#4c1315] mb-3 tracking-tight">Approved for Broadcast!</h1>
-        <p className="text-[#4c1315]/75 text-sm max-w-md mb-8 leading-relaxed">
-          Thank you! Your editor has been notified by email and the post is now queued in your editorial broadcast calendar.
+        <p className="text-[#4c1315]/75 text-sm max-w-md mb-4 leading-relaxed">
+          Thank you! The post has been approved and queued in your editorial broadcast calendar.
         </p>
+        {editorNoteReply.trim() && (
+          <div className="max-w-md w-full mb-6 p-4 rounded-2xl bg-white border border-[#ad9b58]/40 text-left shadow-2xs">
+            <span className="text-[11px] font-bold text-[#4c1315] uppercase tracking-wider block mb-1">
+              Your Note to Akshay:
+            </span>
+            <p className="text-xs sm:text-sm text-[#280c0d] whitespace-pre-wrap italic">
+              "{editorNoteReply.trim()}"
+            </p>
+            <span className="text-[10px] text-emerald-700 font-semibold block mt-2">
+              ✓ Sent directly to Akshay by email
+            </span>
+          </div>
+        )}
         <button
           type="button"
           onClick={() => setConfirmedStatus(null)}
@@ -416,18 +467,65 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
                   </div>
                 )}
 
-                {/* Note to Romany from Editor */}
-                {post.editor_notes && (
+                {/* Note to Romany from Editor & Interactive Reply Box */}
+                {(post.editor_notes || post.status === 'approved') && (
                   <div className="p-4 sm:p-5 rounded-2xl bg-[#fdf8f4] border-2 border-[#ad9b58]/50 text-left mb-5 shadow-xs">
-                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#ad9b58]/20">
-                      <Sparkles className="w-4 h-4 text-[#ad9b58]" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
-                        Note from Akshay (Editor)
-                      </span>
+                    <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-[#ad9b58]/20">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-[#ad9b58]" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
+                          {post.editor_notes ? 'Note from Akshay (Editor)' : 'Reply / Note to Akshay'}
+                        </span>
+                      </div>
+                      {post.status === 'approved' && (
+                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                          Approved
+                        </span>
+                      )}
                     </div>
-                    <p className="text-xs sm:text-sm text-[#4c1315] font-medium leading-relaxed whitespace-pre-wrap">
-                      {post.editor_notes}
-                    </p>
+                    {post.editor_notes && (
+                      <p className="text-xs sm:text-sm text-[#4c1315] font-medium leading-relaxed whitespace-pre-wrap mb-3.5">
+                        {post.editor_notes}
+                      </p>
+                    )}
+
+                    {/* Dedicated Reply Box so Romany can reply and give feedback */}
+                    <div className="pt-3 border-t border-[#ad9b58]/20">
+                      <label htmlFor="editor-reply" className="block text-[11px] font-bold text-[#4c1315]/80 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                        <span>Your reply or feedback on this note (optional):</span>
+                        {replySavedMessage && (
+                          <span className="text-emerald-700 font-bold lowercase normal-case flex items-center gap-1">
+                            <Check className="w-3 h-3 text-emerald-600" /> {replySavedMessage}
+                          </span>
+                        )}
+                      </label>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <textarea
+                          id="editor-reply"
+                          value={editorNoteReply}
+                          onChange={(e) => setEditorNoteReply(e.target.value)}
+                          placeholder="e.g. Sounds good! Approved for Facebook group, let's also share the tips on Stories..."
+                          rows={2}
+                          className="flex-1 p-2.5 rounded-xl bg-white border border-[#ad9b58]/40 text-xs sm:text-sm text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#4c1315] resize-none"
+                        />
+                        {post.status === 'approved' && (
+                          <button
+                            type="button"
+                            onClick={handleSendNoteOnly}
+                            disabled={submitting || !editorNoteReply.trim()}
+                            className="self-end sm:self-center px-3.5 py-2 rounded-xl text-xs font-serif-display font-bold bg-[#4c1315] hover:bg-[#6e1c1f] text-[#fbf7ee] transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-xs whitespace-nowrap"
+                          >
+                            {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#ad9b58]" /> : <Send className="w-3.5 h-3.5 text-[#ad9b58]" />}
+                            <span>Send Reply</span>
+                          </button>
+                        )}
+                      </div>
+                      <p className="text-[10px] text-[#4c1315]/60 mt-1.5">
+                        {post.status === 'approved' 
+                          ? 'You can update this reply anytime and click Send Reply to email Akshay directly.'
+                          : 'Tip: You can write your reply here and click "Approve & Schedule" below. Your reply will be emailed to Akshay along with your approval!'}
+                      </p>
+                    </div>
                   </div>
                 )}
 

@@ -315,13 +315,7 @@ export function InstagramPostPreview({ post }: Props) {
                 className="relative z-10 max-w-full max-h-full object-contain shadow-sm transition-opacity duration-150"
               />
 
-              {/* Note to Romany pill badge (Top Left) */}
-              {post.editor_notes && (
-                <div className="absolute top-3.5 left-3.5 z-30 max-w-[70%] px-3 py-1.5 rounded-xl bg-[#4c1315]/90 backdrop-blur-md text-[#fbf7ee] text-[11px] font-medium shadow-lg border border-[#ad9b58]/40 pointer-events-none line-clamp-2">
-                  <span className="font-bold text-[#ad9b58] mr-1">Note:</span>
-                  {post.editor_notes}
-                </div>
-              )}
+
 
               {/* Carousel Slide Counter Badge (Top Right) */}
               {slides.length > 1 && (
@@ -339,11 +333,11 @@ export function InstagramPostPreview({ post }: Props) {
                     e.stopPropagation();
                     setActiveSlide((prev) => Math.max(0, prev - 1));
                   }}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-neutral-900 flex items-center justify-center shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer border border-neutral-200"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/20 hover:bg-black/60 text-white/70 hover:text-white backdrop-blur-[2px] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
                   aria-label="Previous slide"
                   title="Previous slide"
                 >
-                  <ChevronLeft className="w-6 h-6 -ml-0.5 stroke-[2.5]" />
+                  <ChevronLeft className="w-5 h-5 -ml-0.5 stroke-[2.5]" />
                 </button>
               )}
 
@@ -355,11 +349,11 @@ export function InstagramPostPreview({ post }: Props) {
                     e.stopPropagation();
                     setActiveSlide((prev) => Math.min(slides.length - 1, prev + 1));
                   }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-neutral-900 flex items-center justify-center shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer border border-neutral-200"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/20 hover:bg-black/60 text-white/70 hover:text-white backdrop-blur-[2px] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
                   aria-label="Next slide"
                   title="Next slide"
                 >
-                  <ChevronRight className="w-6 h-6 -mr-0.5 stroke-[2.5]" />
+                  <ChevronRight className="w-5 h-5 -mr-0.5 stroke-[2.5]" />
                 </button>
               )}
 

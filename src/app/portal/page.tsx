@@ -116,18 +116,18 @@ export default function UnifiedInfluencerPortal() {
     setPassword('');
   };
 
-  const fetchPortalData = async () => {
+  const fetchPortalData = async (silent = false) => {
     const token = localStorage.getItem('tfw_portal_token');
     if (!token) return;
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const [resPortal, resIdeas] = await Promise.all([
         fetch('/api/portal', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ password: token }),
         }),
-        fetch('/api/ideas', { cache: 'no-store' }),
+        fetch(`/api/ideas?t=${Date.now()}`, { cache: 'no-store' }),
       ]);
       const data = await resPortal.json();
       if (data.posts) setPosts(data.posts);
@@ -139,9 +139,18 @@ export default function UnifiedInfluencerPortal() {
     } catch (err) {
       console.error('Error refreshing portal:', err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
+
+  // Background Auto-Poll for real-time syncing across all active devices
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const interval = setInterval(() => {
+      fetchPortalData(true);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
 
   const handleGenerateAi = async () => {
     try {
@@ -465,7 +474,7 @@ export default function UnifiedInfluencerPortal() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={fetchPortalData}
+              onClick={() => fetchPortalData()}
               className="p-2 rounded-xl text-[#4c1315]/70 hover:text-[#4c1315] hover:bg-[#4c1315]/5 transition"
               title="Refresh Portal Data"
             >
@@ -1363,6 +1372,7 @@ export default function UnifiedInfluencerPortal() {
         {activeTab === 'ideas' && (
           <IdeasStudio 
             ideas={ideas} 
+            posts={posts}
             selectedBrand={selectedBrand} 
             onIdeaCreated={(newIdea) => setIdeas(prev => [newIdea, ...prev])} 
             onIdeaUpdated={(updatedIdea) => setIdeas(prev => prev.map(i => i.id === updatedIdea.id ? updatedIdea : i))}
