@@ -431,11 +431,18 @@ export function ContentCalendar({ posts, selectedBrand, onSelectReviewPost }: Co
                     >
                       <div className="flex items-start sm:items-center gap-4">
                         <div className="w-16 h-16 rounded-xl bg-[#280c0d] overflow-hidden flex-shrink-0 relative border border-[#4c1315]/20">
-                          {post.media_type === 'video' ? (
-                            <video src={post.media_url} className="w-full h-full object-cover" />
-                          ) : (
-                            <img src={post.media_url} alt="Media" className="w-full h-full object-cover" />
-                          )}
+                          {(() => {
+                            const cover = post.media_urls && post.media_urls.length > 1
+                              ? post.media_urls.find(u => u !== post.media_url && !u.endsWith('.mp4') && !u.endsWith('.mov'))
+                              : null;
+                            if (cover) {
+                              return <img src={cover} alt="Cover" className="w-full h-full object-cover" />;
+                            }
+                            if (post.media_type === 'video') {
+                              return <video src={post.media_url} className="w-full h-full object-cover" />;
+                            }
+                            return <img src={post.media_url} alt="Media" className="w-full h-full object-cover" />;
+                          })()}
                           <span className="absolute bottom-1 right-1 bg-black/70 text-white text-[9px] p-0.5 rounded">
                             {post.media_type === 'video' ? <Video className="w-2.5 h-2.5" /> : <ImageIcon className="w-2.5 h-2.5" />}
                           </span>
@@ -550,9 +557,15 @@ export function ContentCalendar({ posts, selectedBrand, onSelectReviewPost }: Co
               {/* Status and Platform Badges */}
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/30">
-                    {inspectingPost.platform.replace('_', ' ')}
-                  </span>
+                  {inspectingPost.platform === 'facebook_group' || (inspectingPost.editor_notes || '').toLowerCase().includes('pet accountant') ? (
+                    <span className="text-[11px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-[#ad9b58] text-[#4c1315] border border-[#ad9b58]/50 flex items-center gap-1 font-serif-display">
+                      🐾 Facebook Group • The Pet Accountant
+                    </span>
+                  ) : (
+                    <span className="text-[11px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/30">
+                      {inspectingPost.platform.replace('_', ' ')}
+                    </span>
+                  )}
                   {inspectingPost.is_published ? (
                     <span className="px-2.5 py-1 rounded-full font-bold bg-[#ad9b58]/25 text-[#4c1315]">
                       🟢 Live Published
@@ -589,7 +602,7 @@ export function ContentCalendar({ posts, selectedBrand, onSelectReviewPost }: Co
                     className="inline-flex items-center gap-1 text-[11px] text-[#4c1315] hover:text-[#ad9b58] font-semibold transition cursor-pointer"
                   >
                     {copiedCaption ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
-                    <span>{copiedCaption ? 'Copied' : 'Copy Copy'}</span>
+                    <span>{copiedCaption ? 'Copied!' : 'Copy Caption'}</span>
                   </button>
                 </div>
                 <div className="p-3.5 bg-[#fbf7ee] rounded-xl border border-[#4c1315]/15 text-xs text-[#280c0d] font-serif-display leading-relaxed whitespace-pre-wrap max-h-44 overflow-y-auto">

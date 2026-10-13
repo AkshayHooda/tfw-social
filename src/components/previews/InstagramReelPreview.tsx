@@ -25,6 +25,7 @@ interface Props {
 }
 
 export function InstagramReelPreview({ post, cleanMode = false }: Props) {
+  const [viewCover, setViewCover] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentSecs, setCurrentSecs] = useState(0);
@@ -33,6 +34,11 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const lastTapRef = useRef<{ time: number; x: number }>({ time: 0, x: 0 });
   const badgeTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check if a dedicated cover image is provided in media_urls[1] or if post has a cover
+  const coverUrl = post.media_urls && post.media_urls.length > 1 
+    ? post.media_urls.find(u => u !== post.media_url && !u.endsWith('.mp4') && !u.endsWith('.mov'))
+    : null;
 
   const formatSecs = (sec: number) => {
     if (isNaN(sec) || sec < 0) return '0:00';
@@ -185,7 +191,18 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
           className="relative w-full h-full cursor-pointer flex items-center justify-center bg-neutral-950" 
           onClick={handleVideoClick}
         >
-          {post.media_type === 'video' ? (
+          {viewCover && coverUrl ? (
+            <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-neutral-950">
+              <img
+                src={coverUrl}
+                alt="Reel Cover"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 left-4 bg-black/60 text-[#ad9b58] text-[11px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md border border-[#ad9b58]/30">
+                📌 Profile Grid Cover
+              </div>
+            </div>
+          ) : post.media_type === 'video' ? (
             <video
               ref={videoRef}
               src={post.media_url}
@@ -404,6 +421,22 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
               <RotateCcw className="w-3.5 h-3.5 text-[#ad9b58]" />
               <span>-5s</span>
             </button>
+
+            {/* Cover Image Toggle if available */}
+            {coverUrl && (
+              <button
+                type="button"
+                onClick={() => setViewCover(!viewCover)}
+                className={`py-2 px-2.5 rounded-xl border transition flex items-center justify-center gap-1 cursor-pointer active:scale-95 text-xs font-bold ${
+                  viewCover 
+                    ? 'bg-[#ad9b58] text-[#4c1315] border-[#ad9b58]' 
+                    : 'bg-[#fbf7ee] text-[#4c1315] border-[#4c1315]/15 hover:bg-[#ad9b58]/20'
+                }`}
+                title="Toggle between Reel video and Profile Cover photo"
+              >
+                <span>{viewCover ? '▶ Play Reel' : '🖼 Cover'}</span>
+              </button>
+            )}
 
             {/* Play / Pause */}
             <button

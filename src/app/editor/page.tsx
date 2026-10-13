@@ -72,7 +72,12 @@ export default function EditorDashboard() {
 
   const [activeFilter, setActiveFilter] = useState<'all' | PostStatus>('all');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const coverFileInputRef = useRef<HTMLInputElement | null>(null);
   const uploadFormRef = useRef<HTMLDivElement | null>(null);
+
+  // Dedicated Reel Cover Image State
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreviewUrl, setCoverPreviewUrl] = useState<string | null>(null);
 
   // Admin & Post Management State
   const [editingPost, setEditingPost] = useState<Post | null>(null);
@@ -312,6 +317,45 @@ export default function EditorDashboard() {
         setUploadProgress(90);
       }
 
+      // If a separate cover image was attached for a Reel/Video post, upload it and append to media_urls
+      if (coverFile && mediaType === 'video') {
+        setUploadProgress(92);
+        const presignRes = await fetch('/api/upload-url', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: coverFile.name,
+            contentType: coverFile.type || 'image/jpeg',
+          }),
+        });
+        const presignData = await presignRes.json();
+        let coverItemUrl = '';
+        if (presignData.type === 'blob') {
+          const newBlob = await upload(`media/${Date.now()}-${coverFile.name}`, coverFile, {
+            access: 'public',
+            handleUploadUrl: '/api/upload',
+          });
+          coverItemUrl = newBlob.url;
+        } else if (presignData.type === 'r2' || presignData.signedUrl) {
+          const uploadRes = await fetch(presignData.signedUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': coverFile.type },
+            body: coverFile,
+          });
+          if (uploadRes.ok) coverItemUrl = presignData.publicUrl;
+        } else {
+          coverItemUrl = coverPreviewUrl || '';
+        }
+
+        if (coverItemUrl) {
+          if (uploadedUrls.length === 0 && finalMediaUrl) {
+            uploadedUrls = [finalMediaUrl, coverItemUrl];
+          } else if (uploadedUrls.length > 0) {
+            uploadedUrls.push(coverItemUrl);
+          }
+        }
+      }
+
       const postRes = await fetch('/api/posts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -336,6 +380,8 @@ export default function EditorDashboard() {
       setScheduledAt('');
       setMediaFiles([]);
       setMediaPreviewUrls([]);
+      setCoverFile(null);
+      setCoverPreviewUrl(null);
       setEditorNotes('');
       setDirectMediaUrl('');
       setUploadProgress(null);
@@ -958,6 +1004,86 @@ export default function EditorDashboard() {
                     className="w-full px-3 py-2 text-xs rounded-xl bg-[#fbf7ee] border border-[#4c1315]/15 text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#ad9b58]"
                   />
                 </div>
+
+                {/* Dedicated Reel Cover Image Uploader (Optional) */}
+                {(mediaType === 'video' || platform === 'instagram_reel') && (
+                  <div className="mt-3 p-3.5 rounded-2xl bg-[#fbf7ee] border border-[#ad9b58]/40 text-left transition">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-xs font-bold text-[#4c1315] flex items-center gap-1.5">
+                        <ImageIcon className="w-3.5 h-3.5 text-[#ad9b58]" />
+                        <span>Reel Cover Photo (For Profile Grid Approval)</span>
+                      </label>
+                      <span className="text-[10px] text-[#ad9b58] font-bold uppercase tracking-wider">
+                        Client Request
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#4c1315]/70 mb-2.5">
+                      Upload an aesthetic 9:16 or 4:5 cover with clear title typography so Romany can preview how the video sits on her profile feed.
+                    </p>
+
+                    <input
+                      ref={coverFileInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="hidden"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          const file = e.target.files[0];
+                          setCoverFile(file);
+                          setCoverPreviewUrl(URL.createObjectURL(file));
+                        }
+                      }}
+                    />
+
+                    {coverFile && coverPreviewUrl ? (
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-[#4c1315]/15">
+                        <div className="flex items-center gap-2.5 overflow-hidden">
+                          <img
+                            src={coverPreviewUrl}
+                            alt="Cover Preview"
+                            className="w-10 h-10 rounded-lg object-cover border border-[#ad9b58]/30 flex-shrink-0"
+                          />
+                          <div className="truncate">
+                            <p className="text-xs font-bold text-[#4c1315] truncate">
+                              {coverFile.name}
+                            </p>
+                            <p className="text-[10px] text-[#4c1315]/60">
+                              {(coverFile.size / (1024 * 1024)).toFixed(2)} MB • Ready for approval
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => coverFileInputRef.current?.click()}
+                            className="text-xs text-[#ad9b58] hover:text-[#4c1315] font-semibold px-2 py-1 rounded transition cursor-pointer"
+                          >
+                            Change
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCoverFile(null);
+                              setCoverPreviewUrl(null);
+                            }}
+                            className="text-xs text-red-600 hover:text-red-800 font-semibold px-2 py-1 rounded transition cursor-pointer"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => coverFileInputRef.current?.click()}
+                        className="w-full py-2.5 px-3 rounded-xl border border-dashed border-[#ad9b58] bg-white/70 hover:bg-white text-xs font-semibold text-[#4c1315] flex items-center justify-center gap-2 transition cursor-pointer"
+                      >
+                        <UploadCloud className="w-4 h-4 text-[#ad9b58]" />
+                        <span>Upload Dedicated Cover Image</span>
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Note for Romany */}
@@ -1077,19 +1203,26 @@ export default function EditorDashboard() {
                             className="w-14 h-14 rounded-xl bg-[#280c0d] flex items-center justify-center flex-shrink-0 border border-[#ad9b58]/40 overflow-hidden relative group cursor-pointer hover:ring-2 hover:ring-[#ad9b58] transition"
                             title="Click to view full graphics & slides"
                           >
-                            {p.media_url ? (
-                              p.media_type === 'video' ? (
-                                <video src={p.media_url} className="w-full h-full object-cover pointer-events-none" />
-                              ) : (
-                                <img src={p.media_url} alt="Post preview" className="w-full h-full object-cover" />
-                              )
-                            ) : (
-                              p.media_type === 'video' ? (
+                            {(() => {
+                              const coverImg = p.media_urls && p.media_urls.length > 1
+                                ? p.media_urls.find(u => u !== p.media_url && !u.endsWith('.mp4') && !u.endsWith('.mov'))
+                                : null;
+                              if (coverImg) {
+                                return <img src={coverImg} alt="Cover preview" className="w-full h-full object-cover" />;
+                              }
+                              if (p.media_url) {
+                                return p.media_type === 'video' ? (
+                                  <video src={p.media_url} className="w-full h-full object-cover pointer-events-none" />
+                                ) : (
+                                  <img src={p.media_url} alt="Post preview" className="w-full h-full object-cover" />
+                                );
+                              }
+                              return p.media_type === 'video' ? (
                                 <FileVideo className="w-6 h-6 text-[#ad9b58]" />
                               ) : (
                                 <FileImage className="w-6 h-6 text-[#ad9b58]" />
-                              )
-                            )}
+                              );
+                            })()}
                             {p.media_urls && p.media_urls.length > 1 && (
                               <span className="absolute bottom-1 right-1 bg-black/80 text-[9px] font-bold text-white px-1.5 py-0.2 rounded-full flex items-center gap-0.5">
                                 <Layers className="w-2.5 h-2.5 text-[#ad9b58]" />
