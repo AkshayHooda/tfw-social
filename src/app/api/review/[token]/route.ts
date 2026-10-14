@@ -70,11 +70,43 @@ export async function POST(
       );
     }
 
-    const updatePayload = {
+    // Check if an existing post being approved is a reel with an attached cover image
+    // If approved, replace the calendar display thumbnail with the approved cover image and log a note
+    let existingPost = null;
+    if (isSupabaseConfigured && supabase) {
+      const { data: current } = await supabase.from('posts').select('*').eq('token', token).single();
+      existingPost = current;
+    } else {
+      existingPost = await persistentStore.getByToken(token);
+    }
+
+    const updatePayload: Record<string, any> = {
       status: body.status,
       feedback: body.feedback || null,
       updated_at: new Date().toISOString(),
     };
+
+    // If approved and post has an attached dedicated cover image in media_urls
+    if (body.status === 'approved' && existingPost) {
+      const attachedCover = existingPost.media_urls && existingPost.media_urls.length > 1
+        ? existingPost.media_urls.find((u: string) => 
+            u !== existingPost.media_url && 
+            !u.endsWith('.mp4') && 
+            !u.endsWith('.mov') && 
+            !u.includes('Grid_Mockup') && 
+            !u.includes('Feed_Mockup')
+          )
+        : null;
+
+      if (attachedCover) {
+        // Replace current calendar graphic / thumbnail with the approved cover image
+        updatePayload.cover_image_url = attachedCover;
+        const approvalNote = `[APPROVED COVER]: Cover image "${attachedCover}" approved by Romany on ${new Date().toLocaleDateString('en-GB')}. Set as calendar thumbnail and broadcast cover.`;
+        updatePayload.editor_notes = existingPost.editor_notes 
+          ? `${existingPost.editor_notes}\n\n${approvalNote}` 
+          : approvalNote;
+      }
+    }
 
     let targetPost = null;
 

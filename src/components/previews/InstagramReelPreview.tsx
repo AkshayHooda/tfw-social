@@ -7,8 +7,8 @@ import {
   MessageCircle, 
   Send, 
   Bookmark, 
-  Music2, 
   MoreHorizontal, 
+  Music2, 
   Volume2, 
   VolumeX, 
   Play, 
@@ -16,7 +16,10 @@ import {
   Maximize2,
   RotateCcw,
   RotateCw,
-  RefreshCw
+  RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+  Layers
 } from 'lucide-react';
 
 interface Props {
@@ -25,7 +28,6 @@ interface Props {
 }
 
 export function InstagramReelPreview({ post, cleanMode = false }: Props) {
-  const [viewCover, setViewCover] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentSecs, setCurrentSecs] = useState(0);
@@ -35,10 +37,50 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
   const lastTapRef = useRef<{ time: number; x: number }>({ time: 0, x: 0 });
   const badgeTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Check if a dedicated cover image is provided in media_urls[1] or if post has a cover
+  // Check if a dedicated cover image is provided in media_urls
   const coverUrl = post.media_urls && post.media_urls.length > 1 
-    ? post.media_urls.find(u => u !== post.media_url && !u.endsWith('.mp4') && !u.endsWith('.mov'))
+    ? post.media_urls.find(u => u !== post.media_url && !u.endsWith('.mp4') && !u.endsWith('.mov') && !u.includes('Grid_Mockup') && !u.includes('Feed_Mockup'))
     : null;
+
+  // Check for 3-column mobile grid mockup if present in media_urls
+  const gridUrl = post.media_urls && post.media_urls.length > 2
+    ? post.media_urls.find(u => u.includes('Grid_Mockup') || u.includes('Feed_Mockup'))
+    : null;
+
+  // Carousel items: Cover Image (first), Video Reel (second), and 3-Col Grid Mockup (third if available)
+  type ReelSlideItem = {
+    type: 'cover' | 'video' | 'grid';
+    url: string;
+    title: string;
+    badge: string;
+  };
+
+  const slides: ReelSlideItem[] = [];
+  if (coverUrl) {
+    slides.push({
+      type: 'cover',
+      url: coverUrl,
+      title: 'Video Cover (9:16 Full Screen)',
+      badge: 'Cover'
+    });
+  }
+  slides.push({
+    type: 'video',
+    url: post.media_url,
+    title: 'B-Roll Video Reel',
+    badge: 'Video'
+  });
+  if (gridUrl) {
+    slides.push({
+      type: 'grid',
+      url: gridUrl,
+      title: 'Instagram Mobile Grid (3 Columns)',
+      badge: '3-Col Grid'
+    });
+  }
+
+  // Start with Cover Image as requested ("it will first display on video cover")
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 
   const formatSecs = (sec: number) => {
     if (isNaN(sec) || sec < 0) return '0:00';
@@ -186,20 +228,31 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
           </div>
         )}
 
-        {/* Main Video Player / Tap-to-Play Area */}
+        {/* Main Reel & Cover Stage Container - Carousel Arrows between Cover, Video, and 3-Col Grid */}
         <div 
-          className="relative w-full h-full cursor-pointer flex items-center justify-center bg-neutral-950" 
+          className="relative w-full h-full cursor-pointer flex items-center justify-center bg-neutral-950 select-none group/reelstage" 
           onClick={handleVideoClick}
         >
-          {viewCover && coverUrl ? (
+          {slides[activeSlideIndex]?.type === 'grid' ? (
+            <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-black">
+              <img
+                src={slides[activeSlideIndex].url}
+                alt="Instagram 3-Column Profile Grid"
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute top-4 left-4 z-30 bg-black/80 text-[#ad9b58] text-[11px] font-bold px-3 py-1 rounded-full backdrop-blur-md border border-[#ad9b58]/40 shadow-lg flex items-center gap-1.5 pointer-events-none">
+                <span>📱</span> Instagram Mobile Grid (3 Columns)
+              </div>
+            </div>
+          ) : slides[activeSlideIndex]?.type === 'cover' ? (
             <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-neutral-950">
               <img
-                src={coverUrl}
+                src={slides[activeSlideIndex].url}
                 alt="Reel Cover"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute top-4 left-4 bg-black/60 text-[#ad9b58] text-[11px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md border border-[#ad9b58]/30">
-                📌 Profile Grid Cover
+              <div className="absolute top-4 left-4 z-30 bg-black/75 text-[#ad9b58] text-[11px] font-bold px-3 py-1 rounded-full backdrop-blur-md border border-[#ad9b58]/40 shadow-lg flex items-center gap-1.5 pointer-events-none">
+                <span>📌</span> Video Cover (9:16 Full Screen)
               </div>
             </div>
           ) : post.media_type === 'video' ? (
@@ -226,6 +279,63 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
                 alt="Reel visual"
                 className="relative z-10 max-w-full max-h-full object-contain"
               />
+            </div>
+          )}
+
+          {/* Carousel Slide Counter Badge (Top Right) */}
+          {slides.length > 1 && (
+            <div className="absolute top-3.5 right-3.5 z-40 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-bold flex items-center gap-1.5 shadow-lg border border-[#ad9b58]/40 pointer-events-none">
+              <Layers className="w-3.5 h-3.5 text-[#ad9b58]" />
+              <span className="text-[#ad9b58] font-bold">{slides[activeSlideIndex]?.badge}:</span>
+              <span>{String(activeSlideIndex + 1).padStart(2, '0')}/{String(slides.length).padStart(2, '0')}</span>
+            </div>
+          )}
+
+          {/* Left Carousel Arrow Button */}
+          {slides.length > 1 && activeSlideIndex > 0 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveSlideIndex((prev) => Math.max(0, prev - 1));
+              }}
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer border border-white/30 shadow-xl"
+              aria-label="Previous item"
+              title="Previous item"
+            >
+              <ChevronLeft className="w-6 h-6 -ml-0.5 stroke-[2.5]" />
+            </button>
+          )}
+
+          {/* Right Carousel Arrow Button */}
+          {slides.length > 1 && activeSlideIndex < slides.length - 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveSlideIndex((prev) => Math.min(slides.length - 1, prev + 1));
+              }}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer border border-white/30 shadow-xl"
+              aria-label="Next item"
+              title="Next item"
+            >
+              <ChevronRight className="w-6 h-6 -mr-0.5 stroke-[2.5]" />
+            </button>
+          )}
+
+          {/* Bottom Dot Indicators for Reel Carousel */}
+          {slides.length > 1 && (
+            <div className="absolute bottom-2 z-40 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/70 backdrop-blur-sm pointer-events-none">
+              {slides.map((s, idx) => (
+                <div
+                  key={idx}
+                  className={`transition-all duration-200 rounded-full ${
+                    idx === activeSlideIndex
+                      ? 'w-5 h-1.5 bg-[#ad9b58]'
+                      : 'w-1.5 h-1.5 bg-white/50'
+                  }`}
+                />
+              ))}
             </div>
           )}
 
@@ -422,21 +532,22 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
               <span>-5s</span>
             </button>
 
-            {/* Cover Image Toggle if available */}
-            {coverUrl && (
+            {/* Slide Navigation Buttons in Dock */}
+            {slides.map((s, idx) => (
               <button
+                key={idx}
                 type="button"
-                onClick={() => setViewCover(!viewCover)}
+                onClick={() => setActiveSlideIndex(idx)}
                 className={`py-2 px-2.5 rounded-xl border transition flex items-center justify-center gap-1 cursor-pointer active:scale-95 text-xs font-bold ${
-                  viewCover 
-                    ? 'bg-[#ad9b58] text-[#4c1315] border-[#ad9b58]' 
+                  activeSlideIndex === idx
+                    ? 'bg-[#ad9b58] text-[#4c1315] border-[#ad9b58] shadow-xs' 
                     : 'bg-[#fbf7ee] text-[#4c1315] border-[#4c1315]/15 hover:bg-[#ad9b58]/20'
                 }`}
-                title="Toggle between Reel video and Profile Cover photo"
+                title={`Switch to ${s.title}`}
               >
-                <span>{viewCover ? '▶ Play Reel' : '🖼 Cover'}</span>
+                <span>{s.type === 'cover' ? '🖼 Cover' : s.type === 'video' ? '▶ Video' : '📱 3-Col Grid'}</span>
               </button>
-            )}
+            ))}
 
             {/* Play / Pause */}
             <button
