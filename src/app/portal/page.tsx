@@ -28,13 +28,15 @@ import {
   Copy,
   ChevronLeft,
   ChevronRight,
-  Lightbulb
+  Lightbulb,
+  Send
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { InstagramReelPreview } from '@/components/previews/InstagramReelPreview';
 import { InstagramPostPreview } from '@/components/previews/InstagramPostPreview';
 import { InstagramStoryPreview } from '@/components/previews/InstagramStoryPreview';
 import { LinkedInPreview } from '@/components/previews/LinkedInPreview';
+import { MultiChannelAuditPreview } from '@/components/previews/MultiChannelAuditPreview';
 import { ContentCalendar } from '@/components/portal/ContentCalendar';
 import { IdeasStudio } from '@/components/portal/IdeasStudio';
 
@@ -45,7 +47,7 @@ export default function UnifiedInfluencerPortal() {
   const [authLoading, setAuthLoading] = useState(false);
 
   // Format Switcher State (per post)
-  const [previewFormats, setPreviewFormats] = useState<Record<string, 'reel' | 'story' | 'feed'>>({});
+  const [previewFormats, setPreviewFormats] = useState<Record<string, 'reel' | 'story' | 'feed' | 'audit'>>({});
 
   // Portal Data
   const [posts, setPosts] = useState<Post[]>([]);
@@ -63,6 +65,8 @@ export default function UnifiedInfluencerPortal() {
   const [reviewViewMode, setReviewViewMode] = useState<'focused' | 'all'>('focused');
   const [activeReviewPostId, setActiveReviewPostId] = useState<string | null>(null);
   const [feedbackText, setFeedbackText] = useState('');
+  const [editorNoteReplies, setEditorNoteReplies] = useState<Record<string, string>>({});
+  const [noteReplySentPostId, setNoteReplySentPostId] = useState<string | null>(null);
   const [submittingAction, setSubmittingAction] = useState(false);
   const [actionSuccessMsg, setActionSuccessMsg] = useState<string | null>(null);
 
@@ -185,9 +189,53 @@ export default function UnifiedInfluencerPortal() {
   };
 
   // Influencer review actions directly from the portal
-  const handlePostAction = async (post: Post, action: 'approved' | 'changes_requested' | 'rejected') => {
-    if (action === 'changes_requested' && !feedbackText.trim()) {
+  const handlePostAction = async (post: Post, action: 'approved' | 'changes_requested' | 'rejected', customFeedback?: string) => {
+    if (action === 'changes_requested' && !feedbackText.trim() && !customFeedback) {
       alert('Please specify the changes or edits you would like before sending.');
+      return;
+    }
+
+    const replyFromInput = editorNoteReplies[post.id] !== undefined ? editorNoteReplies[post.id] : '';
+    const finalFeedback = customFeedback || (action === 'changes_requested' ? feedbackText.trim() : (replyFromInput.trim() || undefined));
+
+    try {
+      setSubmittingAction(true);
+      const res = await fetch(`/api/review/${post.token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: action,
+          feedback: finalFeedback,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to submit review');
+
+      // Update local state
+      setPosts(prev => prev.map(p => p.id === post.id ? (data.post || { ...p, status: action, feedback: finalFeedback || p.feedback }) : p));
+      setActiveReviewPostId(null);
+      setFeedbackText('');
+
+      const msg = 
+        action === 'approved' ? (finalFeedback ? 'Post Approved with your note! Email sent to Akshay.' : 'Post Approved! Editor notified via email.') :
+        action === 'rejected' ? 'Post Disapproved. Editor notified via email.' :
+        'Changes submitted! Editor notified via email.';
+
+      setActionSuccessMsg(msg);
+      if (action === 'approved') triggerConfetti();
+      setTimeout(() => setActionSuccessMsg(null), 4000);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'Error submitting action');
+    } finally {
+      setSubmittingAction(false);
+    }
+  };
+
+  const handleSendNoteOnly = async (post: Post) => {
+    const replyText = (editorNoteReplies[post.id] !== undefined ? editorNoteReplies[post.id] : (post.feedback || '')).trim();
+    if (!replyText) {
+      alert('Please write a note or reply first.');
       return;
     }
 
@@ -197,29 +245,19 @@ export default function UnifiedInfluencerPortal() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          status: action,
-          feedback: action === 'changes_requested' ? feedbackText.trim() : undefined,
+          status: post.status === 'approved' ? 'approved' : 'pending',
+          feedback: replyText,
         }),
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to submit review');
+      if (!res.ok) throw new Error(data.error || 'Failed to send note');
 
-      // Update local state
-      setPosts(prev => prev.map(p => p.id === post.id ? { ...p, status: action, feedback: action === 'changes_requested' ? feedbackText : p.feedback } : p));
-      setActiveReviewPostId(null);
-      setFeedbackText('');
-
-      const msg = 
-        action === 'approved' ? 'Post Approved! Editor notified via email.' :
-        action === 'rejected' ? 'Post Disapproved. Editor notified via email.' :
-        'Changes submitted! Editor notified via email.';
-
-      setActionSuccessMsg(msg);
-      if (action === 'approved') triggerConfetti();
-      setTimeout(() => setActionSuccessMsg(null), 4000);
+      setPosts(prev => prev.map(p => p.id === post.id ? (data.post || { ...p, feedback: replyText }) : p));
+      setNoteReplySentPostId(post.id);
+      setTimeout(() => setNoteReplySentPostId(null), 4000);
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : 'Error submitting action');
+      alert(err instanceof Error ? err.message : 'Error sending reply');
     } finally {
       setSubmittingAction(false);
     }
@@ -248,7 +286,7 @@ export default function UnifiedInfluencerPortal() {
     : posts;
 
   // Calculations for Streamlined Reporting
-  const inCreationPosts = brandFilteredPosts.filter(p => p.status === 'pending');
+  const inCreationPosts = brandFilteredPosts.filter(p => p.status === 'pending' || p.status === 'action_required' || p.status === 'in_review');
   const approvedPosts = brandFilteredPosts.filter(p => p.status === 'approved' && !p.is_published);
   const rejectedPosts = brandFilteredPosts.filter(p => p.status === 'rejected');
   const postedPosts = brandFilteredPosts.filter(p => p.is_published);
@@ -849,7 +887,7 @@ export default function UnifiedInfluencerPortal() {
                   : pendingPosts
                 ).map((post) => {
                   const isClean = cleanModes[post.id] !== false; // DEFAULT: clean unblocked video!
-                  const isFeedPost = post.platform === 'instagram_post' || post.platform === 'instagram_feed' || post.media_type === 'image';
+                  const isFeedPost = post.platform !== 'instagram_reel' && (post.platform === 'instagram_post' || post.platform === 'instagram_feed' || post.platform === 'facebook_group' || post.media_type === 'image' || (post.media_urls && post.media_urls.length > 0));
                   const defaultFormat = isFeedPost ? 'feed' : post.platform === 'linkedin' ? 'linkedin' : post.platform === 'instagram_story' ? 'story' : 'reel';
                   const currentFormat = previewFormats[post.id] || defaultFormat;
                   const lines = (post.caption || '').split('\n').filter(l => l.trim().length > 0);
@@ -857,6 +895,9 @@ export default function UnifiedInfluencerPortal() {
                   const hasFca = (post.caption || '').toLowerCase().includes('fca') || 
                                  (post.caption || '').toLowerCase().includes('capital at risk') || 
                                  (post.caption || '').toLowerCase().includes('financial advice');
+                  const isPetGroup = post.platform === 'facebook_group' || 
+                                     (post.editor_notes || '').toLowerCase().includes('pet accountant') ||
+                                     (post.caption || '').toLowerCase().includes('pet accountant');
 
                   return (
                     <div
@@ -892,15 +933,21 @@ export default function UnifiedInfluencerPortal() {
                         )}
 
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-[#ad9b58]/15 text-[#4c1315] font-bold border border-[#ad9b58]/30">
-                            {post.platform === 'instagram_reel' && post.media_type === 'video'
-                              ? 'Instagram Reel'
-                              : isFeedPost
-                              ? 'Instagram Post'
-                              : post.platform === 'linkedin'
-                              ? 'LinkedIn Broadcast'
-                              : 'Social Broadcast'}
-                          </span>
+                          {isPetGroup ? (
+                            <span className="text-[11px] px-3 py-1 rounded-full bg-[#4c1315] text-[#fbf7ee] font-bold border border-[#ad9b58]/40 shadow-xs flex items-center gap-1.5">
+                              <span>🐾</span> Facebook Group: The Pet Accountant
+                            </span>
+                          ) : (
+                            <span className="text-[11px] px-2.5 py-1 rounded-full bg-[#ad9b58]/15 text-[#4c1315] font-bold border border-[#ad9b58]/30">
+                              {post.platform === 'instagram_reel' && post.media_type === 'video'
+                                ? 'Instagram Reel'
+                                : isFeedPost
+                                ? 'Instagram Post'
+                                : post.platform === 'linkedin'
+                                ? 'LinkedIn Broadcast'
+                                : 'Social Broadcast'}
+                            </span>
+                          )}
                           <span className="text-[11px] px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-900 font-bold border border-amber-500/30">
                             Awaiting Review
                           </span>
@@ -910,8 +957,8 @@ export default function UnifiedInfluencerPortal() {
                       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
                         {/* LEFT COLUMN: 5 COLS - STUDIO PLAYER */}
                         <div className="lg:col-span-5 flex flex-col items-center">
-                          {/* 1. Format Switcher (Reel / Story / Feed) */}
-                          <div className="w-full max-w-[380px] flex items-center justify-between bg-[#fbf7ee] p-1.5 rounded-2xl border border-[#4c1315]/15 mb-3">
+                          {/* 1. Format Switcher (Reel / Story / Feed / Audit) */}
+                          <div className="w-full max-w-[420px] flex items-center justify-between bg-[#fbf7ee] p-1.5 rounded-2xl border border-[#4c1315]/15 mb-3">
                             <span className="text-[10px] font-bold text-[#4c1315]/70 pl-2 uppercase tracking-wider">
                               Format:
                             </span>
@@ -943,11 +990,22 @@ export default function UnifiedInfluencerPortal() {
                               >
                                 Story
                               </button>
+                              <button
+                                type="button"
+                                onClick={() => setPreviewFormats(prev => ({ ...prev, [post.id]: 'audit' }))}
+                                className={`px-2.5 py-1 rounded-xl text-xs font-bold font-serif-display transition cursor-pointer flex items-center gap-1 ${
+                                  currentFormat === 'audit' ? 'bg-[#ad9b58] text-[#4c1315] shadow-xs' : 'text-[#4c1315]/70 hover:text-[#4c1315] border border-[#ad9b58]/40'
+                                }`}
+                                title="Check how this post looks across all 16 Instagram and Facebook placement surfaces"
+                              >
+                                <Sparkles className="w-3 h-3 text-[#ad9b58]" />
+                                <span>Placement Audit</span>
+                              </button>
                             </div>
                           </div>
 
                           {/* 2. Display Mode Switcher (Clean Video vs IG Chrome Simulation) */}
-                          {currentFormat !== 'feed' && post.platform !== 'linkedin' && (
+                          {currentFormat !== 'feed' && currentFormat !== 'audit' && post.platform !== 'linkedin' && (
                             <div className="w-full max-w-[380px] flex items-center justify-between bg-white p-1.5 rounded-2xl border border-[#4c1315]/15 mb-3 shadow-2xs">
                               <span className="text-[10px] font-bold text-[#4c1315]/70 pl-2 uppercase tracking-wider flex items-center gap-1">
                                 <SlidersHorizontal className="w-3 h-3 text-[#ad9b58]" /> View Mode:
@@ -978,8 +1036,10 @@ export default function UnifiedInfluencerPortal() {
                           )}
 
                           {/* 3. Phone / Post Preview Mockup */}
-                          <div className="w-full max-w-[440px] my-2">
-                            {post.platform === 'linkedin' ? (
+                          <div className={`w-full my-2 ${currentFormat === 'audit' ? 'max-w-2xl' : 'max-w-[440px]'}`}>
+                            {currentFormat === 'audit' ? (
+                              <MultiChannelAuditPreview post={post} />
+                            ) : post.platform === 'linkedin' ? (
                               <LinkedInPreview post={post} />
                             ) : currentFormat === 'story' ? (
                               <InstagramStoryPreview post={post} cleanMode={isClean} />
@@ -993,7 +1053,9 @@ export default function UnifiedInfluencerPortal() {
                           {/* Indicator message */}
                           <div className="mt-2 text-center">
                             <span className="text-[11px] text-[#4c1315]/70 font-medium">
-                              {currentFormat === 'feed'
+                              {isPetGroup
+                                ? '🐾 The Pet Accountant Facebook Group: 5-Slide Carousel Infographic.'
+                                : currentFormat === 'feed'
                                 ? 'Instagram Feed Post: 100% uncropped graphic with authentic feed interactions.'
                                 : isClean 
                                 ? 'Clean Video: Speaker, graphics & subtitles are 100% unobstructed.' 
@@ -1017,9 +1079,15 @@ export default function UnifiedInfluencerPortal() {
                                     The Finance Woman
                                   </span>
                                 )}
-                                <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40">
-                                  {post.platform.replace('_', ' ')} • {currentFormat.toUpperCase()}
-                                </span>
+                                {isPetGroup ? (
+                                  <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-[#ad9b58] text-[#4c1315] border border-[#ad9b58]/60 shadow-2xs flex items-center gap-1 font-serif-display">
+                                    <span>🐾</span> Facebook Group • The Pet Accountant
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40">
+                                    {post.platform.replace('_', ' ')} • {currentFormat.toUpperCase()}
+                                  </span>
+                                )}
                                 <span className="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
                                   Action Required
                                 </span>
@@ -1034,33 +1102,102 @@ export default function UnifiedInfluencerPortal() {
                               </div>
                             </div>
 
+                            {/* Destination Channel Spotlight */}
+                            {isPetGroup && (
+                              <div className="p-3.5 sm:p-4 rounded-2xl bg-[#ad9b58]/15 border-2 border-[#ad9b58]/50 text-left mb-5 shadow-xs flex items-start gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-[#4c1315] text-[#fbf7ee] flex items-center justify-center text-base flex-shrink-0 shadow-xs">
+                                  🐾
+                                </div>
+                                <div className="flex-1">
+                                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                                    <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
+                                      Destination: The Pet Accountant Facebook Group
+                                    </span>
+                                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-[#4c1315]/10 text-[#4c1315] border border-[#4c1315]/20">
+                                      Weekly Partner Slot
+                                    </span>
+                                  </div>
+                                  <p className="text-xs text-[#4c1315]/90 leading-relaxed">
+                                    This post is scheduled specifically for your weekly slot in <strong>The Pet Professional Business &amp; Finance Hub</strong> (The Pet Accountant Facebook group).
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
                             {/* Hook Spotlight */}
                             <div className="p-4 rounded-2xl bg-[#ad9b58]/15 border border-[#ad9b58]/30 mb-5">
                               <div className="flex items-center justify-between mb-1.5">
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#4c1315]/80">
-                                  Opening Video Hook
+                                  {isPetGroup ? 'Carousel Hook / Slide 1 Headline' : isFeedPost ? 'Carousel / Graphic Hook' : 'Opening Video Hook'}
                                 </span>
                                 <span className="text-[10px] font-semibold text-[#4c1315]/60">
-                                  First 3 Seconds
+                                  {isPetGroup || isFeedPost ? 'Cover Slide' : 'First 3 Seconds'}
                                 </span>
                               </div>
                               <p className="text-base font-serif-display font-bold text-[#4c1315] leading-snug">
-                                "{hookSnippet}"
+                                "{hookSnippet.replace(/^["'\s]+|["'\s]+$/g, '')}"
                               </p>
                             </div>
 
-                            {/* Note to Romany from Editor */}
-                            {post.editor_notes && (
+                            {/* Note to Romany from Editor & Inline Reply Box */}
+                            {(post.editor_notes || post.status === 'approved') && (
                               <div className="p-4 sm:p-5 rounded-2xl bg-[#fdf8f4] border-2 border-[#ad9b58]/50 text-left mb-5 shadow-xs">
-                                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#ad9b58]/20">
-                                  <Sparkles className="w-4 h-4 text-[#ad9b58]" />
-                                  <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
-                                    Note from Akshay (Editor)
-                                  </span>
+                                <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-[#ad9b58]/20">
+                                  <div className="flex items-center gap-2">
+                                    <Sparkles className="w-4 h-4 text-[#ad9b58]" />
+                                    <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
+                                      {post.editor_notes ? 'Note from Akshay (Editor)' : 'Reply / Note to Akshay'}
+                                    </span>
+                                  </div>
+                                  {post.status === 'approved' && (
+                                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300">
+                                      Approved
+                                    </span>
+                                  )}
                                 </div>
-                                <p className="text-xs sm:text-sm text-[#4c1315] font-medium leading-relaxed whitespace-pre-wrap">
-                                  {post.editor_notes}
-                                </p>
+                                {post.editor_notes && (
+                                  <p className="text-xs sm:text-sm text-[#4c1315] font-medium leading-relaxed whitespace-pre-wrap mb-3.5">
+                                    {post.editor_notes}
+                                  </p>
+                                )}
+
+                                {/* Dedicated Reply Box so Romany can reply and give feedback directly on /portal */}
+                                <div className="pt-3 border-t border-[#ad9b58]/20">
+                                  <label htmlFor={`editor-reply-${post.id}`} className="block text-[11px] font-bold text-[#4c1315]/80 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                                    <span>Your reply or feedback on this note (optional):</span>
+                                    {noteReplySentPostId === post.id && (
+                                      <span className="text-emerald-700 font-bold normal-case flex items-center gap-1">
+                                        <Check className="w-3 h-3 text-emerald-600" /> Reply sent to Akshay by email!
+                                      </span>
+                                    )}
+                                  </label>
+                                  <div className="flex flex-col sm:flex-row gap-2">
+                                    <textarea
+                                      id={`editor-reply-${post.id}`}
+                                      value={editorNoteReplies[post.id] !== undefined ? editorNoteReplies[post.id] : (post.feedback || '')}
+                                      onChange={(e) => setEditorNoteReplies(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                      placeholder=""
+                                      rows={2}
+                                      className="flex-1 p-2.5 rounded-xl bg-white border border-[#ad9b58]/40 text-xs sm:text-sm text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#4c1315] resize-none"
+                                    />
+                                    {post.status === 'approved' && (
+                                      <button
+                                        type="button"
+                                        onClick={() => handleSendNoteOnly(post)}
+                                        disabled={submittingAction || !((editorNoteReplies[post.id] !== undefined ? editorNoteReplies[post.id] : (post.feedback || '')).trim())}
+                                        className="self-end sm:self-center px-3.5 py-2 rounded-xl text-xs font-serif-display font-bold bg-[#4c1315] hover:bg-[#6e1c1f] text-[#fbf7ee] transition flex items-center gap-1.5 disabled:opacity-50 cursor-pointer shadow-xs whitespace-nowrap"
+                                      >
+                                        {submittingAction ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#ad9b58]" /> : <Send className="w-3.5 h-3.5 text-[#ad9b58]" />}
+                                        <span>Send Reply</span>
+                                      </button>
+                                    )}
+                                  </div>
+                                  <p className="text-[10px] text-[#4c1315]/60 mt-1.5">
+                                    {post.status === 'approved' 
+                                      ? 'You can update this reply anytime and click Send Reply to email Akshay directly.'
+                                      : 'Tip: You can write your reply here and click "Approve & Schedule" below. Your reply will be emailed to Akshay along with your approval!'}
+                                  </p>
+                                </div>
                               </div>
                             )}
 

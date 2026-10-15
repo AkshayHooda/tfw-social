@@ -6,6 +6,7 @@ import { InstagramReelPreview } from '@/components/previews/InstagramReelPreview
 import { InstagramPostPreview } from '@/components/previews/InstagramPostPreview';
 import { InstagramStoryPreview } from '@/components/previews/InstagramStoryPreview';
 import { LinkedInPreview } from '@/components/previews/LinkedInPreview';
+import { MultiChannelAuditPreview } from '@/components/previews/MultiChannelAuditPreview';
 import { CheckCircle2, AlertCircle, Sparkles, Clock, MessageSquare, Loader2, Check, XCircle, SlidersHorizontal, Copy, Send } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -17,7 +18,7 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [previewFormat, setPreviewFormat] = useState<'reel' | 'story' | 'feed'>('reel');
+  const [previewFormat, setPreviewFormat] = useState<'reel' | 'story' | 'feed' | 'audit'>('reel');
   const [isCleanMode, setIsCleanMode] = useState<boolean>(true);
   const [copiedCaption, setCopiedCaption] = useState<boolean>(false);
 
@@ -286,6 +287,10 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
     );
   }
 
+  const isPetGroup = post.platform === 'facebook_group' || 
+                     (post.editor_notes || '').toLowerCase().includes('pet accountant') ||
+                     (post.caption || '').toLowerCase().includes('pet accountant');
+
   return (
     <div className="min-h-screen bg-[#fbf7ee] text-[#280c0d] flex flex-col justify-between font-body selection:bg-[#4c1315] selection:text-[#fbf7ee]">
       {/* Top Banner & Authentic Logo */}
@@ -301,6 +306,11 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
             <span className="text-xs font-bold font-serif-display text-[#4c1315] truncate max-w-[160px] sm:max-w-[220px]">
               {post.creator_name}
             </span>
+            {isPetGroup && (
+              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40">
+                🐾 Pet Accountant Facebook Group
+              </span>
+            )}
           </div>
 
           {/* Status Badge */}
@@ -337,7 +347,7 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
             <div className="lg:col-span-5 flex flex-col items-center">
               {/* Format Switcher */}
               {post.platform !== 'linkedin' && (
-                <div className="w-full max-w-[380px] mb-3 flex items-center justify-between bg-[#fbf7ee] p-1.5 rounded-2xl border border-[#4c1315]/15">
+                <div className="w-full max-w-[420px] mb-3 flex items-center justify-between bg-[#fbf7ee] p-1.5 rounded-2xl border border-[#4c1315]/15">
                   <span className="text-[10px] font-bold text-[#4c1315]/70 pl-2 uppercase tracking-wider">
                     Format:
                   </span>
@@ -369,12 +379,23 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
                     >
                       Story
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewFormat('audit')}
+                      className={`px-2.5 py-1 rounded-xl text-xs font-bold font-serif-display transition cursor-pointer flex items-center gap-1 ${
+                        previewFormat === 'audit' ? 'bg-[#ad9b58] text-[#4c1315] shadow-xs' : 'text-[#4c1315]/70 hover:text-[#4c1315] border border-[#ad9b58]/40'
+                      }`}
+                      title="Inspect how this post renders across all 16 Instagram and Facebook placement surfaces"
+                    >
+                      <Sparkles className="w-3 h-3 text-[#ad9b58]" />
+                      <span>Placement Audit</span>
+                    </button>
                   </div>
                 </div>
               )}
 
               {/* View Mode Switcher (Clean Video vs IG App Simulation) */}
-              {previewFormat !== 'feed' && post.platform !== 'linkedin' && (
+              {previewFormat !== 'feed' && previewFormat !== 'audit' && post.platform !== 'linkedin' && (
                 <div className="w-full max-w-[380px] flex items-center justify-between bg-white p-1.5 rounded-2xl border border-[#4c1315]/15 mb-3 shadow-2xs">
                   <span className="text-[10px] font-bold text-[#4c1315]/70 pl-2 uppercase tracking-wider flex items-center gap-1">
                     <SlidersHorizontal className="w-3 h-3 text-[#ad9b58]" /> View Mode:
@@ -403,8 +424,10 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
               )}
 
               {/* Phone / Post Mockup Frame */}
-              <div className="w-full max-w-[440px] my-2">
-                {post.platform === 'linkedin' ? (
+              <div className={`w-full my-2 ${previewFormat === 'audit' ? 'max-w-2xl' : 'max-w-[440px]'}`}>
+                {previewFormat === 'audit' ? (
+                  <MultiChannelAuditPreview post={post} />
+                ) : post.platform === 'linkedin' ? (
                   <LinkedInPreview post={post} />
                 ) : previewFormat === 'story' ? (
                   <InstagramStoryPreview post={post} cleanMode={isCleanMode} />
@@ -418,7 +441,9 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
               {/* Guidance pill */}
               <div className="mt-2 text-center">
                 <span className="text-[11px] text-[#4c1315]/70 font-medium">
-                  {previewFormat === 'feed'
+                  {isPetGroup
+                    ? '🐾 The Pet Accountant Facebook Group: 5-Slide Carousel Infographic.'
+                    : previewFormat === 'feed'
                     ? 'Instagram Feed Post: 100% uncropped graphic with authentic feed interactions.'
                     : isCleanMode 
                     ? 'Clean Video: Speaker & subtitles are 100% visible.' 
@@ -433,9 +458,15 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
                 {/* Meta Header */}
                 <div className="flex flex-wrap items-center justify-between pb-4 border-b border-[#4c1315]/10 mb-4 gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40">
-                      {post.platform.replace('_', ' ')} • {previewFormat.toUpperCase()}
-                    </span>
+                    {isPetGroup ? (
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-[#ad9b58] text-[#4c1315] border border-[#ad9b58]/60 shadow-2xs flex items-center gap-1 font-serif-display">
+                        <span>🐾</span> Facebook Group • The Pet Accountant
+                      </span>
+                    ) : (
+                      <span className="text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40">
+                        {post.platform.replace('_', ' ')} • {previewFormat.toUpperCase()}
+                      </span>
+                    )}
                     <span className="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
                       Action Required
                     </span>
@@ -450,19 +481,41 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
                   </div>
                 </div>
 
+                {/* Destination Channel Spotlight */}
+                {isPetGroup && (
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-[#ad9b58]/15 border-2 border-[#ad9b58]/50 text-left mb-5 shadow-xs flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-[#4c1315] text-[#fbf7ee] flex items-center justify-center text-base flex-shrink-0 shadow-xs">
+                      🐾
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
+                          Destination: The Pet Accountant Facebook Group
+                        </span>
+                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-[#4c1315]/10 text-[#4c1315] border border-[#4c1315]/20">
+                          Weekly Partner Slot
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#4c1315]/90 leading-relaxed">
+                        This post is prepared specifically for your weekly slot in <strong>The Pet Professional Business &amp; Finance Hub</strong> (The Pet Accountant Facebook group).
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Hook Spotlight */}
                 {post.caption && (
                   <div className="p-4 rounded-2xl bg-[#ad9b58]/15 border border-[#ad9b58]/30 mb-5">
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[#4c1315]/80">
-                        Opening Video Hook
+                        {isPetGroup ? 'Carousel Hook / Slide 1 Headline' : 'Opening Video Hook'}
                       </span>
                       <span className="text-[10px] font-semibold text-[#4c1315]/60">
-                        First 3 Seconds
+                        {isPetGroup ? 'Cover Slide' : 'First 3 Seconds'}
                       </span>
                     </div>
                     <p className="text-base font-serif-display font-bold text-[#4c1315] leading-snug">
-                      "{(post.caption.split('\n').filter(Boolean)[0] || 'Draft Video Post')}"
+                      "{(post.caption.split('\n').filter(Boolean)[0] || 'Draft Post')}"
                     </p>
                   </div>
                 )}
@@ -504,7 +557,7 @@ export default function ReviewPage({ params }: { params: Promise<{ token: string
                           id="editor-reply"
                           value={editorNoteReply}
                           onChange={(e) => setEditorNoteReply(e.target.value)}
-                          placeholder="e.g. Sounds good! Approved for Facebook group, let's also share the tips on Stories..."
+                          placeholder=""
                           rows={2}
                           className="flex-1 p-2.5 rounded-xl bg-white border border-[#ad9b58]/40 text-xs sm:text-sm text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#4c1315] resize-none"
                         />
