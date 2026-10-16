@@ -1527,7 +1527,7 @@ export default function UnifiedInfluencerPortal() {
         {/* TAB 1.5: TEMPLATES APPROVAL VAULT */}
         {activeTab === 'templates' && (
           <TemplateVault
-            posts={brandFilteredPosts}
+            posts={portalTemplates}
             selectedBrand={selectedBrand}
             onReviewAction={handlePostAction}
             submittingAction={submittingAction}

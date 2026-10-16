@@ -20,24 +20,8 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
   onReviewAction,
   submittingAction
 }) => {
-  // Helper to detect if a post is a template
-  const isTemplatePost = (p: Post) => {
-    const combined = `${p.platform || ''} ${p.media_type || ''} ${p.editor_notes || ''} ${p.caption || ''}`.toLowerCase();
-    return (
-      p.media_type === ('template' as any) ||
-      p.platform === ('template' as any) ||
-      combined.includes('template ') ||
-      combined.includes('template:') ||
-      combined.includes('template t') ||
-      combined.includes('template_') ||
-      combined.includes('(burgundy comparison') ||
-      combined.includes('(myth buster') ||
-      combined.includes('editorial split') ||
-      combined.includes('side-by-side comparison')
-    );
-  };
-
-  const templatePosts = posts.filter(isTemplatePost);
+  // Use the isolated template posts passed directly from portal
+  const templatePosts = posts;
   const [selectedTemplateIndex, setSelectedTemplateIndex] = useState(0);
   const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({});
   const [replyTexts, setReplyTexts] = useState<Record<string, string>>({});
