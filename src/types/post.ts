@@ -1,6 +1,6 @@
-export type PlatformType = 'instagram_reel' | 'instagram_post' | 'instagram_feed' | 'instagram_story' | 'linkedin';
+export type PlatformType = 'instagram_reel' | 'instagram_post' | 'instagram_feed' | 'instagram_story' | 'linkedin' | 'facebook_group';
 export type MediaType = 'video' | 'image';
-export type PostStatus = 'pending' | 'approved' | 'changes_requested' | 'rejected';
+export type PostStatus = 'pending' | 'action_required' | 'in_review' | 'approved' | 'changes_requested' | 'rejected';
 
 export interface Post {
   id: string;

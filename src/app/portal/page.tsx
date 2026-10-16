@@ -39,6 +39,7 @@ import { LinkedInPreview } from '@/components/previews/LinkedInPreview';
 import { MultiChannelAuditPreview } from '@/components/previews/MultiChannelAuditPreview';
 import { ContentCalendar } from '@/components/portal/ContentCalendar';
 import { IdeasStudio } from '@/components/portal/IdeasStudio';
+import { TemplateVault } from '@/components/portal/TemplateVault';
 
 export default function UnifiedInfluencerPortal() {
   const [password, setPassword] = useState('');
@@ -56,7 +57,7 @@ export default function UnifiedInfluencerPortal() {
   const [summary, setSummary] = useState<PerformanceSummary | null>(null);
   const [loading, setLoading] = useState(false);
   const [generatingAi, setGeneratingAi] = useState(false);
-  const [activeTab, setActiveTab] = useState<'review' | 'calendar' | 'ideas' | 'analytics'>('review');
+  const [activeTab, setActiveTab] = useState<'review' | 'templates' | 'calendar' | 'ideas' | 'analytics'>('review');
 
   // Review Action State inside portal
   const [cleanModes, setCleanModes] = useState<Record<string, boolean>>({});
@@ -285,17 +286,38 @@ export default function UnifiedInfluencerPortal() {
     ? tfwPosts
     : posts;
 
-  // Calculations for Streamlined Reporting
-  const inCreationPosts = brandFilteredPosts.filter(p => p.status === 'pending' || p.status === 'action_required' || p.status === 'in_review');
-  const approvedPosts = brandFilteredPosts.filter(p => p.status === 'approved' && !p.is_published);
-  const rejectedPosts = brandFilteredPosts.filter(p => p.status === 'rejected');
-  const postedPosts = brandFilteredPosts.filter(p => p.is_published);
-  const editsRequestedPosts = brandFilteredPosts.filter(p => p.status === 'changes_requested');
+  // Template Detection Helper
+  const isPostTemplate = (p: Post) => {
+    const combined = `${p.platform || ''} ${p.media_type || ''} ${p.editor_notes || ''} ${p.caption || ''}`.toLowerCase();
+    return (
+      p.media_type === ('template' as any) ||
+      p.platform === ('template' as any) ||
+      combined.includes('template ') ||
+      combined.includes('template:') ||
+      combined.includes('template t') ||
+      combined.includes('template_') ||
+      combined.includes('(burgundy comparison') ||
+      combined.includes('(myth buster') ||
+      combined.includes('editorial split') ||
+      combined.includes('side-by-side comparison')
+    );
+  };
+
+  const portalTemplates = brandFilteredPosts.filter(isPostTemplate);
+  const broadcastPosts = brandFilteredPosts.filter(p => !isPostTemplate(p));
+
+  // Calculations for Streamlined Reporting (excluding standalone templates from standard broadcast counts)
+  const inCreationPosts = broadcastPosts.filter(p => p.status === 'pending' || p.status === 'action_required' || p.status === 'in_review');
+  const approvedPosts = broadcastPosts.filter(p => p.status === 'approved' && !p.is_published);
+  const rejectedPosts = broadcastPosts.filter(p => p.status === 'rejected');
+  const postedPosts = broadcastPosts.filter(p => p.is_published);
+  const editsRequestedPosts = broadcastPosts.filter(p => p.status === 'changes_requested');
 
   // Convenience aliases for tabs & counter badges
   const pendingPosts = inCreationPosts;
   const publishedPosts = postedPosts;
   const scheduledPosts = approvedPosts;
+  const pendingTemplates = portalTemplates.filter(p => p.status === 'pending' || p.status === 'action_required' || p.status === 'in_review');
 
   // Filter ideas by selected brand
   const isIdeaIBT = (i: ContentIdea) => {
@@ -731,6 +753,24 @@ export default function UnifiedInfluencerPortal() {
               pendingPosts.length > 0 ? 'bg-[#4c1315] text-[#fbf7ee]' : 'bg-[#4c1315]/10 text-[#4c1315]'
             }`}>
               {pendingPosts.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('templates')}
+            className={`pb-3.5 text-sm font-bold tracking-wide border-b-2 transition flex items-center gap-2 font-serif-display whitespace-nowrap cursor-pointer ${
+              activeTab === 'templates'
+                ? 'border-[#4c1315] text-[#4c1315]'
+                : 'border-transparent text-[#4c1315]/60 hover:text-[#4c1315]'
+            }`}
+          >
+            <Layers className="w-4 h-4 text-[#ad9b58]" />
+            <span>Templates</span>
+            <span className={`text-xs px-2.5 py-0.5 rounded-full font-body font-semibold ${
+              pendingTemplates.length > 0 ? 'bg-[#ad9b58] text-[#280c0d]' : 'bg-[#4c1315]/10 text-[#4c1315]'
+            }`}>
+              {portalTemplates.length}
             </span>
           </button>
 
@@ -1491,6 +1531,16 @@ export default function UnifiedInfluencerPortal() {
           </div>
         )}
 
+
+        {/* TAB 1.5: TEMPLATES APPROVAL VAULT */}
+        {activeTab === 'templates' && (
+          <TemplateVault
+            posts={brandFilteredPosts}
+            selectedBrand={selectedBrand}
+            onReviewAction={handlePostAction}
+            submittingAction={submittingAction}
+          />
+        )}
 
         {/* TAB 2: CONTENT CALENDAR */}
         {activeTab === 'calendar' && (

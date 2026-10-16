@@ -45,10 +45,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Format submission attribution
+    let finalNotes = body.notes ? body.notes.trim() : '';
+    if (!finalNotes.includes('Submitted by')) {
+      const sourceTag = 'Submitted by Romany (via Client Portal)';
+      finalNotes = finalNotes ? `${sourceTag}\n\n${finalNotes}` : sourceTag;
+    }
+
     const createdIdea = await persistentStore.createIdea({
       creator_name: body.creator_name || 'The Finance Woman',
       title: body.title || 'Untitled Concept',
-      notes: body.notes || '',
+      notes: finalNotes,
       links: body.links || [],
       images: body.images || [],
       raw_video_url: body.raw_video_url || null,

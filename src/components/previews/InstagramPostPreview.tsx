@@ -52,9 +52,17 @@ export function InstagramPostPreview({ post }: Props) {
                 (post.creator_handle || '').toLowerCase().includes('business') ||
                 (post.caption || '').toLowerCase().includes('in business together');
 
+  const isPetGroup = post.platform === 'facebook_group' ||
+                     (post.editor_notes || '').toLowerCase().includes('pet accountant') ||
+                     (post.caption || '').toLowerCase().includes('pet accountant');
+
   const handle = post.creator_handle || (isIBT ? 'inbusinesstogether' : 'thefinancewoman');
   const creatorTitle = post.creator_name || (isIBT ? 'In Business Together' : 'The Finance Woman');
-  const locationText = isIBT ? 'United Kingdom • Director Couples' : 'London, United Kingdom';
+  const locationText = isPetGroup
+    ? '🐾 The Pet Accountant Facebook Group (Weekly Partner Slot)'
+    : isIBT 
+    ? 'United Kingdom • Director Couples' 
+    : 'London, United Kingdom';
   const avatarUrl = isIBT 
     ? '/ibt-logo.png' 
     : 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80';
@@ -208,9 +216,21 @@ export function InstagramPostPreview({ post }: Props) {
         </div>
       </div>
 
-      {/* Main Instagram Feed Post Card */}
+      {/* Main Instagram / Facebook Group Feed Post Card */}
       <div className="w-full bg-white rounded-2xl overflow-hidden shadow-xl border border-neutral-200">
         
+        {/* Facebook Group Channel Badge */}
+        {isPetGroup && (
+          <div className="bg-[#4c1315] text-[#fbf7ee] px-3.5 py-1.5 flex items-center justify-between text-xs font-serif-display border-b border-[#ad9b58]/40">
+            <span className="flex items-center gap-1.5 font-bold tracking-wide">
+              <span>🐾</span> FACEBOOK GROUP POST
+            </span>
+            <span className="text-[11px] text-[#ad9b58] font-bold">
+              The Pet Accountant Community
+            </span>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between p-3.5 border-b border-neutral-100 bg-white">
           <div className="flex items-center gap-2.5">

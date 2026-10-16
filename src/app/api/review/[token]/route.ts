@@ -99,12 +99,25 @@ export async function POST(
         : null;
 
       if (attachedCover) {
-        // Replace current calendar graphic / thumbnail with the approved cover image
-        updatePayload.cover_image_url = attachedCover;
         const approvalNote = `[APPROVED COVER]: Cover image "${attachedCover}" approved by Romany on ${new Date().toLocaleDateString('en-GB')}. Set as calendar thumbnail and broadcast cover.`;
         updatePayload.editor_notes = existingPost.editor_notes 
           ? `${existingPost.editor_notes}\n\n${approvalNote}` 
           : approvalNote;
+      }
+    }
+
+    // Allowed columns in Supabase 'posts' table schema to permanently prevent PGRST204 errors
+    const ALLOWED_POST_COLUMNS = new Set([
+      'id', 'token', 'creator_name', 'creator_handle', 'platform', 'media_url',
+      'media_urls', 'media_type', 'caption', 'scheduled_at', 'status', 'feedback',
+      'editor_notes', 'live_post_url', 'is_published', 'published_at', 'views',
+      'likes', 'comments_count', 'shares', 'metrics_updated_at', 'created_at', 'updated_at'
+    ]);
+
+    const sanitizedSupabasePayload: Record<string, any> = {};
+    for (const [key, value] of Object.entries(updatePayload)) {
+      if (ALLOWED_POST_COLUMNS.has(key)) {
+        sanitizedSupabasePayload[key] = value;
       }
     }
 
@@ -113,13 +126,21 @@ export async function POST(
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from('posts')
-        .update(updatePayload)
+        .update(sanitizedSupabasePayload)
         .eq('token', token)
         .select()
         .single();
 
       if (!error && data) {
         targetPost = data;
+        // Always keep persistent store (Vercel Blob) dual-synced
+        try {
+          await persistentStore.updateByToken(token, updatePayload);
+        } catch (e) {
+          console.warn('[Review API] Could not sync update to persistentStore:', e);
+        }
+      } else if (error) {
+        console.error('[Review API] Supabase update error:', error);
       }
     }
 

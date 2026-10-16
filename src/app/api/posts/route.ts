@@ -153,21 +153,37 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Post id is required' }, { status: 400 });
     }
 
+    const ALLOWED_POST_COLUMNS = new Set([
+      'id', 'token', 'creator_name', 'creator_handle', 'platform', 'media_url',
+      'media_urls', 'media_type', 'caption', 'scheduled_at', 'status', 'feedback',
+      'editor_notes', 'live_post_url', 'is_published', 'published_at', 'views',
+      'likes', 'comments_count', 'shares', 'metrics_updated_at', 'created_at', 'updated_at'
+    ]);
+
+    const sanitizedUpdates: Record<string, any> = { updated_at: new Date().toISOString() };
+    for (const [key, value] of Object.entries(updates)) {
+      if (ALLOWED_POST_COLUMNS.has(key)) {
+        sanitizedUpdates[key] = value;
+      }
+    }
+
     let updated = null;
 
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from('posts')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString(),
-        })
+        .update(sanitizedUpdates)
         .eq('id', id)
         .select()
         .single();
 
       if (!error && data) {
         updated = data;
+        try {
+          await persistentStore.updateById(id, updates);
+        } catch (e) {
+          console.warn('[Posts API] Could not sync update to persistentStore:', e);
+        }
       }
     }
 

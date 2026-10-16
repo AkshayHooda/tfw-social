@@ -42,14 +42,9 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
     ? post.media_urls.find(u => u !== post.media_url && !u.endsWith('.mp4') && !u.endsWith('.mov') && !u.includes('Grid_Mockup') && !u.includes('Feed_Mockup'))
     : null;
 
-  // Check for 3-column mobile grid mockup if present in media_urls
-  const gridUrl = post.media_urls && post.media_urls.length > 2
-    ? post.media_urls.find(u => u.includes('Grid_Mockup') || u.includes('Feed_Mockup'))
-    : null;
-
-  // Carousel items: Cover Image (first), Video Reel (second), and 3-Col Grid Mockup (third if available)
+  // Carousel items: Cover Image (first), Video Reel (second)
   type ReelSlideItem = {
-    type: 'cover' | 'video' | 'grid';
+    type: 'cover' | 'video';
     url: string;
     title: string;
     badge: string;
@@ -70,14 +65,6 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
     title: 'B-Roll Video Reel',
     badge: 'Video'
   });
-  if (gridUrl) {
-    slides.push({
-      type: 'grid',
-      url: gridUrl,
-      title: 'Instagram Mobile Grid (3 Columns)',
-      badge: '3-Col Grid'
-    });
-  }
 
   // Start with Cover Image as requested ("it will first display on video cover")
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -228,23 +215,12 @@ export function InstagramReelPreview({ post, cleanMode = false }: Props) {
           </div>
         )}
 
-        {/* Main Reel & Cover Stage Container - Carousel Arrows between Cover, Video, and 3-Col Grid */}
+        {/* Main Reel & Cover Stage Container - Carousel Arrows between Cover and Video */}
         <div 
           className="relative w-full h-full cursor-pointer flex items-center justify-center bg-neutral-950 select-none group/reelstage" 
           onClick={handleVideoClick}
         >
-          {slides[activeSlideIndex]?.type === 'grid' ? (
-            <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-black">
-              <img
-                src={slides[activeSlideIndex].url}
-                alt="Instagram 3-Column Profile Grid"
-                className="w-full h-full object-contain"
-              />
-              <div className="absolute top-4 left-4 z-30 bg-black/80 text-[#ad9b58] text-[11px] font-bold px-3 py-1 rounded-full backdrop-blur-md border border-[#ad9b58]/40 shadow-lg flex items-center gap-1.5 pointer-events-none">
-                <span>📱</span> Instagram Mobile Grid (3 Columns)
-              </div>
-            </div>
-          ) : slides[activeSlideIndex]?.type === 'cover' ? (
+          {slides[activeSlideIndex]?.type === 'cover' ? (
             <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-neutral-950">
               <img
                 src={slides[activeSlideIndex].url}
