@@ -607,11 +607,54 @@ export default function UnifiedInfluencerPortal() {
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs">
+            {pendingTemplates.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setActiveTab('templates')}
+                className="px-3 py-1 rounded-full bg-[#4c1315] text-[#fbf7ee] font-bold border border-[#ad9b58] shadow-xs flex items-center gap-1.5 cursor-pointer hover:bg-[#6e1c1f] transition animate-pulse"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#ad9b58]" />
+                <span>{pendingTemplates.length} New Templates to Review</span>
+                <ArrowRight className="w-3 h-3 text-[#ad9b58]" />
+              </button>
+            )}
             <span className="px-3 py-1 rounded-full bg-[#ad9b58]/20 text-[#4c1315] font-bold border border-[#ad9b58]/40">
               {pendingPosts.length} Pending Approval
             </span>
           </div>
         </div>
+
+        {/* EYE-CATCHING TEMPLATE GUIDE BANNER FOR ROMANY (IF TEMPLATES AWAIT REVIEW) */}
+        {pendingTemplates.length > 0 && activeTab !== 'templates' && (
+          <div className="bg-[#fdf8f4] border-2 border-[#ad9b58] rounded-3xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-[#4c1315] text-[#ad9b58] flex items-center justify-center shrink-0 shadow-xs">
+                <Layers className="w-6 h-6 stroke-[2]" />
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-[#ad9b58]/25 text-[#4c1315] px-2 py-0.5 rounded-md">
+                    Action Needed
+                  </span>
+                  <h3 className="text-sm sm:text-base font-bold font-serif-display text-[#4c1315]">
+                    {pendingTemplates.length} Master Templates Waiting for Approval
+                  </h3>
+                </div>
+                <p className="text-xs text-[#4c1315]/80 font-medium">
+                  Quick visual style check only. Click below to view and approve the slide layouts.
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveTab('templates')}
+              className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-[#4c1315] hover:bg-[#6e1c1f] text-[#fbf7ee] font-serif-display text-xs sm:text-sm font-bold shadow-sm transition flex items-center justify-center gap-2 cursor-pointer shrink-0 active:scale-95"
+            >
+              <span>Review Templates Now</span>
+              <ArrowRight className="w-4 h-4 text-[#ad9b58]" />
+            </button>
+          </div>
+        )}
 
         {/* PROMINENT DEDICATED BRAND SELECTOR STRIP */}
         <div className="bg-white rounded-3xl p-4 sm:p-5 border-2 border-[#4c1315]/15 shadow-sm space-y-3.5">
@@ -825,14 +868,36 @@ export default function UnifiedInfluencerPortal() {
                 </div>
                 <div>
                   <h3 className="font-serif-display text-xl font-bold text-[#4c1315] mb-2">
-                    All Caught Up!
+                    All Caught Up on Broadcasts!
                   </h3>
                   <p className="text-xs text-[#4c1315]/70 leading-relaxed font-body">
                     {selectedBrand !== 'all'
-                      ? `There are no pending posts for ${selectedBrand} waiting for approval right now.`
-                      : 'There are no pending posts waiting for your approval right now.'}
+                      ? `There are no scheduled posts for ${selectedBrand} waiting for approval right now.`
+                      : 'There are no scheduled posts waiting for your approval right now.'}
                   </p>
                 </div>
+
+                {/* Direct Gateway to Pending Templates if any await approval */}
+                {pendingTemplates.length > 0 && (
+                  <div className="pt-3 border-t border-[#4c1315]/15">
+                    <div className="bg-[#fdf8f4] border-2 border-[#ad9b58] rounded-2xl p-4 text-center space-y-2">
+                      <p className="text-xs font-bold text-[#4c1315] font-serif-display">
+                        ✨ {pendingTemplates.length} Master Templates Waiting for Approval
+                      </p>
+                      <p className="text-[11px] text-[#4c1315]/75">
+                        Quick visual check only (dates and captions will be approved later).
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('templates')}
+                        className="w-full py-2.5 px-4 rounded-xl bg-[#4c1315] text-[#fbf7ee] text-xs font-serif-display font-bold hover:bg-[#6e1c1f] transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs"
+                      >
+                        <span>Open Templates Vault</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-[#ad9b58]" />
+                      </button>
+                    </div>
+                  </div>
+                )}
                 {selectedBrand !== 'all' && (
                   <div className="pt-2">
                     <button
