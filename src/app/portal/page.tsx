@@ -90,9 +90,10 @@ export default function UnifiedInfluencerPortal() {
     try {
       setAuthLoading(true);
       setAuthError('');
-      const res = await fetch('/api/portal', {
+      const res = await fetch(`/api/portal?t=${Date.now()}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
         body: JSON.stringify({ password: enteredPass }),
       });
 
@@ -127,9 +128,10 @@ export default function UnifiedInfluencerPortal() {
     try {
       if (!silent) setLoading(true);
       const [resPortal, resIdeas] = await Promise.all([
-        fetch('/api/portal', {
+        fetch(`/api/portal?t=${Date.now()}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
           body: JSON.stringify({ password: token }),
         }),
         fetch(`/api/ideas?t=${Date.now()}`, { cache: 'no-store' }),
