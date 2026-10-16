@@ -286,21 +286,13 @@ export default function UnifiedInfluencerPortal() {
     ? tfwPosts
     : posts;
 
-  // Template Detection Helper
+  // Template Detection Helper: strictly dedicated templates
   const isPostTemplate = (p: Post) => {
-    const combined = `${p.platform || ''} ${p.media_type || ''} ${p.editor_notes || ''} ${p.caption || ''}`.toLowerCase();
-    return (
-      p.media_type === ('template' as any) ||
-      p.platform === ('template' as any) ||
-      combined.includes('template ') ||
-      combined.includes('template:') ||
-      combined.includes('template t') ||
-      combined.includes('template_') ||
-      combined.includes('(burgundy comparison') ||
-      combined.includes('(myth buster') ||
-      combined.includes('editorial split') ||
-      combined.includes('side-by-side comparison')
-    );
+    // Dedicated template objects always have media_type === 'template' or platform === 'template'
+    if (p.media_type === ('template' as any) || p.platform === ('template' as any)) return true;
+    // Or if explicitly marked as master template without being a scheduled broadcast post
+    if (!p.scheduled_at && p.editor_notes && p.editor_notes.toLowerCase().includes('master template')) return true;
+    return false;
   };
 
   const portalTemplates = brandFilteredPosts.filter(isPostTemplate);
