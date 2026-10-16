@@ -23,8 +23,12 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
   submittingAction,
   onNavigateToTab
 }) => {
-  // Use the isolated template posts passed directly from portal, sorted in exact numerical sequence T1 -> T7
+  // Sort templates so that unapproved/pending templates appear first, followed by approved ones, while preserving numerical order within each group
   const templatePosts = [...posts].sort((a, b) => {
+    const isApprovedA = a.status === 'approved' ? 1 : 0;
+    const isApprovedB = b.status === 'approved' ? 1 : 0;
+    if (isApprovedA !== isApprovedB) return isApprovedA - isApprovedB; // 0 (pending) comes before 1 (approved)
+
     const numA = parseInt((a.editor_notes || '').match(/Template T(\d+)/i)?.[1] || '999');
     const numB = parseInt((b.editor_notes || '').match(/Template T(\d+)/i)?.[1] || '999');
     if (numA !== numB) return numA - numB;
@@ -45,7 +49,7 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
     return true;
   });
 
-  // Track selected template by post ID so state never loses position on polling
+  // Track selected template by post ID: always start with the first template that is not approved
   const firstPending = filteredTemplates.find(p => p.status !== 'approved');
   const [selectedPostId, setSelectedPostId] = useState<string>(firstPending ? firstPending.id : filteredTemplates[0]?.id || '');
 
