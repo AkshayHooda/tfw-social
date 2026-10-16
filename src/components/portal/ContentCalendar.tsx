@@ -66,8 +66,18 @@ export function ContentCalendar({ posts, selectedBrand, onSelectReviewPost }: Co
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const daysInPrevMonth = new Date(year, month, 0).getDate();
 
+  // Template Detection Helper: strictly filter out design templates so only real broadcast content shows on calendar
+  const isPostTemplate = (p: Post) => {
+    if (p.media_type === ('template' as any) || p.platform === ('template' as any)) return true;
+    if (!p.scheduled_at && p.editor_notes && p.editor_notes.toLowerCase().includes('template')) return true;
+    return false;
+  };
+
+  // Exclude standalone design templates from the calendar
+  const broadcastPosts = posts.filter(p => !isPostTemplate(p));
+
   // Filter posts by selected brand
-  const brandFilteredPosts = posts.filter(p => {
+  const brandFilteredPosts = broadcastPosts.filter(p => {
     if (selectedBrand === 'all') return true;
     const name = (p.creator_name || '').toLowerCase();
     if (selectedBrand === 'The Finance Woman') {

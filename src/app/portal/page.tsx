@@ -1615,7 +1615,7 @@ export default function UnifiedInfluencerPortal() {
         {/* TAB 2: CONTENT CALENDAR */}
         {activeTab === 'calendar' && (
           <ContentCalendar 
-            posts={posts} 
+            posts={broadcastPosts} 
             selectedBrand={selectedBrand} 
             onSelectReviewPost={(id) => {
               const idx = pendingPosts.findIndex(p => p.id === id);

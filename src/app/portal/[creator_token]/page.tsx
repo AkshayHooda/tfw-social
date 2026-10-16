@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useEffect, useState, use } from 'react';
 import { Post, PerformanceSummary } from '@/types/post';
@@ -75,10 +75,19 @@ export default function InfluencerPortal({
     }
   };
 
+  // Filter out design templates from broadcast statistics
+  const isTemplate = (p: Post) => {
+    if (p.media_type === ('template' as any) || p.platform === ('template' as any)) return true;
+    if (!p.scheduled_at && p.editor_notes && p.editor_notes.toLowerCase().includes('template')) return true;
+    return false;
+  };
+
+  const broadcastPosts = posts.filter(p => !isTemplate(p));
+
   // Calculations
-  const publishedPosts = posts.filter(p => p.is_published);
-  const scheduledPosts = posts.filter(p => !p.is_published && p.status === 'approved');
-  const pendingPosts = posts.filter(p => p.status === 'pending');
+  const publishedPosts = broadcastPosts.filter(p => p.is_published);
+  const scheduledPosts = broadcastPosts.filter(p => !p.is_published && p.status === 'approved');
+  const pendingPosts = broadcastPosts.filter(p => p.status === 'pending');
 
   const totalViews = publishedPosts.reduce((acc, p) => acc + (p.views || 0), 0);
   const totalEngagements = publishedPosts.reduce(
