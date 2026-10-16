@@ -448,7 +448,7 @@ export default function UnifiedInfluencerPortal() {
                     </span>
                   </div>
                   <p className="text-[10px] text-[#4c1315]/70 tracking-widest uppercase font-medium mt-0.5">
-                    Executive Review Desk • Romany Youell
+                    Romany Review Portal
                   </p>
                 </div>
               </div>
@@ -467,7 +467,7 @@ export default function UnifiedInfluencerPortal() {
                 />
                 <div className="hidden lg:block border-l border-[#4c1315]/20 pl-3">
                   <p className="text-[10px] text-[#4c1315]/70 tracking-widest uppercase font-medium mt-0.5">
-                    Executive Review &amp; Approval Desk
+                    Romany Review Portal
                   </p>
                 </div>
               </div>
@@ -595,10 +595,10 @@ export default function UnifiedInfluencerPortal() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-serif-display font-bold text-[#4c1315] tracking-tight">
               {selectedBrand === 'In Business Together'
-                ? 'In Business Together — Broadcast Desk'
+                ? 'In Business Together'
                 : selectedBrand === 'The Finance Woman'
-                ? 'The Finance Woman — Broadcast Desk'
-                : 'Executive Broadcast Desk'}
+                ? 'The Finance Woman'
+                : 'Content Review Portal'}
             </h1>
             <p className="text-sm text-[#4c1315]/75 mt-1">
               {selectedBrand === 'In Business Together'
