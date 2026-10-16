@@ -22,7 +22,6 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
 }) => {
   // Use the isolated template posts passed directly from portal
   const templatePosts = posts;
-  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState(0);
   const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({});
   const [replyTexts, setReplyTexts] = useState<Record<string, string>>({});
   const [filterType, setFilterType] = useState<'all' | 'carousel' | 'reel'>('all');
@@ -33,6 +32,10 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
     if (filterType === 'reel') return p.media_type === 'video' || p.platform === 'instagram_reel';
     return true;
   });
+
+  // Automatically start on the first template that needs approval
+  const firstPendingIndex = filteredTemplates.findIndex(p => p.status !== 'approved');
+  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState(firstPendingIndex >= 0 ? firstPendingIndex : 0);
 
   const activePost = filteredTemplates[selectedTemplateIndex] || filteredTemplates[0];
 
@@ -62,14 +65,14 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-xl sm:text-2xl font-serif-display font-bold text-[#4c1315]">
-                  Design &amp; Template Approval Vault
+                  Slide Design Templates
                 </h2>
                 <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-[#ad9b58]/20 text-[#4c1315] border border-[#ad9b58]/40">
-                  Brand Aesthetics
+                  Styles
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-[#4c1315]/75 mt-0.5">
-                Review and approve master design layouts for carousels and reels. Once approved, these visual styles are saved into the team bank.
+                Check and approve slide layouts here. Once approved, the team uses these designs for future posts.
               </p>
             </div>
           </div>
@@ -82,16 +85,16 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
               </div>
               <div>
                 <p className="text-xs font-bold text-[#4c1315] font-serif-display uppercase tracking-wider">
-                  Layouts &amp; Aesthetics Only
+                  Layouts &amp; Look Only
                 </p>
                 <p className="text-xs text-[#4c1315]/80 font-medium">
-                  Approve the visual style here. Actual scheduled carousels with dates &amp; copy will go to <span className="font-bold underline">Needs Review</span>.
+                  You are only approving the design look here. Actual scheduled posts with real dates and copy will be in <span className="font-bold underline">Needs Review</span>.
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
               <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300">
-                ✓ Approve Style
+                ✓ Check Design
               </span>
               <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#4c1315]/10 text-[#4c1315]">
                 📅 Dates Later
@@ -106,7 +109,7 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
               onClick={() => { setFilterType('all'); setSelectedTemplateIndex(0); }}
               className={`px-3 py-1.5 rounded-xl transition cursor-pointer ${filterType === 'all' ? 'bg-[#4c1315] text-[#fbf7ee] shadow-2xs' : 'text-[#4c1315]/70 hover:text-[#4c1315]'}`}
             >
-              All Templates ({templatePosts.length})
+              All ({templatePosts.length})
             </button>
             <button
               type="button"
@@ -120,7 +123,7 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
               onClick={() => { setFilterType('reel'); setSelectedTemplateIndex(0); }}
               className={`px-3 py-1.5 rounded-xl transition cursor-pointer ${filterType === 'reel' ? 'bg-[#4c1315] text-[#fbf7ee] shadow-2xs' : 'text-[#4c1315]/70 hover:text-[#4c1315]'}`}
             >
-              Reels &amp; Overlays ({templatePosts.filter(p => p.media_type === 'video' || p.platform === 'instagram_reel').length})
+              Reels ({templatePosts.filter(p => p.media_type === 'video' || p.platform === 'instagram_reel').length})
             </button>
           </div>
         </div>
@@ -338,37 +341,37 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-[#ad9b58]" />
                     <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
-                      Template Design &amp; Layout Specification
+                      Style Details
                     </span>
                   </div>
                   <div className="text-xs sm:text-[13px] text-[#4c1315] leading-relaxed whitespace-pre-line font-medium bg-white/70 p-3 rounded-xl border border-[#ad9b58]/30">
-                    {activePost.editor_notes || 'Master Layout Template'}
+                    {activePost.editor_notes || 'Design Template'}
                   </div>
                   <p className="text-[11px] text-[#4c1315]/75 leading-relaxed">
-                    This template defines typography hierarchy, color balance, spacing and layout structure. Approving this template confirms the visual layout for future posts in this format.
+                    Approving confirms this visual style for future posts.
                   </p>
                 </div>
 
                 {/* Example Content / Caption Applied */}
                 <div className="p-4 rounded-2xl bg-[#fbf7ee] border border-[#4c1315]/15 space-y-2">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[#4c1315]/70 block">
-                    Example Content Tested On This Layout
+                    Example Text Used In This Demo
                   </span>
                   <p className="text-xs text-[#4c1315]/85 leading-relaxed font-body max-h-36 overflow-y-auto whitespace-pre-line pr-1">
-                    {activePost.caption || 'No caption copy attached to this template.'}
+                    {activePost.caption || 'No caption text for this design.'}
                   </p>
                 </div>
 
                 {/* Inline Feedback Box */}
                 <div className="space-y-1.5">
                   <label htmlFor={`template-reply-${activePost.id}`} className="block text-[11px] font-bold text-[#4c1315]/80 uppercase tracking-wider">
-                    Design Feedback or Adjustments (Optional):
+                    Notes or changes (optional):
                   </label>
                   <textarea
                     id={`template-reply-${activePost.id}`}
                     value={replyTexts[activePost.id] || ''}
                     onChange={(e) => setReplyTexts(prev => ({ ...prev, [activePost.id]: e.target.value }))}
-                    placeholder="e.g. Love the typography contrast! Could we try the photo bleed on the left next time?"
+                    placeholder="Type any quick notes or changes here..."
                     rows={2}
                     className="w-full p-3 rounded-xl bg-white border border-[#ad9b58]/40 text-xs sm:text-sm text-[#280c0d] placeholder:text-[#4c1315]/40 focus:outline-none focus:border-[#4c1315] resize-none"
                   />

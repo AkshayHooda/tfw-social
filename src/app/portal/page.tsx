@@ -610,7 +610,11 @@ export default function UnifiedInfluencerPortal() {
             {pendingTemplates.length > 0 && (
               <button
                 type="button"
-                onClick={() => setActiveTab('templates')}
+                onClick={() => {
+                  setActiveTab('templates');
+                  const el = document.getElementById('template-section-anchor');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="px-3 py-1 rounded-full bg-[#4c1315] text-[#fbf7ee] font-bold border border-[#ad9b58] shadow-xs flex items-center gap-1.5 cursor-pointer hover:bg-[#6e1c1f] transition animate-pulse"
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#ad9b58]" />
@@ -637,20 +641,24 @@ export default function UnifiedInfluencerPortal() {
                     Action Needed
                   </span>
                   <h3 className="text-sm sm:text-base font-bold font-serif-display text-[#4c1315]">
-                    {pendingTemplates.length} Master Templates Waiting for Approval
+                    {pendingTemplates.length} Design Templates Waiting for Approval
                   </h3>
                 </div>
                 <p className="text-xs text-[#4c1315]/80 font-medium">
-                  Quick visual style check only. Click below to view and approve the slide layouts.
+                  Quick visual look check only. Click below to view and approve the slide layouts.
                 </p>
               </div>
             </div>
             <button
               type="button"
-              onClick={() => setActiveTab('templates')}
+              onClick={() => {
+                setActiveTab('templates');
+                const el = document.getElementById('template-section-anchor');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-[#4c1315] hover:bg-[#6e1c1f] text-[#fbf7ee] font-serif-display text-xs sm:text-sm font-bold shadow-sm transition flex items-center justify-center gap-2 cursor-pointer shrink-0 active:scale-95"
             >
-              <span>Review Templates Now</span>
+              <span>Review Templates</span>
               <ArrowRight className="w-4 h-4 text-[#ad9b58]" />
             </button>
           </div>
@@ -1591,12 +1599,14 @@ export default function UnifiedInfluencerPortal() {
 
         {/* TAB 1.5: TEMPLATES APPROVAL VAULT */}
         {activeTab === 'templates' && (
-          <TemplateVault
-            posts={portalTemplates}
-            selectedBrand={selectedBrand}
-            onReviewAction={handlePostAction}
-            submittingAction={submittingAction}
-          />
+          <div id="template-section-anchor">
+            <TemplateVault
+              posts={portalTemplates}
+              selectedBrand={selectedBrand}
+              onReviewAction={handlePostAction}
+              submittingAction={submittingAction}
+            />
+          </div>
         )}
 
         {/* TAB 2: CONTENT CALENDAR */}
