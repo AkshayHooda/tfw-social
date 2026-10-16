@@ -74,6 +74,21 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
             </div>
           </div>
 
+          {/* Explicit Notice: Template Approvals Only vs Scheduled Broadcasts */}
+          <div className="w-full bg-[#fdf8f4] border border-[#ad9b58]/40 rounded-2xl p-3.5 sm:p-4 flex items-start gap-3 shadow-2xs">
+            <div className="w-7 h-7 rounded-xl bg-[#ad9b58]/20 flex items-center justify-center shrink-0 mt-0.5 text-[#4c1315]">
+              <Sparkles className="w-4 h-4 text-[#ad9b58]" />
+            </div>
+            <div className="text-left space-y-0.5">
+              <p className="text-xs font-bold text-[#4c1315] font-serif-display uppercase tracking-wider">
+                Template Layout Approvals Only
+              </p>
+              <p className="text-[12px] text-[#4c1315]/80 leading-relaxed font-body">
+                This vault is strictly for approving recurring visual templates and slide frameworks. Live production carousels with written copy and specific publishing dates are reviewed and approved separately in the <span className="font-bold underline text-[#4c1315]">Needs Review</span> broadcast queue.
+              </p>
+            </div>
+          </div>
+
           {/* Quick Filter Pill */}
           <div className="flex items-center p-1 bg-[#4c1315]/5 rounded-2xl border border-[#4c1315]/15 text-xs font-bold font-serif-display">
             <button
