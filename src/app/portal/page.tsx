@@ -1607,6 +1607,7 @@ export default function UnifiedInfluencerPortal() {
               selectedBrand={selectedBrand}
               onReviewAction={handlePostAction}
               submittingAction={submittingAction}
+              onNavigateToTab={(tab) => setActiveTab(tab)}
             />
           </div>
         )}

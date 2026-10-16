@@ -12,13 +12,15 @@ interface TemplateVaultProps {
   selectedBrand: 'all' | 'The Finance Woman' | 'In Business Together';
   onReviewAction: (post: Post, action: 'approved' | 'changes_requested' | 'rejected', customFeedback?: string) => Promise<void>;
   submittingAction: boolean;
+  onNavigateToTab?: (tab: 'review' | 'templates' | 'calendar' | 'ideas' | 'analytics') => void;
 }
 
 export const TemplateVault: React.FC<TemplateVaultProps> = ({
   posts,
   selectedBrand,
   onReviewAction,
-  submittingAction
+  submittingAction,
+  onNavigateToTab
 }) => {
   // Use the isolated template posts passed directly from portal, sorted in exact numerical sequence T1 -> T7
   const templatePosts = [...posts].sort((a, b) => {
@@ -97,7 +99,18 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
                   Layouts &amp; Look Only
                 </p>
                 <p className="text-xs text-[#4c1315]/80 font-medium">
-                  You are only approving the design look here. Actual scheduled posts with real dates and copy will be in <span className="font-bold underline">Needs Review</span>.
+                  You are only approving the design look here. Actual scheduled posts with real dates and copy will be in{' '}
+                  {onNavigateToTab ? (
+                    <button
+                      type="button"
+                      onClick={() => onNavigateToTab('review')}
+                      className="inline-flex items-center font-bold underline text-[#4c1315] hover:text-[#ad9b58] transition-colors cursor-pointer"
+                    >
+                      Needs Review →
+                    </button>
+                  ) : (
+                    <span className="font-bold underline">Needs Review</span>
+                  )}.
                 </p>
               </div>
             </div>
