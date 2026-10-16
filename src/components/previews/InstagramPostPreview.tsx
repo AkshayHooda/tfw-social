@@ -326,16 +326,26 @@ export function InstagramPostPreview({ post }: Props) {
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover blur-xl opacity-35 scale-110 pointer-events-none"
               />
+
+              {/* Hidden preloader for all carousel slides for zero-lag instant transitions */}
+              {slides.length > 1 && (
+                <div className="hidden pointer-events-none" aria-hidden="true">
+                  {slides.map((s, idx) => (
+                    <img key={idx} src={s} alt="" loading="eager" />
+                  ))}
+                </div>
+              )}
+
               {/* 100% Uncropped Feed Graphic */}
               <img
-                key={activeSlide}
+                key={`${post.id}-${activeSlide}`}
                 src={slides[activeSlide] || post.media_url}
                 alt={`Instagram post slide ${activeSlide + 1}`}
                 onLoad={handleImageLoad}
-                className="relative z-10 max-w-full max-h-full object-contain shadow-sm transition-opacity duration-150"
+                decoding="async"
+                loading="eager"
+                className="relative z-10 max-w-full max-h-full object-contain shadow-sm select-none"
               />
-
-
 
               {/* Carousel Slide Counter Badge (Top Right) */}
               {slides.length > 1 && (
@@ -353,7 +363,7 @@ export function InstagramPostPreview({ post }: Props) {
                     e.stopPropagation();
                     setActiveSlide((prev) => Math.max(0, prev - 1));
                   }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/20 hover:bg-black/60 text-white/70 hover:text-white backdrop-blur-[2px] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-[2px] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-white/20 shadow-md"
                   aria-label="Previous slide"
                   title="Previous slide"
                 >
@@ -369,7 +379,7 @@ export function InstagramPostPreview({ post }: Props) {
                     e.stopPropagation();
                     setActiveSlide((prev) => Math.min(slides.length - 1, prev + 1));
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/20 hover:bg-black/60 text-white/70 hover:text-white backdrop-blur-[2px] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-white/20"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-[2px] flex items-center justify-center transition-all hover:scale-105 active:scale-95 cursor-pointer border border-white/20 shadow-md"
                   aria-label="Next slide"
                   title="Next slide"
                 >
@@ -395,6 +405,33 @@ export function InstagramPostPreview({ post }: Props) {
             </div>
           )}
         </div>
+
+        {/* Quick Filmstrip Preview for Multi-Slide Carousels */}
+        {slides.length > 1 && (
+          <div className="px-3.5 pt-2.5 pb-1 bg-neutral-50/80 border-b border-neutral-100 flex items-center gap-1.5 overflow-x-auto scrollbar-thin">
+            {slides.map((sUrl, idx) => {
+              const isSelected = idx === activeSlide;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveSlide(idx)}
+                  className={`relative shrink-0 w-11 aspect-[4/5] rounded-md overflow-hidden border-2 transition cursor-pointer ${
+                    isSelected 
+                      ? 'border-[#3897f0] ring-2 ring-[#3897f0]/30 shadow-sm scale-105' 
+                      : 'border-neutral-200 opacity-60 hover:opacity-100'
+                  }`}
+                  title={`Jump to slide ${idx + 1}`}
+                >
+                  <img src={sUrl} alt="" className="w-full h-full object-cover" loading="eager" />
+                  <span className="absolute bottom-0 inset-x-0 bg-black/75 text-[8.5px] font-bold text-white text-center py-0.2">
+                    {idx + 1}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* Action Bar */}
         <div className="p-3.5 pb-3">

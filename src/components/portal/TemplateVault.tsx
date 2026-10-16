@@ -177,6 +177,7 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* LEFT COLUMN: Visual Preview (4:5 Mockup Frame) */}
+            {/* LEFT COLUMN: Visual Preview (4:5 Mockup Frame) */}
             <div className="lg:col-span-5 flex flex-col items-center">
               <div className="w-full max-w-[400px] aspect-[4/5] bg-[#280c0d] rounded-2xl overflow-hidden shadow-xl border-4 border-[#280c0d] relative group">
                 {(activePost.media_type as string) === 'carousel' || (activePost.media_urls && activePost.media_urls.length > 1) ? (
@@ -185,41 +186,63 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
                     const currentIndex = carouselIndices[activePost.id] || 0;
                     return (
                       <div className="relative w-full h-full flex items-center justify-center bg-[#fbf7ee]">
+                        {/* Hidden preloader elements to guarantee instant browser cache decode */}
+                        <div className="hidden pointer-events-none" aria-hidden="true">
+                          {urls.map((u, idx) => (
+                            <img key={idx} src={u} alt="" loading="eager" />
+                          ))}
+                        </div>
+
                         <img 
+                          key={`${activePost.id}-${currentIndex}`}
                           src={urls[currentIndex]} 
                           alt={`Template Slide ${currentIndex + 1}`} 
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain select-none"
+                          decoding="async"
+                          loading="eager"
                         />
+
                         {/* Slide Navigation Arrows */}
                         {urls.length > 1 && (
                           <>
                             <button
                               type="button"
                               onClick={(e) => { e.stopPropagation(); handlePrevSlide(activePost.id, urls.length); }}
-                              className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition cursor-pointer backdrop-blur-xs"
+                              className="absolute left-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/65 hover:bg-black text-white flex items-center justify-center transition cursor-pointer backdrop-blur-xs shadow-md border border-white/20 active:scale-95"
+                              title="Previous slide"
+                              aria-label="Previous slide"
                             >
-                              <ChevronLeft className="w-5 h-5" />
+                              <ChevronLeft className="w-5 h-5 -ml-0.5 stroke-[2.5]" />
                             </button>
                             <button
                               type="button"
                               onClick={(e) => { e.stopPropagation(); handleNextSlide(activePost.id, urls.length); }}
-                              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition cursor-pointer backdrop-blur-xs"
+                              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/65 hover:bg-black text-white flex items-center justify-center transition cursor-pointer backdrop-blur-xs shadow-md border border-white/20 active:scale-95"
+                              title="Next slide"
+                              aria-label="Next slide"
                             >
-                              <ChevronRight className="w-5 h-5" />
+                              <ChevronRight className="w-5 h-5 -mr-0.5 stroke-[2.5]" />
                             </button>
 
                             {/* Dots Indicator */}
                             <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-xs">
                               {urls.map((_, i) => (
-                                <span 
-                                  key={i} 
-                                  className={`w-1.5 h-1.5 rounded-full transition ${i === currentIndex ? 'bg-[#ad9b58] w-3' : 'bg-white/60'}`} 
+                                <button
+                                  key={i}
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCarouselIndices(prev => ({ ...prev, [activePost.id]: i }));
+                                  }}
+                                  className={`h-1.5 rounded-full transition-all cursor-pointer ${i === currentIndex ? 'bg-[#ad9b58] w-4' : 'bg-white/60 hover:bg-white w-1.5'}`}
+                                  title={`Go to slide ${i + 1}`}
+                                  aria-label={`Go to slide ${i + 1}`}
                                 />
                               ))}
                             </div>
 
                             {/* Badge */}
-                            <span className="absolute top-3 right-3 text-[11px] font-mono font-bold bg-black/70 text-white px-2 py-0.5 rounded-md backdrop-blur-xs">
+                            <span className="absolute top-3 right-3 text-[11px] font-mono font-bold bg-black/75 text-white px-2.5 py-0.5 rounded-md backdrop-blur-xs border border-white/10 shadow-xs">
                               {currentIndex + 1} / {urls.length}
                             </span>
                           </>
@@ -238,8 +261,54 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
                 )}
               </div>
 
-              <p className="text-[11px] text-[#4c1315]/65 mt-2.5 text-center font-medium">
-                4:5 Portrait Feed Standard (1080 x 1350) • Swipe to review slide transitions
+              {/* Instant Slide Filmstrip Selector */}
+              {((activePost.media_type as string) === 'carousel' || (activePost.media_urls && activePost.media_urls.length > 1)) && (() => {
+                const urls = activePost.media_urls && activePost.media_urls.length > 0 ? activePost.media_urls : [activePost.media_url];
+                const currentIndex = carouselIndices[activePost.id] || 0;
+                return (
+                  <div className="w-full max-w-[400px] mt-3">
+                    <div className="flex items-center justify-between mb-1.5 px-1">
+                      <span className="text-[11px] font-bold text-[#4c1315] uppercase tracking-wider font-serif-display">
+                        Quick Slide Strip
+                      </span>
+                      <span className="text-[10px] text-[#4c1315]/70 font-mono">
+                        Click any slide to jump instantly
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 overflow-x-auto p-1.5 bg-[#fbf7ee] rounded-xl border border-[#4c1315]/15 scrollbar-thin">
+                      {urls.map((url, sIdx) => {
+                        const isCur = sIdx === currentIndex;
+                        return (
+                          <button
+                            key={sIdx}
+                            type="button"
+                            onClick={() => setCarouselIndices(prev => ({ ...prev, [activePost.id]: sIdx }))}
+                            className={`relative shrink-0 w-12 aspect-[4/5] rounded-lg overflow-hidden border-2 transition cursor-pointer group/thumb ${
+                              isCur
+                                ? 'border-[#4c1315] ring-2 ring-[#ad9b58] shadow-md scale-105'
+                                : 'border-neutral-200 opacity-60 hover:opacity-100 hover:border-[#4c1315]/50'
+                            }`}
+                            title={`Jump to slide ${sIdx + 1}`}
+                          >
+                            <img 
+                              src={url} 
+                              alt={`Thumb ${sIdx + 1}`} 
+                              className="w-full h-full object-cover"
+                              loading="eager"
+                            />
+                            <span className="absolute bottom-0 inset-x-0 bg-black/75 text-[9px] font-bold text-white text-center py-0.2">
+                              {sIdx + 1}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              <p className="text-[11px] text-[#4c1315]/65 mt-2 text-center font-medium">
+                4:5 Portrait Feed Standard (1080 x 1350) • Instant slide transitions
               </p>
             </div>
 
