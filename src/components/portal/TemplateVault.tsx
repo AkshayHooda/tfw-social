@@ -334,18 +334,18 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
                 </div>
 
                 {/* Template Name & Design Specification Box */}
-                <div className="p-4 sm:p-5 rounded-2xl bg-[#fdf8f4] border-2 border-[#ad9b58]/50 text-left shadow-xs space-y-2.5">
+                <div className="p-4 sm:p-5 rounded-2xl bg-[#fdf8f4] border-2 border-[#ad9b58]/50 text-left shadow-xs space-y-3">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-[#ad9b58]" />
                     <span className="text-xs font-bold uppercase tracking-wider text-[#4c1315] font-serif-display">
-                      Template Design Notes
+                      Template Design &amp; Layout Specification
                     </span>
                   </div>
-                  <p className="text-sm text-[#4c1315] font-serif-display font-bold leading-relaxed">
+                  <div className="text-xs sm:text-[13px] text-[#4c1315] leading-relaxed whitespace-pre-line font-medium bg-white/70 p-3 rounded-xl border border-[#ad9b58]/30">
                     {activePost.editor_notes || 'Master Layout Template'}
-                  </p>
-                  <p className="text-xs text-[#4c1315]/80 leading-relaxed">
-                    This template defines the background texture, font sizing, ghost number watermarks, and photo bleed margins. Approving this template confirms the visual layout for future posts in this format.
+                  </div>
+                  <p className="text-[11px] text-[#4c1315]/75 leading-relaxed">
+                    This template defines typography hierarchy, color balance, spacing and layout structure. Approving this template confirms the visual layout for future posts in this format.
                   </p>
                 </div>
 
