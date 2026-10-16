@@ -20,8 +20,16 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
   onReviewAction,
   submittingAction
 }) => {
-  // Use the isolated template posts passed directly from portal
-  const templatePosts = posts;
+  // Use the isolated template posts passed directly from portal, sorted in exact numerical sequence T1 -> T7
+  const templatePosts = [...posts].sort((a, b) => {
+    const numA = parseInt((a.editor_notes || '').match(/Template T(\d+)/i)?.[1] || '999');
+    const numB = parseInt((b.editor_notes || '').match(/Template T(\d+)/i)?.[1] || '999');
+    if (numA !== numB) return numA - numB;
+    const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
+    const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
+    return timeA - timeB;
+  });
+
   const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({});
   const [replyTexts, setReplyTexts] = useState<Record<string, string>>({});
   const [filterType, setFilterType] = useState<'all' | 'carousel' | 'reel'>('all');
@@ -33,11 +41,12 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
     return true;
   });
 
-  // Automatically start on the first template that needs approval
-  const firstPendingIndex = filteredTemplates.findIndex(p => p.status !== 'approved');
-  const [selectedTemplateIndex, setSelectedTemplateIndex] = useState(firstPendingIndex >= 0 ? firstPendingIndex : 0);
+  // Track selected template by post ID so state never loses position on polling
+  const firstPending = filteredTemplates.find(p => p.status !== 'approved');
+  const [selectedPostId, setSelectedPostId] = useState<string>(firstPending ? firstPending.id : filteredTemplates[0]?.id || '');
 
-  const activePost = filteredTemplates[selectedTemplateIndex] || filteredTemplates[0];
+  // Keep active post resolved
+  const activePost = filteredTemplates.find(p => p.id === selectedPostId) || filteredTemplates[0];
 
   const handlePrevSlide = (postId: string, total: number) => {
     setCarouselIndices(prev => ({
@@ -106,21 +115,21 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
           <div className="flex items-center p-1 bg-[#4c1315]/5 rounded-2xl border border-[#4c1315]/15 text-xs font-bold font-serif-display">
             <button
               type="button"
-              onClick={() => { setFilterType('all'); setSelectedTemplateIndex(0); }}
+              onClick={() => { setFilterType('all'); }}
               className={`px-3 py-1.5 rounded-xl transition cursor-pointer ${filterType === 'all' ? 'bg-[#4c1315] text-[#fbf7ee] shadow-2xs' : 'text-[#4c1315]/70 hover:text-[#4c1315]'}`}
             >
               All ({templatePosts.length})
             </button>
             <button
               type="button"
-              onClick={() => { setFilterType('carousel'); setSelectedTemplateIndex(0); }}
+              onClick={() => { setFilterType('carousel'); }}
               className={`px-3 py-1.5 rounded-xl transition cursor-pointer ${filterType === 'carousel' ? 'bg-[#4c1315] text-[#fbf7ee] shadow-2xs' : 'text-[#4c1315]/70 hover:text-[#4c1315]'}`}
             >
               Carousels ({templatePosts.filter(p => (p.media_type as string) === 'carousel' || (p.media_urls && p.media_urls.length > 1)).length})
             </button>
             <button
               type="button"
-              onClick={() => { setFilterType('reel'); setSelectedTemplateIndex(0); }}
+              onClick={() => { setFilterType('reel'); }}
               className={`px-3 py-1.5 rounded-xl transition cursor-pointer ${filterType === 'reel' ? 'bg-[#4c1315] text-[#fbf7ee] shadow-2xs' : 'text-[#4c1315]/70 hover:text-[#4c1315]'}`}
             >
               Reels ({templatePosts.filter(p => p.media_type === 'video' || p.platform === 'instagram_reel').length})
@@ -145,13 +154,13 @@ export const TemplateVault: React.FC<TemplateVaultProps> = ({
           /* Template Selection Ribbon */
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
             {filteredTemplates.map((tpl, idx) => {
-              const isSelected = selectedTemplateIndex === idx;
+              const isSelected = tpl.id === (activePost?.id || selectedPostId);
               const isApproved = tpl.status === 'approved';
               return (
                 <button
                   key={tpl.id}
                   type="button"
-                  onClick={() => setSelectedTemplateIndex(idx)}
+                  onClick={() => setSelectedPostId(tpl.id)}
                   className={`px-4 py-2 rounded-2xl text-xs font-serif-display font-bold whitespace-nowrap transition cursor-pointer flex items-center gap-2 border ${
                     isSelected 
                       ? 'bg-[#4c1315] text-[#fbf7ee] border-[#ad9b58] shadow-md ring-2 ring-[#ad9b58]/40' 
