@@ -1536,13 +1536,13 @@ export default function UnifiedInfluencerPortal() {
                 Content Pipeline Summary
               </h3>
 
-              {posts.length === 0 ? (
+              {broadcastPosts.length === 0 ? (
                 <div className="py-8 text-center text-[#4c1315]/60 text-xs font-serif-display">
-                  No creative assets currently in the portal. Upload drafts from the Editor Desk to populate your report.
+                  No broadcast assets currently in the portal. Upload drafts from the Editor Desk to populate your report.
                 </div>
               ) : (
                 <div className="divide-y divide-[#4c1315]/10">
-                  {posts.map((p) => (
+                  {broadcastPosts.map((p) => (
                     <div key={p.id} className="py-3 flex items-center justify-between gap-3 text-xs">
                       <div className="flex items-center gap-3">
                         <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#ad9b58]/20 text-[#4c1315]">
