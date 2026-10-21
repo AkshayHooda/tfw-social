@@ -103,25 +103,14 @@ export function ContentCalendar({ posts, selectedBrand, onSelectReviewPost }: Co
     const targetDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
     
     return filteredPosts.filter(p => {
-      // 1. Check scheduled_at
-      if (p.scheduled_at) {
-        const d = new Date(p.scheduled_at);
-        const postDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        if (postDateStr === targetDateStr) return true;
-      }
-      // 2. If published, check published_at
-      if (p.is_published && p.published_at) {
-        const d = new Date(p.published_at);
-        const postDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        if (postDateStr === targetDateStr) return true;
-      }
-      // 3. Fallback to created_at if neither scheduled nor published date is set
-      if (!p.scheduled_at && !p.published_at && p.created_at) {
-        const d = new Date(p.created_at);
-        const postDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        if (postDateStr === targetDateStr) return true;
-      }
-      return false;
+      // Use published_at if published, else scheduled_at, else created_at
+      const rawDate = p.is_published && p.published_at
+        ? p.published_at
+        : (p.scheduled_at || p.created_at);
+      if (!rawDate) return false;
+      const d = new Date(rawDate);
+      const postDateStr = d.toISOString().split("T")[0];
+      return postDateStr === targetDateStr;
     });
   };
 
