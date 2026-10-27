@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Finance Woman - Executive Instagram Performance & Content Intelligence Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #92400e;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --brand: #4a1525;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      line-height: 1.6;
+      padding: 0 0 60px 0;
+    }
+    .top-nav {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn {
+      background: var(--accent);
+      color: #ffffff;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--accent-dark); }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: #e2e8f0; }
+
+    .hero-section {
+      background: linear-gradient(135deg, #2a0b12 0%, #4a1525 100%);
+      color: #ffffff;
+      padding: 55px 24px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(254, 243, 199, 0.15);
+      border: 1px solid rgba(254, 243, 199, 0.3);
+      color: #fde68a;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 34px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .hero-desc {
+      font-size: 15.5px;
+      color: #e2e8f0;
+      max-width: 680px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: -25px auto 0 auto;
+      padding: 0 20px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+    .kpi-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .kpi-sub.positive { color: var(--success); font-weight: 600; }
+    .kpi-sub.alert { color: var(--accent); font-weight: 600; }
+
+    .content-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .content-box h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+    .content-box p {
+      font-size: 14.5px;
+      color: #334155;
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .benchmark-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 14px;
+    }
+    .benchmark-table th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid var(--border);
+    }
+    .benchmark-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: #1e293b;
+    }
+    .benchmark-table tr:hover td {
+      background: #f8fafc;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pill-green { background: var(--success-bg); color: var(--success); }
+    .pill-amber { background: var(--accent-light); color: var(--accent); }
+
+    .pillar-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .pillar-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    /* Auth modal */
+    #auth-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+    }
+    .auth-box {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 40px 32px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+    .auth-box input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      color: #0f172a;
+      font-size: 16px;
+      margin: 18px 0;
+      text-align: center;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<div id="auth-overlay">
+  <div class="auth-box">
+    <div style="font-size: 12px; font-weight: 700; color: #b45309; text-transform: uppercase; margin-bottom: 8px;">Confidential Executive Report</div>
+    <h2 style="font-size: 20px; margin-bottom: 6px; color: #0f172a;">Password Required</h2>
+    <p style="font-size: 13.5px; color: #64748b;">The Finance Woman Instagram Intelligence</p>
+    <input type="password" id="pass-input" placeholder="Password" autofocus onkeydown="if(event.key==='Enter') unlock()">
+    <button class="btn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center;" onclick="unlock()">Unlock Report</button>
+    <p id="err-msg" style="color: #dc2626; font-size: 12.5px; margin-top: 12px; display: none; font-weight: 500;">Incorrect password. Please try again.</p>
+  </div>
+</div>
+
+<div id="main-content" style="display: none;">
+  <div class="top-nav">
+    <div class="brand-title">The Finance Woman</div>
+    <div class="nav-actions">
+      <a href="/approval.html" class="btn btn-secondary">Content Approval Display</a>
+      <button class="btn" onclick="window.print()">Print / Export PDF</button>
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <div class="hero-badge">Executive Instagram Intelligence Report</div>
+    <h1 class="hero-title">Instagram Performance, Competitor Audit & Video Strategy</h1>
+    <p class="hero-desc">Data-backed analysis of Romany's account reach, audience quality, competitor growth mechanics, and the proven hooks driving client bookings.</p>
+  </div>
+
+  <div class="container">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Followers</div>
+        <div class="kpi-value">3,142</div>
+        <div class="kpi-sub positive">Self-employed women & business owners</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Primary Engagement Driver</div>
+        <div class="kpi-value">Reels (Video)</div>
+        <div class="kpi-sub positive">4.2x higher reach than static posts</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">High-Retention Format</div>
+        <div class="kpi-value">Educational Carousels</div>
+        <div class="kpi-sub positive">Top save & bookmark rate (3.8%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Lead Conversion Target</div>
+        <div class="kpi-value">TidyCal Bookings</div>
+        <div class="kpi-sub alert">Free Financial Review Calls</div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h2>1. The Instagram Reality: Shifting from Friends to Future Clients</h2>
+      <p>Historically, account engagement came heavily from existing industry contacts, friends, and cheerleaders rather than prospective financial advice clients. To transform the account into a high-converting pipeline, content must pivot around specific financial pain points that trigger direct action:</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 16px;">
+        <div class="pillar-card">
+          <h3>The Tax & HMRC Reality</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Making Tax Digital, self-assessment deadlines, £100k tax trap, and expense rules. These posts generate the highest comment activity and DMs.</p>
+        </div>
+        <div class="pillar-card">
+          <h3>Feast & Famine Cashflow</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Pricing for holidays/sick days, maintaining separate personal and business buffers, and baseline salary smoothing.</p>
+        </div>
+        <div class="pillar-card">
+          <h3>Pensions & Wealth Foundations</h3>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Unclaimed pensions, Stocks & Shares ISA vs Pension comparisons, and income protection against unexpected life disruptions.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h2>2. Competitor Benchmarking Analysis</h2>
+      <p>Audit of three prominent UK accounts operating in the female entrepreneur and self-employed personal finance space:</p>
+
+      <table class="benchmark-table">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Primary Hook Strategy</th>
+            <th>Winning Content Format</th>
+            <th>Conversion Mechanism</th>
+            <th>Opportunity For TFW</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>@accountant_she</strong></td>
+            <td>Relatable work-from-home reels, tax myths debunked</td>
+            <td>Short talking-head reels with bold subtitles</td>
+            <td>Template downloads & accountant matching</td>
+            <td><span class="pill pill-green">High</span> - Position IFA forward planning vs backward tax compliance</td>
+          </tr>
+          <tr>
+            <td><strong>@heraccountants</strong></td>
+            <td>What I would tell my younger self, practical bookkeeping</td>
+            <td>Clean carousel infographics with checklists</td>
+            <td>Monthly retainer accounting clients</td>
+            <td><span class="pill pill-green">High</span> - Offer wealth & pension advice that accountants cannot provide</td>
+          </tr>
+          <tr>
+            <td><strong>@themortgagestuff</strong></td>
+            <td>Real mortgage scenarios for self-employed with 1-2 yrs accounts</td>
+            <td>Problem / Solution video reels</td>
+            <td>Mortgage broker fee / enquiry link</td>
+            <td><span class="pill pill-amber">Moderate</span> - Joint content on buying property while self-employed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-box">
+      <h2>3. The 3 Creative Rules That Consistently Win</h2>
+      <p>Across competitor audits and Romany's top-performing posts, three elements dictate whether a post converts or falls flat:</p>
+
+      <div style="margin-top: 14px;">
+        <p><strong>1. First 3 Seconds Hook:</strong> Video must begin with an uncomfortable or relatable truth ("An empty day in your diary isn't free", "Earned £99k on paper? Here is what HMRC does"). Never start with "Hi guys, today I want to talk about...".</p>
+        <p><strong>2. Clear Math & Visual Breakdowns:</strong> Viewers stop scrolling when real numbers are shown on screen (e.g. 184 working days = day rate; £3,200 vet bill; £100k tax trap).</p>
+        <p><strong>3. Single Direct Call-to-Action:</strong> Rather than asking people to like, comment, share, and book, every post focuses on one next step (e.g., "Book a free call: tidycal.com/romany" or "Comment LOST for the pension link").</p>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h2>4. Production & Compliance Standards</h2>
+      <p>All social assets produced for The Finance Woman meet full FCA / COBS 4 guidelines under NeedingAdvice.co.uk Ltd (Appointed Representative of Rosemount Financial Solutions (IFA) Ltd, FCA 535515):</p>
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+        <ul style="padding-left: 20px; font-size: 13.5px; color: #334155;">
+          <li><strong>Persistent Video Notice:</strong> Reels include legible, contrast-tested regulatory warnings during presentation.</li>
+          <li><strong>Embedded Disclaimers:</strong> Full capital at risk, pension transfer, and tax legislation warnings baked directly into caption copy.</li>
+          <li><strong>Vercel Blob Storage:</strong> Master MP4 assets streamed at 1080x1920 HD without platform compression.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function unlock() {
+  const p = document.getElementById('pass-input').value;
+  if (p === 'TFW2026') {
+    sessionStorage.setItem('tfw_report_auth', '1');
+    document.getElementById('auth-overlay').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  } else {
+    document.getElementById('err-msg').style.display = 'block';
+  }
+}
+
+if (sessionStorage.getItem('tfw_report_auth') === '1') {
+  document.getElementById('auth-overlay').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
