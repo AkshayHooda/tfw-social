@@ -261,7 +261,7 @@
 </head>
 <body>
 
-<div id="auth-overlay">
+<div id="auth-overlay" style="display: none !important;">
   <div class="auth-box">
     <div style="font-size: 12px; font-weight: 700; color: #b45309; text-transform: uppercase; margin-bottom: 8px;">Confidential Executive Report</div>
     <h2 style="font-size: 20px; margin-bottom: 6px; color: #0f172a;">Password Required</h2>
@@ -272,7 +272,7 @@
   </div>
 </div>
 
-<div id="main-content" style="display: none;">
+<div id="main-content" style="display: block;">
   <div class="top-nav">
     <div class="brand-title">The Finance Woman</div>
     <div class="nav-actions">
@@ -408,7 +408,7 @@ function unlock() {
   }
 }
 
-if (sessionStorage.getItem('tfw_report_auth') === '1') {
+if (true) {
   document.getElementById('auth-overlay').style.display = 'none';
   document.getElementById('main-content').style.display = 'block';
 }

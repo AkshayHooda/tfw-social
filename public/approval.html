@@ -231,7 +231,7 @@
 </head>
 <body>
 
-<div id="auth-overlay">
+<div id="auth-overlay" style="display: none !important;">
   <div class="auth-box">
     <div class="badge">COMPLIANCE REVIEW ACCESS</div>
     <h2 style="font-size: 20px; margin-bottom: 6px; color: #0f172a;">Password Required</h2>
@@ -242,7 +242,7 @@
   </div>
 </div>
 
-<div class="container" id="main-content" style="display: none;">
+<div class="container" id="main-content" style="display: block;">
   <header>
     <div class="badge">COBS 4 COMPLIANCE SUBMISSION (10 POSTS)</div>
     <h1>The Finance Woman - Content Approval Display</h1>
@@ -278,7 +278,7 @@ function unlock() {
   }
 }
 
-if (sessionStorage.getItem('tfw_auth') === '1') {
+if (true) {
   document.getElementById('auth-overlay').style.display = 'none';
   document.getElementById('main-content').style.display = 'block';
   render(POSTS);
