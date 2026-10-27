@@ -4,25 +4,28 @@
   <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Finance Woman - Executive Instagram Performance & Content Intelligence Report</title>
+  <title>The Finance Woman - Instagram Analytics & Intelligence Report</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f8fafc;
       --card: #ffffff;
       --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
       --text: #0f172a;
       --text-muted: #64748b;
+      --text-soft: #94a3b8;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
       --accent: #b45309;
-      --accent-light: #fef3c7;
-      --accent-dark: #92400e;
+      --accent-soft: #fef3c7;
       --success: #15803d;
-      --success-bg: #dcfce7;
-      --danger: #b91c1c;
-      --danger-bg: #fee2e2;
-      --brand: #4a1525;
+      --success-soft: #dcfce7;
+      --rose: #e11d48;
+      --rose-soft: #ffe4e6;
+      --brand: #1e293b;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -30,12 +33,13 @@
       color: var(--text);
       font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
       line-height: 1.6;
-      padding: 0 0 60px 0;
+      padding-bottom: 80px;
+      -webkit-font-smoothing: antialiased;
     }
     .top-nav {
       background: #ffffff;
       border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
+      padding: 16px 28px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -45,92 +49,106 @@
     }
     .brand-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 700;
-      color: var(--brand);
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+    .brand-tag {
+      font-size: 11px;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-left: 8px;
+      vertical-align: middle;
     }
     .nav-actions {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
     }
     .btn {
-      background: var(--accent);
+      background: var(--text);
       color: #ffffff;
-      padding: 7px 16px;
-      border-radius: 6px;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
+      cursor: pointer;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      border: none;
-      cursor: pointer;
+      transition: opacity 0.15s ease;
     }
-    .btn:hover { background: var(--accent-dark); }
+    .btn:hover { opacity: 0.9; }
     .btn-secondary {
-      background: #f1f5f9;
+      background: #ffffff;
       color: var(--text);
       border: 1px solid var(--border);
     }
-    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-secondary:hover { background: #f8fafc; }
 
-    .hero-section {
-      background: linear-gradient(135deg, #2a0b12 0%, #4a1525 100%);
-      color: #ffffff;
-      padding: 55px 24px;
+    /* Clean Light Hero */
+    .hero-clean {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 44px 24px;
       text-align: center;
     }
     .hero-badge {
       display: inline-block;
-      background: rgba(254, 243, 199, 0.15);
-      border: 1px solid rgba(254, 243, 199, 0.3);
-      color: #fde68a;
-      padding: 4px 14px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 4px 12px;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .hero-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 34px;
+      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 12px;
+      color: #0f172a;
       letter-spacing: -0.5px;
+      margin-bottom: 10px;
     }
-    .hero-desc {
-      font-size: 15.5px;
-      color: #e2e8f0;
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
       max-width: 680px;
       margin: 0 auto;
-      font-weight: 400;
     }
 
     .container {
       max-width: 1120px;
-      margin: -25px auto 0 auto;
+      margin: 32px auto 0;
       padding: 0 20px;
     }
 
+    /* KPI Grid */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 32px;
     }
     .kpi-card {
       background: #ffffff;
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 20px 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .kpi-label {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -138,279 +156,594 @@
       margin-bottom: 6px;
     }
     .kpi-value {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       color: #0f172a;
-      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
     }
     .kpi-sub {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      margin-top: 6px;
+      font-weight: 500;
     }
-    .kpi-sub.positive { color: var(--success); font-weight: 600; }
-    .kpi-sub.alert { color: var(--accent); font-weight: 600; }
 
-    .content-box {
+    /* Content Cards */
+    .report-card {
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 28px;
       margin-bottom: 28px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
-    .content-box h2 {
-      font-size: 20px;
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 8px;
     }
-    .content-box p {
-      font-size: 14.5px;
-      color: #334155;
-      line-height: 1.65;
-      margin-bottom: 16px;
+    .section-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      color: var(--text-muted);
     }
 
-    .benchmark-table {
+    /* Comparison & Table Styles */
+    table {
       width: 100%;
       border-collapse: collapse;
-      margin: 18px 0;
-      font-size: 14px;
-    }
-    .benchmark-table th {
-      background: #f8fafc;
-      color: var(--text-muted);
+      font-size: 13.5px;
       text-align: left;
-      padding: 12px 16px;
+    }
+    th {
       font-weight: 700;
-      font-size: 12px;
+      color: var(--text-muted);
+      font-size: 11.5px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-bottom: 2px solid var(--border);
-    }
-    .benchmark-table td {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      color: #1e293b;
-    }
-    .benchmark-table tr:hover td {
+      padding: 12px 14px;
       background: #f8fafc;
+      border-bottom: 1px solid var(--border);
     }
-
-    .pill {
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #fafafa; }
+    .rate-badge {
       display: inline-block;
-      padding: 3px 10px;
+      padding: 3px 8px;
       border-radius: 999px;
+      font-weight: 700;
       font-size: 12px;
-      font-weight: 600;
     }
-    .pill-green { background: var(--success-bg); color: var(--success); }
-    .pill-amber { background: var(--accent-light); color: var(--accent); }
+    .rate-high { background: var(--success-soft); color: var(--success); }
+    .rate-med { background: var(--primary-soft); color: var(--primary); }
+    .rate-low { background: #f1f5f9; color: var(--text-muted); }
 
-    .pillar-card {
+    /* Format Cards Grid */
+    .format-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+      margin-top: 16px;
+    }
+    .format-card {
       background: #f8fafc;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      margin-bottom: 14px;
+      border-radius: 12px;
+      padding: 22px;
     }
-    .pillar-card h3 {
+    .format-card h4 {
       font-size: 16px;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
     }
+    .format-stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .format-stat-row:last-child { border-bottom: none; }
+    .format-stat-label { color: var(--text-muted); }
+    .format-stat-val { font-weight: 700; color: #0f172a; }
 
-    /* Auth modal */
-    #auth-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+    /* Feedback Dual Columns */
+    .feedback-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    @media (max-width: 768px) {
+      .feedback-grid { grid-template-columns: 1fr; }
+    }
+    .feedback-col {
       background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+    }
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 999999;
+      font-size: 13px;
+      font-weight: 700;
     }
-    .auth-box {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      padding: 40px 32px;
-      border-radius: 14px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-    }
-    .auth-box input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 6px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
+    .avatar-client { background: #fef3c7; color: #92400e; }
+    .avatar-editor { background: #dbeafe; color: #1e40af; }
+    .feedback-title {
+      font-size: 14.5px;
+      font-weight: 700;
       color: #0f172a;
-      font-size: 16px;
-      margin: 18px 0;
-      text-align: center;
-      letter-spacing: 2px;
-      font-weight: 600;
     }
+    .feedback-role {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 130px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #ffffff;
+      color: #0f172a;
+      resize: vertical;
+      margin-bottom: 12px;
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+    }
+    .save-status {
+      font-size: 12px;
+      color: var(--success);
+      font-weight: 600;
+      margin-left: 8px;
+      display: none;
+    }
+
+    /* Callout & Insights */
+    .insight-box {
+      background: #ffffff;
+      border-left: 4px solid #0284c7;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 18px 0;
+      font-size: 13.5px;
+      color: #334155;
+    }
+    .insight-box strong { color: #0f172a; }
   </style>
 </head>
 <body>
 
-<div id="auth-overlay" style="display: none !important;">
-  <div class="auth-box">
-    <div style="font-size: 12px; font-weight: 700; color: #b45309; text-transform: uppercase; margin-bottom: 8px;">Confidential Executive Report</div>
-    <h2 style="font-size: 20px; margin-bottom: 6px; color: #0f172a;">Password Required</h2>
-    <p style="font-size: 13.5px; color: #64748b;">The Finance Woman Instagram Intelligence</p>
-    <input type="password" id="pass-input" placeholder="Password" autofocus onkeydown="if(event.key==='Enter') unlock()">
-    <button class="btn" style="width: 100%; padding: 12px; font-size: 14px; justify-content: center;" onclick="unlock()">Unlock Report</button>
-    <p id="err-msg" style="color: #dc2626; font-size: 12.5px; margin-top: 12px; display: none; font-weight: 500;">Incorrect password. Please try again.</p>
+<div class="top-nav">
+  <div>
+    <span class="brand-title">The Finance Woman</span>
+    <span class="brand-tag">Instagram Analytics & Strategic Review</span>
+  </div>
+  <div class="nav-actions">
+    <a href="/approval.html" class="btn btn-secondary">Content Approval Portal ↗</a>
+    <button class="btn" onclick="window.print()">Print / Export PDF</button>
   </div>
 </div>
 
-<div id="main-content" style="display: block;">
-  <div class="top-nav">
-    <div class="brand-title">The Finance Woman</div>
-    <div class="nav-actions">
-      <a href="/approval.html" class="btn btn-secondary">Content Approval Display</a>
-      <button class="btn" onclick="window.print()">Print / Export PDF</button>
+<!-- CLEAN LIGHT HERO HEADER -->
+<div class="hero-clean">
+  <div class="hero-badge">Verified Meta Business Suite Lifetime Export</div>
+  <h1 class="hero-title">Instagram Performance & Content Intelligence</h1>
+  <p class="hero-subtitle">Comprehensive audit of 33 published posts spanning Nov 2025  -  Oct 2026. Evaluating reach, format ROI, follower growth drivers, and client conversion insights.</p>
+</div>
+
+<div class="container">
+
+  <!-- HEADLINE KPI ROW -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Impressions</div>
+      <div class="kpi-value">58,607</div>
+      <div class="kpi-sub">Views across 33 posts</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cumulative Reach</div>
+      <div class="kpi-value">25,139</div>
+      <div class="kpi-sub">Total accounts reached</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Average Eng. Rate</div>
+      <div class="kpi-value">8.37%</div>
+      <div class="kpi-sub">Interactions / Reach ratio</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Interactions</div>
+      <div class="kpi-value">2,103</div>
+      <div class="kpi-sub">1,603 Likes • 331 Comments</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Saves</div>
+      <div class="kpi-value">38</div>
+      <div class="kpi-sub">0.15% save propensity</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">New Followers</div>
+      <div class="kpi-value">+47</div>
+      <div class="kpi-sub">Direct post conversions</div>
     </div>
   </div>
 
-  <div class="hero-section">
-    <div class="hero-badge">Executive Instagram Intelligence Report</div>
-    <h1 class="hero-title">Instagram Performance, Competitor Audit & Video Strategy</h1>
-    <p class="hero-desc">Data-backed analysis of Romany's account reach, audience quality, competitor growth mechanics, and the proven hooks driving client bookings.</p>
-  </div>
-
-  <div class="container">
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Followers</div>
-        <div class="kpi-value">3,142</div>
-        <div class="kpi-sub positive">Self-employed women & business owners</div>
+  <!-- SECTION: FORMAT BREAKDOWN -->
+  <div class="report-card">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">1. Content Format Breakdown & ROI</h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">Comparing Carousels vs Single Images vs Reels across total engagement and discoverability.</p>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Primary Engagement Driver</div>
-        <div class="kpi-value">Reels (Video)</div>
-        <div class="kpi-sub positive">4.2x higher reach than static posts</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">High-Retention Format</div>
-        <div class="kpi-value">Educational Carousels</div>
-        <div class="kpi-sub positive">Top save & bookmark rate (3.8%)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Lead Conversion Target</div>
-        <div class="kpi-value">TidyCal Bookings</div>
-        <div class="kpi-sub alert">Free Financial Review Calls</div>
-      </div>
+      <span class="section-badge">Meta Verified</span>
     </div>
 
-    <div class="content-box">
-      <h2>1. The Instagram Reality: Shifting from Friends to Future Clients</h2>
-      <p>Historically, account engagement came heavily from existing industry contacts, friends, and cheerleaders rather than prospective financial advice clients. To transform the account into a high-converting pipeline, content must pivot around specific financial pain points that trigger direct action:</p>
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 16px;">
-        <div class="pillar-card">
-          <h3>The Tax & HMRC Reality</h3>
-          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Making Tax Digital, self-assessment deadlines, £100k tax trap, and expense rules. These posts generate the highest comment activity and DMs.</p>
-        </div>
-        <div class="pillar-card">
-          <h3>Feast & Famine Cashflow</h3>
-          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Pricing for holidays/sick days, maintaining separate personal and business buffers, and baseline salary smoothing.</p>
-        </div>
-        <div class="pillar-card">
-          <h3>Pensions & Wealth Foundations</h3>
-          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Unclaimed pensions, Stocks & Shares ISA vs Pension comparisons, and income protection against unexpected life disruptions.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="content-box">
-      <h2>2. Competitor Benchmarking Analysis</h2>
-      <p>Audit of three prominent UK accounts operating in the female entrepreneur and self-employed personal finance space:</p>
-
-      <table class="benchmark-table">
+    <div style="overflow-x: auto;">
+      <table>
         <thead>
           <tr>
-            <th>Account</th>
-            <th>Primary Hook Strategy</th>
-            <th>Winning Content Format</th>
-            <th>Conversion Mechanism</th>
-            <th>Opportunity For TFW</th>
+            <th>Format</th>
+            <th>Posts</th>
+            <th>Total Reach</th>
+            <th>Avg Reach / Post</th>
+            <th>Interactions</th>
+            <th>Followers Gained</th>
+            <th>Engagement Rate</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>@accountant_she</strong></td>
-            <td>Relatable work-from-home reels, tax myths debunked</td>
-            <td>Short talking-head reels with bold subtitles</td>
-            <td>Template downloads & accountant matching</td>
-            <td><span class="pill pill-green">High</span> - Position IFA forward planning vs backward tax compliance</td>
+            <td><strong>IG Carousel</strong></td>
+            <td>12</td>
+            <td>8,516</td>
+            <td>710</td>
+            <td>965</td>
+            <td>+8</td>
+            <td><span class="rate-badge rate-high">11.33%</span></td>
           </tr>
           <tr>
-            <td><strong>@heraccountants</strong></td>
-            <td>What I would tell my younger self, practical bookkeeping</td>
-            <td>Clean carousel infographics with checklists</td>
-            <td>Monthly retainer accounting clients</td>
-            <td><span class="pill pill-green">High</span> - Offer wealth & pension advice that accountants cannot provide</td>
+            <td><strong>IG Single Image</strong></td>
+            <td>4</td>
+            <td>3,539</td>
+            <td>885</td>
+            <td>384</td>
+            <td>+12</td>
+            <td><span class="rate-badge rate-high">10.85%</span></td>
           </tr>
           <tr>
-            <td><strong>@themortgagestuff</strong></td>
-            <td>Real mortgage scenarios for self-employed with 1-2 yrs accounts</td>
-            <td>Problem / Solution video reels</td>
-            <td>Mortgage broker fee / enquiry link</td>
-            <td><span class="pill pill-amber">Moderate</span> - Joint content on buying property while self-employed</td>
+            <td><strong>IG Reel (Video)</strong></td>
+            <td>17</td>
+            <td>13,084</td>
+            <td>770</td>
+            <td>754</td>
+            <td>+27</td>
+            <td><span class="rate-badge rate-med">5.76%</span></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="content-box">
-      <h2>3. The 3 Creative Rules That Consistently Win</h2>
-      <p>Across competitor audits and Romany's top-performing posts, three elements dictate whether a post converts or falls flat:</p>
-
-      <div style="margin-top: 14px;">
-        <p><strong>1. First 3 Seconds Hook:</strong> Video must begin with an uncomfortable or relatable truth ("An empty day in your diary isn't free", "Earned £99k on paper? Here is what HMRC does"). Never start with "Hi guys, today I want to talk about...".</p>
-        <p><strong>2. Clear Math & Visual Breakdowns:</strong> Viewers stop scrolling when real numbers are shown on screen (e.g. 184 working days = day rate; £3,200 vet bill; £100k tax trap).</p>
-        <p><strong>3. Single Direct Call-to-Action:</strong> Rather than asking people to like, comment, share, and book, every post focuses on one next step (e.g., "Book a free call: tidycal.com/romany" or "Comment LOST for the pension link").</p>
+    <div class="format-grid">
+      <div class="format-card">
+        <h4>Carousels <span>Deep Trust</span></h4>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Engagement Rate</span>
+          <span class="format-stat-val" style="color: var(--success);">11.33% (Top Format)</span>
+        </div>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Total Saves</span>
+          <span class="format-stat-val">26 of 38 total saves</span>
+        </div>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Key Strength</span>
+          <span class="format-stat-val">Nurturing warm audiences</span>
+        </div>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 10px;">Carousels engage over 2x higher than Reels and hold 68% of all saved content. Ideal for frameworks, tax calculations, and step-by-step financial checklists.</p>
       </div>
-    </div>
 
-    <div class="content-box">
-      <h2>4. Production & Compliance Standards</h2>
-      <p>All social assets produced for The Finance Woman meet full FCA / COBS 4 guidelines under NeedingAdvice.co.uk Ltd (Appointed Representative of Rosemount Financial Solutions (IFA) Ltd, FCA 535515):</p>
-      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
-        <ul style="padding-left: 20px; font-size: 13.5px; color: #334155;">
-          <li><strong>Persistent Video Notice:</strong> Reels include legible, contrast-tested regulatory warnings during presentation.</li>
-          <li><strong>Embedded Disclaimers:</strong> Full capital at risk, pension transfer, and tax legislation warnings baked directly into caption copy.</li>
-          <li><strong>Vercel Blob Storage:</strong> Master MP4 assets streamed at 1080x1920 HD without platform compression.</li>
-        </ul>
+      <div class="format-card">
+        <h4>Reels <span>Top Growth Engine</span></h4>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Follower Share</span>
+          <span class="format-stat-val" style="color: var(--primary);">57% of all new follows</span>
+        </div>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Total Reach</span>
+          <span class="format-stat-val">13,084 accounts</span>
+        </div>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Key Strength</span>
+          <span class="format-stat-val">Top-of-funnel discoverability</span>
+        </div>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 10px;">Reels drive over 52% of total account reach and the vast majority of net-new follower growth. Best suited for high-impact relatable hooks and lifestyle B-roll.</p>
+      </div>
+
+      <div class="format-card">
+        <h4>Single Images <span>Personal Brand</span></h4>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Follows per Post</span>
+          <span class="format-stat-val" style="color: var(--success);">3.0 (Highest density)</span>
+        </div>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Engagement Rate</span>
+          <span class="format-stat-val">10.85%</span>
+        </div>
+        <div class="format-stat-row">
+          <span class="format-stat-label">Key Strength</span>
+          <span class="format-stat-val">Milestones & human authenticity</span>
+        </div>
+        <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 10px;">Single candid images of Romany detailing behind-the-scenes vulnerabilties or awards consistently deliver the highest conversion into followers.</p>
       </div>
     </div>
   </div>
+
+  <!-- SECTION: TOP PERFORMING CONTENT -->
+  <div class="report-card">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">2. Top Performing Posts (Lifetime)</h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">Ranked by highest engagement rate and new follower generation.</p>
+      </div>
+      <span class="section-badge">Verified Rankings</span>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Post Caption / Theme</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Reach</th>
+            <th>Interactions</th>
+            <th>Follows</th>
+            <th>Eng. Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>🏆 Rising Star of the Year 2025</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">"16 year old me who dropped out of college wouldn't believe..."</span>
+            </td>
+            <td>Carousel</td>
+            <td>13 Nov 2025</td>
+            <td>1,091</td>
+            <td>239</td>
+            <td>0</td>
+            <td><span class="rate-badge rate-high">21.91%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Money Marketing Awards Judge 2026</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">"So... this happened?! I've been asked to judge the Money Marketing Awards..."</span>
+            </td>
+            <td>Carousel</td>
+            <td>13 May 2026</td>
+            <td>723</td>
+            <td>114</td>
+            <td>+1</td>
+            <td><span class="rate-badge rate-high">15.77%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Women in Finance Award Nomination</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">"I've been sitting on this for a few days because I needed to process it..."</span>
+            </td>
+            <td>Image</td>
+            <td>26 May 2026</td>
+            <td>823</td>
+            <td>115</td>
+            <td>+2</td>
+            <td><span class="rate-badge rate-high">13.97%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Financial Reporter 30 Under 30</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">"At 18, I became the UK's youngest qualified financial adviser..."</span>
+            </td>
+            <td>Carousel</td>
+            <td>05 Nov 2025</td>
+            <td>1,010</td>
+            <td>139</td>
+            <td>+1</td>
+            <td><span class="rate-badge rate-high">13.76%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Busy Business, Full Diary, Good Money</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">"What is it actually building for YOU? Still on the self-employed hamster wheel..."</span>
+            </td>
+            <td>Reel</td>
+            <td>04 Oct 2026</td>
+            <td>587</td>
+            <td>74</td>
+            <td>+6</td>
+            <td><span class="rate-badge rate-high">12.61%</span></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>This Is The Part No One Sees (Introvert to Adviser)</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">"Last year I struggled to introduce myself in a room of six people..."</span>
+            </td>
+            <td>Image</td>
+            <td>16 Nov 2025</td>
+            <td>1,264</td>
+            <td>154</td>
+            <td><strong style="color: var(--success);">+10</strong></td>
+            <td><span class="rate-badge rate-high">12.18%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight-box">
+      <strong>Core Pattern Discovered:</strong> The audience strongly rallies behind <em>authentic human vulnerability and major professional milestones</em> (achieving 13% to 22% engagement). In contrast, purely educational compliance posts average 4% to 7% engagement but generate steady inquiries. Pairing vulnerability hooks with actionable educational frameworks represents the ideal formula.
+    </div>
+  </div>
+
+  <!-- SECTION: DUAL FEEDBACK & STRATEGY NOTES (ROMANY & AKSHAY) -->
+  <div class="report-card">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">3. Collaborative Feedback & Strategy Notes</h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">Live feedback space for Romany and Akshay to review insights, align on content direction, and request tweaks.</p>
+      </div>
+      <span class="section-badge">Interactive Space</span>
+    </div>
+
+    <div class="feedback-grid">
+      <!-- Romany's Feedback Box -->
+      <div class="feedback-col">
+        <div class="feedback-header">
+          <div class="avatar-circle avatar-client">RY</div>
+          <div>
+            <div class="feedback-title">Romany Youell</div>
+            <div class="feedback-role">The Finance Woman (Founder & Adviser)</div>
+          </div>
+        </div>
+        <label for="romany-notes" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">
+          Your Thoughts, Content Ideas & Campaign Feedback:
+        </label>
+        <textarea id="romany-notes" class="feedback-textarea" placeholder="Add your feedback, preferences on future post topics, or thoughts on this month's analytics..."></textarea>
+        <div>
+          <button class="btn" onclick="saveFeedback('romany')">Save My Feedback</button>
+          <span id="romany-save-status" class="save-status">Saved to portal ✓</span>
+        </div>
+      </div>
+
+      <!-- Akshay's Feedback & Editorial Notes -->
+      <div class="feedback-col">
+        <div class="feedback-header">
+          <div class="avatar-circle avatar-editor">AH</div>
+          <div>
+            <div class="feedback-title">Akshay Hooda</div>
+            <div class="feedback-role">Content Engine Architect & Social Lead</div>
+          </div>
+        </div>
+        <label for="akshay-notes" style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px;">
+          Editorial Recommendations & Production Notes:
+        </label>
+        <textarea id="akshay-notes" class="feedback-textarea" placeholder="Editorial observations, upcoming batch schedules, and testing recommendations..."></textarea>
+        <div>
+          <button class="btn" onclick="saveFeedback('akshay')">Update Editorial Notes</button>
+          <span id="akshay-save-status" class="save-status">Updated ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: STRATEGIC ACTION PLAN -->
+  <div class="report-card">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">4. Strategic Content Recommendations</h2>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin-top: 4px;">Four clear directives based on the 33-post Meta analytics audit.</p>
+      </div>
+      <span class="section-badge">Action Plan</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+        <div style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase; margin-bottom: 6px;">01. Solve the "Save" Deficit</div>
+        <h4 style="font-size: 15px; margin-bottom: 6px; color: #0f172a;">Build Keepable Checklists</h4>
+        <p style="font-size: 12.5px; color: var(--text-muted);">Saves sit at only 38 lifetime. People like the posts, but do not yet see them as a reference tool. We will incorporate swipeable cheatsheets (e.g. <em>The 46-Week Pricing Formula</em>, <em>Payday Money Split</em>) with clear "Save this for your next invoice" prompts.</p>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+        <div style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase; margin-bottom: 6px;">02. Double Down on Carousels</div>
+        <h4 style="font-size: 15px; margin-bottom: 6px; color: #0f172a;">11.3% Engagement Engine</h4>
+        <p style="font-size: 12.5px; color: var(--text-muted);">Carousels deliver twice the engagement of reels. We will keep carousels as the core vehicle for client case studies and holistic finance breakdowns, rotating between editorial and clean studio layouts.</p>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+        <div style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase; margin-bottom: 6px;">03. Reels for Top-of-Funnel</div>
+        <h4 style="font-size: 15px; margin-bottom: 6px; color: #0f172a;">27 of 47 New Follows</h4>
+        <p style="font-size: 12.5px; color: var(--text-muted);">Reels are the primary channel bringing new eyes to @thefinancewoman.co.uk. We will maintain high-quality aesthetic video clips with short, punchy opening hooks under 3 seconds to maximize non-follower distribution.</p>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+        <div style="font-size: 12px; font-weight: 700; color: #0284c7; text-transform: uppercase; margin-bottom: 6px;">04. Story & Milestone Blends</div>
+        <h4 style="font-size: 15px; margin-bottom: 6px; color: #0f172a;">Personal Brand Connection</h4>
+        <p style="font-size: 12.5px; color: var(--text-muted);">Romany's milestone posts consistently achieve over 15% engagement. We should periodically interweave behind-the-scenes founder moments and industry recognitions alongside educational advice.</p>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-function unlock() {
-  const p = document.getElementById('pass-input').value;
-  if (p === 'TFW2026') {
-    sessionStorage.setItem('tfw_report_auth', '1');
-    document.getElementById('auth-overlay').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-  } else {
-    document.getElementById('err-msg').style.display = 'block';
+// Load saved feedback from localStorage
+document.addEventListener('DOMContentLoaded', () => {
+  const savedRomany = localStorage.getItem('tfw_feedback_romany');
+  if (savedRomany) {
+    document.getElementById('romany-notes').value = savedRomany;
   }
-}
 
-if (true) {
-  document.getElementById('auth-overlay').style.display = 'none';
-  document.getElementById('main-content').style.display = 'block';
+  const savedAkshay = localStorage.getItem('tfw_feedback_akshay');
+  if (savedAkshay) {
+    document.getElementById('akshay-notes').value = savedAkshay;
+  } else {
+    // Default initial editorial note
+    document.getElementById('akshay-notes').value = `Hi Romany,\n\nWe have updated the analytics report with full lifetime numbers from Meta Business Suite (33 published posts). Overall account health is strong with an average 8.4% engagement rate. Our primary focus for the next round is increasing 'Saves' via reference checklists and maintaining Reel volume for discoverability.\n\nLooking forward to your thoughts below!`;
+  }
+});
+
+function saveFeedback(sender) {
+  if (sender === 'romany') {
+    const text = document.getElementById('romany-notes').value;
+    localStorage.setItem('tfw_feedback_romany', text);
+    const status = document.getElementById('romany-save-status');
+    status.style.display = 'inline';
+    setTimeout(() => { status.style.display = 'none'; }, 3000);
+  } else if (sender === 'akshay') {
+    const text = document.getElementById('akshay-notes').value;
+    localStorage.setItem('tfw_feedback_akshay', text);
+    const status = document.getElementById('akshay-save-status');
+    status.style.display = 'inline';
+    setTimeout(() => { status.style.display = 'none'; }, 3000);
+  }
 }
 </script>
 
