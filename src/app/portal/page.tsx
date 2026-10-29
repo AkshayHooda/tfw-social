@@ -866,6 +866,16 @@ export default function UnifiedInfluencerPortal() {
               {publishedPosts.length}
             </span>
           </button>
+
+          <a
+            href="/report.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pb-3.5 text-sm font-bold tracking-wide border-b-2 border-transparent text-[#ad9b58] hover:text-[#4c1315] transition flex items-center gap-1.5 font-serif-display whitespace-nowrap ml-auto cursor-pointer"
+          >
+            <span>Monthly Report (27 Sep - 26 Oct)</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </div>
 
         {/* TAB 1: NEEDS REVIEW (SPACIOUS EXECUTIVE STUDIO LAYOUT) */}
@@ -1457,6 +1467,34 @@ export default function UnifiedInfluencerPortal() {
         {/* TAB 2: REPORTING (Approved, Rejected, Posted, In Creation) */}
         {activeTab === 'analytics' && (
           <div className="space-y-8">
+            {/* MONTHLY DEEP DIVE REPORT BANNER */}
+            <div className="bg-gradient-to-r from-[#4c1315] to-[#2d090b] text-white rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border border-[#ad9b58]/30">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="bg-[#ad9b58] text-[#4c1315] text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                    Verified Meta Business Export
+                  </span>
+                  <span className="text-white/70 text-xs font-body">
+                    27 Sep - 26 Oct 2026 (30 Days)
+                  </span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-serif-display font-bold text-white mb-1">
+                  Instagram Monthly Performance Report
+                </h3>
+                <p className="text-white/80 text-sm font-body max-w-2xl">
+                  Complete post-by-post audit, carousel vs. reel breakdown, saves surge (+725%), and strategic targets for next month.
+                </p>
+              </div>
+              <a
+                href="/report.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#ad9b58] hover:bg-[#c2ae63] text-[#4c1315] font-bold px-6 py-3.5 rounded-2xl text-sm font-body shadow transition flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0"
+              >
+                <span>View Full Monthly Report</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
             {/* 4 CORE EXECUTIVE STATUS CARDS */}
             <section className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
               {/* Card 1: In Creation / Pending */}

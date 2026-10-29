@@ -19,8 +19,9 @@
       --text-soft: #94a3b8;
       --success: #15803d;
       --success-soft: #dcfce7;
-      --primary: #2563eb;
-      --primary-soft: #eff6ff;
+      --primary: #4c1315;
+      --primary-soft: #fbf7f4;
+      --accent-gold: #ad9b58;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -30,6 +31,75 @@
       line-height: 1.6;
       padding-bottom: 80px;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* Password gate */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .gate-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 36px 32px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .gate-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .gate-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .gate-input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 15px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 14px;
+      text-align: center;
+      letter-spacing: 2px;
+      font-weight: 600;
+      outline: none;
+    }
+    .gate-input:focus {
+      border-color: var(--primary);
+    }
+    .gate-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .gate-btn:hover { opacity: 0.92; }
+    .gate-err {
+      color: #dc2626;
+      font-size: 12.5px;
+      margin-top: 10px;
+      font-weight: 600;
+      display: none;
     }
 
     .top-nav {
@@ -47,7 +117,7 @@
       font-family: 'Playfair Display', Georgia, serif;
       font-size: 20px;
       font-weight: 700;
-      color: var(--text);
+      color: var(--primary);
     }
     .brand-tag {
       font-size: 11.5px;
@@ -60,76 +130,81 @@
     }
     .nav-actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       align-items: center;
     }
-    .btn {
-      background: var(--text);
-      color: #ffffff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
+    .nav-link {
       font-size: 13px;
       font-weight: 600;
-      cursor: pointer;
+      color: var(--primary);
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--primary-soft);
+      border: 1px solid rgba(76,19,21,0.15);
+      transition: all 0.15s;
     }
-    .btn-secondary {
-      background: #ffffff;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-secondary:hover { background: #f8fafc; }
-
-    /* Clean Hero */
-    .hero {
-      background: #ffffff;
-      border-bottom: 1px solid var(--border);
-      padding: 40px 24px;
-      text-align: center;
-    }
-    .hero-badge {
-      display: inline-block;
-      background: #f1f5f9;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-    .hero-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 8px;
-    }
-    .hero-subtitle {
-      font-size: 14.5px;
-      color: var(--text-muted);
-      max-width: 650px;
-      margin: 0 auto;
+    .nav-link:hover {
+      background: rgba(76,19,21,0.1);
     }
 
     .container {
-      max-width: 1200px;
-      margin: 28px auto 0;
-      padding: 0 20px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 24px 0;
     }
 
-    /* KPI Summary Cards */
+    /* Period Tabs */
+    .period-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+    .period-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .period-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .hero-banner {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .hero-sub {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* KPI Grid */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 14px;
-      margin-bottom: 28px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
     }
     .kpi-card {
       background: #ffffff;
@@ -138,27 +213,37 @@
       padding: 18px 20px;
     }
     .kpi-label {
-      font-size: 11.5px;
+      font-size: 12px;
       font-weight: 700;
-      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      color: var(--text-muted);
       margin-bottom: 6px;
     }
     .kpi-value {
-      font-size: 26px;
-      font-weight: 800;
-      color: #0f172a;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
       line-height: 1.1;
+      margin-bottom: 4px;
     }
     .kpi-sub {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-top: 5px;
-      font-weight: 500;
     }
+    .kpi-change {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-top: 4px;
+    }
+    .kpi-change.up { background: #dcfce7; color: #15803d; }
+    .kpi-change.down { background: #fee2e2; color: #b91c1c; }
 
-    /* Table Container */
+    /* Cards */
     .card {
       background: #ffffff;
       border: 1px solid var(--border);
@@ -176,12 +261,12 @@
     }
     .card-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 700;
       color: #0f172a;
     }
     .card-count {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       background: #f1f5f9;
       color: var(--text-muted);
@@ -189,7 +274,7 @@
       border-radius: 6px;
     }
 
-    /* Table Styling */
+    /* Table */
     .table-wrap {
       overflow-x: auto;
       border: 1px solid var(--border);
@@ -220,34 +305,15 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #fbfcfe; }
 
-    .post-caption-cell {
-      max-width: 320px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #1e293b;
-      font-weight: 500;
-    }
-    .post-link {
-      color: #0284c7;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 12px;
-    }
-    .post-link:hover { text-decoration: underline; }
-
-    /* Pills */
     .type-pill {
       display: inline-block;
       padding: 2px 7px;
       border-radius: 4px;
       font-size: 11px;
       font-weight: 700;
-      text-transform: capitalize;
     }
     .type-carousel { background: #eff6ff; color: #1d4ed8; }
     .type-reel { background: #fef3c7; color: #b45309; }
-    .type-image { background: #f3e8ff; color: #7e22ce; }
 
     .eng-pill {
       display: inline-block;
@@ -257,190 +323,172 @@
       font-size: 11.5px;
     }
     .eng-high { background: var(--success-soft); color: var(--success); }
-    .eng-med { background: var(--primary-soft); color: var(--primary); }
+    .eng-med { background: #eff6ff; color: #2563eb; }
     .eng-low { background: #f1f5f9; color: var(--text-muted); }
 
-    /* Format Summary Table */
-    .summary-grid {
+    /* Grid for recommendations & findings */
+    .insights-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 16px;
-      margin-top: 14px;
     }
-    .summary-box {
+    .insight-item {
       background: #f8fafc;
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 18px;
+      padding: 16px 18px;
     }
-    .summary-title {
+    .insight-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .insight-title {
       font-size: 14px;
       font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
+      color: var(--text);
+      margin-bottom: 6px;
     }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
+    .insight-desc {
       font-size: 12.5px;
-      padding: 5px 0;
-      border-bottom: 1px dashed var(--border);
+      color: var(--text-muted);
+      line-height: 1.5;
     }
-    .stat-row:last-child { border-bottom: none; }
-    .stat-label { color: var(--text-muted); }
-    .stat-val { font-weight: 700; color: #0f172a; }
   </style>
 </head>
 <body>
 
-<div class="top-nav">
-  <div>
-    <span class="brand-title">The Finance Woman</span>
-    <span class="brand-tag">Instagram Performance Report</span>
-  </div>
-  <div class="nav-actions">
-    <a href="/approval.html" class="btn btn-secondary">Content Approval Portal ↗</a>
-    <button class="btn" onclick="window.print()">Print / Export PDF</button>
+<!-- PASSWORD GATE -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">The Finance Woman</div>
+    <div class="gate-sub">Enter passcode to view private performance analytics</div>
+    <input type="password" id="gate-pass" class="gate-input" placeholder="PASSCODE" autofocus onkeydown="if(event.key==='Enter') checkGate()">
+    <button class="gate-btn" onclick="checkGate()">Access Report</button>
+    <div id="gate-error" class="gate-err">Incorrect passcode. Please try again.</div>
   </div>
 </div>
 
-<div class="hero">
-  <div class="hero-badge">Meta Business Suite Lifetime Export</div>
-  <h1 class="hero-title">Instagram Post Performance & Analytics</h1>
-  <p class="hero-subtitle">Chronological ledger of all 33 published posts from November 2025 to October 2026 with verified reach, engagement rates, interactions, and follow conversions.</p>
+<div class="top-nav">
+  <div style="display: flex; align-items: center;">
+    <span class="brand-title">The Finance Woman</span>
+    <span class="brand-tag">Monthly Analytics</span>
+  </div>
+  <div class="nav-actions">
+    <a href="/portal" class="nav-link">← Return to Portal</a>
+  </div>
 </div>
 
 <div class="container">
 
-  <!-- KPI SUMMARY CARDS -->
+  <!-- PERIOD SELECTOR -->
+  <div class="period-bar">
+    <button class="period-btn active" onclick="switchReportPeriod('latest', this)">27 Sep - 26 Oct 2026 (Latest 30 Days)</button>
+    <button class="period-btn" onclick="switchReportPeriod('historical', this)">Previous 11 Months Benchmark</button>
+  </div>
+
+  <!-- HERO BANNER -->
+  <div class="hero-banner">
+    <div class="hero-title">Instagram Performance Report: 27 Sep - 26 Oct 2026</div>
+    <div class="hero-sub">
+      Account: <strong>@thefinancewoman.co.uk</strong> | Verified Meta Business Suite lifetime metrics (30 Days).<br>
+      <strong>Core Insight:</strong> Overall engagement quality surged significantly: <strong>Saves per 1,000 reach grew +725%</strong>, and <strong>Follows per 1,000 reach grew +13.1%</strong>. Carousels led across all quality and saving metrics.
+    </div>
+  </div>
+
+  <!-- KPI SUMMARY -->
   <div class="kpi-grid">
     <div class="kpi-card">
-      <div class="kpi-label">Total Posts</div>
-      <div class="kpi-value">33</div>
-      <div class="kpi-sub">17 Reels • 12 Carousels • 4 Images</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Cumulative Reach</div>
-      <div class="kpi-value">25,139</div>
-      <div class="kpi-sub">Sum of per-post reach</div>
+      <div class="kpi-label">Total Reach</div>
+      <div class="kpi-value">4,338</div>
+      <div class="kpi-sub">Avg 542 per post</div>
+      <span class="kpi-change down">-34.8% vs benchmark</span>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Total Views</div>
-      <div class="kpi-value">58,607</div>
-      <div class="kpi-sub">Feed impressions & video plays</div>
+      <div class="kpi-value">8,262</div>
+      <div class="kpi-sub">1.90 views per reached account</div>
+      <span class="kpi-change down">-21.5% replay rate</span>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Total Interactions</div>
-      <div class="kpi-value">2,103</div>
-      <div class="kpi-sub">1,603 Likes • 331 Comments</div>
+      <div class="kpi-label">Saves Per 1k Reach</div>
+      <div class="kpi-value">5.53</div>
+      <div class="kpi-sub">24 total saves in period</div>
+      <span class="kpi-change up">+725% increase</span>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Average Eng. Rate</div>
-      <div class="kpi-value">8.4%</div>
-      <div class="kpi-sub">Interactions / Reach ratio</div>
+      <div class="kpi-label">Engagement Rate</div>
+      <div class="kpi-value">6.98%</div>
+      <div class="kpi-sub">303 total interactions</div>
+      <span class="kpi-change down">-1.67 pts</span>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Followers Gained</div>
-      <div class="kpi-value">+47</div>
-      <div class="kpi-sub">Direct post follow conversions</div>
+      <div class="kpi-value">+9</div>
+      <div class="kpi-sub">2.07 follows per 1k reach</div>
+      <span class="kpi-change up">+13.1% follow rate</span>
     </div>
   </div>
 
   <!-- FORMAT COMPARISON -->
   <div class="card">
     <div class="card-header">
-      <h2 class="card-title">Performance Summary by Format</h2>
-      <span class="card-count">3 Formats Audited</span>
+      <h2 class="card-title">Performance by Format (Carousels vs. Reels)</h2>
+      <span class="card-count">8 Posts Published</span>
     </div>
-
-    <div class="summary-grid">
-      <div class="summary-box">
-        <div class="summary-title">
-          <span>Carousels (12 posts)</span>
-          <span style="color: var(--success);">11.33% Eng</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Reach / Views</span>
-          <span class="stat-val">8,516 / 27,680</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Interactions</span>
-          <span class="stat-val">965 (705 likes, 182 comments)</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Saves</span>
-          <span class="stat-val">26 of 38 total account saves</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Followers Gained</span>
-          <span class="stat-val">+8 follows</span>
-        </div>
-      </div>
-
-      <div class="summary-box">
-        <div class="summary-title">
-          <span>Reels (17 posts)</span>
-          <span style="color: #0284c7;">5.76% Eng</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Reach / Views</span>
-          <span class="stat-val">13,084 / 21,566</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Interactions</span>
-          <span class="stat-val">754 (610 likes, 68 comments)</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Followers Gained</span>
-          <span class="stat-val" style="color: var(--success); font-weight: 800;">+27 follows (57% of growth)</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Shares</span>
-          <span class="stat-val">65 shares (top viral format)</span>
-        </div>
-      </div>
-
-      <div class="summary-box">
-        <div class="summary-title">
-          <span>Single Images (4 posts)</span>
-          <span style="color: var(--success);">10.85% Eng</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Reach / Views</span>
-          <span class="stat-val">3,539 / 9,361</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Total Interactions</span>
-          <span class="stat-val">384 (288 likes, 81 comments)</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Followers Gained</span>
-          <span class="stat-val">+12 follows (3.0 per post)</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Primary Driver</span>
-          <span class="stat-val">Award & personal milestones</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ALL 33 POSTS LEDGER WITH DATES -->
-  <div class="card">
-    <div class="card-header">
-      <h2 class="card-title">All Published Posts (Chronological Ledger)</h2>
-      <span class="card-count">33 Posts Recorded</span>
-    </div>
-
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Publish Date</th>
+            <th>Format</th>
+            <th style="text-align: right;">Posts</th>
+            <th style="text-align: right;">Avg Reach</th>
+            <th style="text-align: right;">Eng Rate</th>
+            <th style="text-align: right;">Saves / 1k</th>
+            <th style="text-align: right;">Shares / 1k</th>
+            <th style="text-align: right;">Follows / 1k</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="type-pill type-carousel">Carousel</span></td>
+            <td style="text-align: right; font-weight: 600;">2</td>
+            <td style="text-align: right; font-weight: 700;">622</td>
+            <td style="text-align: right;"><span class="eng-pill eng-high">9.25%</span></td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">12.87</td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">10.46</td>
+            <td style="text-align: right;">1.61</td>
+          </tr>
+          <tr>
+            <td><span class="type-pill type-reel">Reel</span></td>
+            <td style="text-align: right; font-weight: 600;">6</td>
+            <td style="text-align: right;">516</td>
+            <td style="text-align: right;"><span class="eng-pill eng-med">6.07%</span></td>
+            <td style="text-align: right;">2.58</td>
+            <td style="text-align: right;">3.55</td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">2.26</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- POST BY POST LEDGER -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Post by Post Breakdown (27 Sep - 26 Oct 2026)</h2>
+      <span class="card-count">Chronological Meta Export</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
             <th>Type</th>
-            <th>Post Caption & Topic</th>
+            <th>Post Title</th>
             <th style="text-align: right;">Reach</th>
             <th style="text-align: right;">Views</th>
             <th style="text-align: right;">Likes</th>
@@ -448,545 +496,173 @@
             <th style="text-align: right;">Shares</th>
             <th style="text-align: right;">Saves</th>
             <th style="text-align: right;">Follows</th>
-            <th style="text-align: right;">Eng. Rate</th>
-            <th style="text-align: center;">Link</th>
+            <th style="text-align: right;">Eng Rate</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">26 Oct 2026</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">4 Oct 2026</td>
             <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">Does your dog have more insurance than you?  I recently had a chat with a lady who told me...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">335</td>
-            <td style="text-align: right; color: #64748b;">495</td>
-            <td style="text-align: right;">8</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.3%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/De86RXjzgXA/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">21 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">Your payslip says £99,000. HMRC may see more.  For the £100,000 rule, HMRC does not just l...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">599</td>
-            <td style="text-align: right; color: #64748b;">1,124</td>
-            <td style="text-align: right;">29</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">5.5%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DeyY4UEzfa4/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">20 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">Self-employed finances should feel calm, clear and human.   Too often they're made way too...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">401</td>
-            <td style="text-align: right; color: #64748b;">612</td>
-            <td style="text-align: right;">13</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.5%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DevwjtGBwTm/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">18 Oct 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">Billions of pounds are sitting in pensions people have lost track of. Money you paid into....</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">515</td>
-            <td style="text-align: right; color: #64748b;">1,266</td>
-            <td style="text-align: right;">37</td>
-            <td style="text-align: right;">7</td>
-            <td style="text-align: right;">5</td>
-            <td style="text-align: right;">9</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">11.3%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DeqmdHnCEHn/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">14 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">Four things I'd want every woman in business to protect before she needs them:  1. Your in...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">530</td>
-            <td style="text-align: right; color: #64748b;">766</td>
-            <td style="text-align: right;">25</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">5.5%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DegNjiNBJ8z/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">13 Oct 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">Self-employed and expecting? There's no Statutory Maternity Pay, but there is Maternity Al...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">728</td>
-            <td style="text-align: right; color: #64748b;">1,868</td>
-            <td style="text-align: right;">38</td>
+            <td style="font-weight: 600;">Busy business, full diary, good money</td>
+            <td style="text-align: right; font-weight: 600;">587</td>
+            <td style="text-align: right; color: #64748b;">1,108</td>
+            <td style="text-align: right;">52</td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">17</td>
             <td style="text-align: right;">4</td>
-            <td style="text-align: right;">8</td>
-            <td style="text-align: right;">7</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">7.8%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DedouhJIMWi/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">+6</td>
+            <td style="text-align: right;"><span class="eng-pill eng-high">12.6%</span></td>
           </tr>
           <tr>
             <td style="white-space: nowrap; font-weight: 600; color: #475569;">11 Oct 2026</td>
             <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">3 things every woman in business should do this October 🍂  1. Set money aside for the next...</div>
-            </td>
+            <td style="font-weight: 600;">3 things every woman in business should do this October</td>
             <td style="text-align: right; font-weight: 600;">643</td>
             <td style="text-align: right; color: #64748b;">1,023</td>
             <td style="text-align: right;">23</td>
             <td style="text-align: right;">0</td>
             <td style="text-align: right;">1</td>
             <td style="text-align: right;">3</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
+            <td style="text-align: right;">0</td>
             <td style="text-align: right;"><span class="eng-pill eng-low">4.2%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DeYnMoKB2JL/" target="_blank" class="post-link">View ↗</a></td>
           </tr>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">04 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">Busy business. Full diary. Good money. But what is it actually building for YOU?  Still on...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">587</td>
-            <td style="text-align: right; color: #64748b;">1,108</td>
-            <td style="text-align: right;">52</td>
-            <td style="text-align: right;">17</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+6</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">12.6%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DeEPwJkoCZp/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">21 Sep 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">✨ YOUR BUSINESS SHOULDN’T JUST PAY THE BILLS. IT SHOULD HELP BUILD YOUR FUTURE.   It’s so...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">583</td>
-            <td style="text-align: right; color: #64748b;">947</td>
-            <td style="text-align: right;">34</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+2</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.7%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DdjwVjtNmCk/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">17 Sep 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">I think this might be one of my proudest career moments and it wasn’t even my award 🥹  Meg...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">1,211</td>
-            <td style="text-align: right; color: #64748b;">1,761</td>
-            <td style="text-align: right;">29</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">2.6%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DdZs-UuIIwq/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">20 Jul 2026</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">13 Oct 2026</td>
             <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">The biggest green flag in business… looking forward to seeing the people you work with 🤍...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">517</td>
-            <td style="text-align: right; color: #64748b;">1,630</td>
-            <td style="text-align: right;">57</td>
-            <td style="text-align: right;">6</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">12.2%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DbA5q0CiNqE/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">16 Jul 2026</td>
-            <td><span class="type-pill type-image">Image</span></td>
-            <td>
-              <div class="post-caption-cell">I can’t believe I’m writing this…  The past week has been a WHIRLWIND.  ✨ Winning Legal &...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">876</td>
-            <td style="text-align: right; color: #64748b;">1,915</td>
-            <td style="text-align: right;">46</td>
-            <td style="text-align: right;">8</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.4%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/Da2m0k2IYu9/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">14 Jul 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">I’ve never shared my story this openly before 🤍  If you’ve only found me through Instagram...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">764</td>
-            <td style="text-align: right; color: #64748b;">1,284</td>
-            <td style="text-align: right;">43</td>
-            <td style="text-align: right;">11</td>
-            <td style="text-align: right;">17</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+3</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">9.3%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/Daxuc6rI8p_/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">06 Jul 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">A Finance Woman catch up is officially due 🤍  What we’ve been up to, what’s changed and th...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">912</td>
-            <td style="text-align: right; color: #64748b;">1,485</td>
-            <td style="text-align: right;">54</td>
-            <td style="text-align: right;">10</td>
+            <td style="font-weight: 600;">Self-employed and expecting? (Maternity Allowance)</td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">728</td>
+            <td style="text-align: right; color: #64748b; font-weight: 700;">1,868</td>
+            <td style="text-align: right;">38</td>
             <td style="text-align: right;">4</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">7.5%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/Dacl0WPI--X/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">08 Jun 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">RED FLAG!! Could you tell me, right now, exactly how much is in your pension?  If you can’...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">601</td>
-            <td style="text-align: right; color: #64748b;">1,401</td>
-            <td style="text-align: right;">27</td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">8</td>
             <td style="text-align: right;">7</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.3%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DZVDJEECOCO/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right;">+1</td>
+            <td style="text-align: right;"><span class="eng-pill eng-med">7.8%</span></td>
           </tr>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">03 Jun 2026</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">14 Oct 2026</td>
             <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">I built something I wish existed when I started out…  So many people want to know where th...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">1,063</td>
-            <td style="text-align: right; color: #64748b;">1,761</td>
-            <td style="text-align: right;">56</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right;">11</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+2</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.8%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DZIip9Co8le/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">26 May 2026</td>
-            <td><span class="type-pill type-image">Image</span></td>
-            <td>
-              <div class="post-caption-cell">I’ve been sitting on this for a few days because I needed to process it!!  I’ve been nomin...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">823</td>
-            <td style="text-align: right; color: #64748b;">1,948</td>
-            <td style="text-align: right;">78</td>
-            <td style="text-align: right;">30</td>
-            <td style="text-align: right;">7</td>
+            <td style="font-weight: 600;">Four things to protect before you need them</td>
+            <td style="text-align: right; font-weight: 600;">530</td>
+            <td style="text-align: right; color: #64748b;">766</td>
+            <td style="text-align: right;">25</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">14.0%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DYzJCX6IcK6/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">13 May 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">So… this happened?!  I’ve been asked to judge the Money Marketing Awards 2026.  At 18, I q...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">723</td>
-            <td style="text-align: right; color: #64748b;">2,128</td>
-            <td style="text-align: right;">71</td>
-            <td style="text-align: right;">34</td>
-            <td style="text-align: right;">9</td>
+            <td style="text-align: right;">2</td>
+            <td style="text-align: right;">2</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+2</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">15.8%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DYScSFRCNYR/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right;"><span class="eng-pill eng-med">5.5%</span></td>
           </tr>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">29 Apr 2026</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">18 Oct 2026</td>
             <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">These are the 5 questions I ask every single client in our first conversation. 📋  Not beca...</div>
-            </td>
+            <td style="font-weight: 600;">Billions sitting in lost pensions</td>
             <td style="text-align: right; font-weight: 600;">515</td>
-            <td style="text-align: right; color: #64748b;">1,357</td>
-            <td style="text-align: right;">31</td>
-            <td style="text-align: right;">3</td>
+            <td style="text-align: right; color: #64748b;">1,266</td>
+            <td style="text-align: right;">37</td>
+            <td style="text-align: right;">7</td>
             <td style="text-align: right;">5</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">8.3%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DXtOELwiJjT/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right; font-weight: 700; color: #15803d;">9</td>
+            <td style="text-align: right;">+1</td>
+            <td style="text-align: right;"><span class="eng-pill eng-high">11.3%</span></td>
           </tr>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">23 Apr 2026</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">20 Oct 2026</td>
             <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">"I could literally just pick up the phone and speak to Ahmed, the CEO. Where else can you...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">860</td>
-            <td style="text-align: right; color: #64748b;">1,388</td>
-            <td style="text-align: right;">51</td>
+            <td style="font-weight: 600;">Self-employed finances should feel calm, clear and human</td>
+            <td style="text-align: right; font-weight: 600;">401</td>
+            <td style="text-align: right; color: #64748b;">612</td>
+            <td style="text-align: right;">13</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right;">4</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.4%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DXdzrk3gFWD/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right;">1</td>
+            <td style="text-align: right;">0</td>
+            <td style="text-align: right;"><span class="eng-pill eng-low">3.5%</span></td>
           </tr>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">13 Apr 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">Is it too early on a Monday to be making decisions?  Mortgage vs pension? 🏠 Life insurance...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">535</td>
-            <td style="text-align: right; color: #64748b;">1,396</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">21 Oct 2026</td>
+            <td><span class="type-pill type-reel">Reel</span></td>
+            <td style="font-weight: 600;">Your payslip says £99,000. HMRC may see more</td>
+            <td style="text-align: right; font-weight: 600;">599</td>
+            <td style="text-align: right; color: #64748b;">1,124</td>
             <td style="text-align: right;">29</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">6</td>
             <td style="text-align: right;">2</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.9%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DXEYuGwCDw7/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">11 Apr 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">You do not need to have it all figured out to start.  I speak to so many people who think...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">649</td>
-            <td style="text-align: right; color: #64748b;">1,054</td>
-            <td style="text-align: right;">32</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">5.7%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DW__LCkCAkQ/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">07 Apr 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">What actually happens in our Holistic Finance Call? (It’s not what you think.) 📞   No jarg...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">391</td>
-            <td style="text-align: right; color: #64748b;">934</td>
-            <td style="text-align: right;">17</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">4.9%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DW08AU7COSq/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">08 Mar 2026</td>
-            <td><span class="type-pill type-image">Image</span></td>
-            <td>
-              <div class="post-caption-cell">This International Women’s Day I’ve been invited onto the radio!! 🎙️  I’m joining Sharon G...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">576</td>
-            <td style="text-align: right; color: #64748b;">1,235</td>
-            <td style="text-align: right;">45</td>
-            <td style="text-align: right;">10</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">10.2%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DVnvngviE-w/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">05 Mar 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">This International Women’s Day, we’re sharing a powerful conversation with Romany Youell -...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">754</td>
-            <td style="text-align: right; color: #64748b;">1,291</td>
-            <td style="text-align: right;">34</td>
-            <td style="text-align: right;">6</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">5.8%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DVgSqx_COTS/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">04 Mar 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">We have a special someone joining us at crufts tomorrow…   The amazing Romany, who is a fi...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">451</td>
-            <td style="text-align: right; color: #64748b;">840</td>
-            <td style="text-align: right;">19</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+2</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">4.9%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DVdYwqYCI_z/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">24 Feb 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">HMUA’s, you’ve probably had thoughts like this at some point or another:  “Wedding season...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">713</td>
-            <td style="text-align: right; color: #64748b;">2,278</td>
-            <td style="text-align: right;">36</td>
-            <td style="text-align: right;">5</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">5.9%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DVJmNVJiF0P/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">04 Feb 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">📣📢 Get ready! The incredible Romany Youell  -  @thefinancewoman.co.uk  -  is returning again t...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">635</td>
-            <td style="text-align: right; color: #64748b;">1,259</td>
-            <td style="text-align: right;">46</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+3</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">8.0%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DUVemSzjAHx/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">05 Dec 2025</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>
-              <div class="post-caption-cell">When the finance industry tells me I can’t be too friendly with my clients… The Finance Wo...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">2,107</td>
-            <td style="text-align: right; color: #64748b;">3,368</td>
-            <td style="text-align: right;">62</td>
-            <td style="text-align: right;">10</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+5</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.6%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/reel/DR5WbFtiFLw/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">16 Nov 2025</td>
-            <td><span class="type-pill type-image">Image</span></td>
-            <td>
-              <div class="post-caption-cell">This is the part no one sees:   Last year I struggled to introduce myself in a group of si...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">1,264</td>
-            <td style="text-align: right; color: #64748b;">4,263</td>
-            <td style="text-align: right;">119</td>
-            <td style="text-align: right;">33</td>
             <td style="text-align: right;">2</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+10</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">12.2%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DRHJT4KiMXI/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right;">+1</td>
+            <td style="text-align: right;"><span class="eng-pill eng-med">5.5%</span></td>
           </tr>
           <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">13 Nov 2025</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">🏆 Rising Star of the Year 2025 🏆  16 year old me who dropped out of college wouldn’t belie...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">1,091</td>
-            <td style="text-align: right; color: #64748b;">4,491</td>
-            <td style="text-align: right;">176</td>
-            <td style="text-align: right;">55</td>
+            <td style="white-space: nowrap; font-weight: 600; color: #475569;">26 Oct 2026</td>
+            <td><span class="type-pill type-reel">Reel</span></td>
+            <td style="font-weight: 600;">Does your dog have more insurance than you?</td>
+            <td style="text-align: right; font-weight: 600;">335</td>
+            <td style="text-align: right; color: #64748b;">495</td>
             <td style="text-align: right;">8</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #64748b;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">21.9%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DQ_nDxECJ1w/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">07 Nov 2025</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">If a 15 year old girl can see herself becoming a financial adviser - we’re finally changin...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">1,177</td>
-            <td style="text-align: right; color: #64748b;">4,611</td>
-            <td style="text-align: right;">93</td>
-            <td style="text-align: right;">19</td>
-            <td style="text-align: right;">3</td>
+            <td style="text-align: right;">2</td>
             <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+3</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">9.9%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DQwnlwQCNXb/" target="_blank" class="post-link">View ↗</a></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">05 Nov 2025</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td>
-              <div class="post-caption-cell">So excited to share that I’ve been named one of Financial Reporter’s 30 Under 30!! 🥳  At 1...</div>
-            </td>
-            <td style="text-align: right; font-weight: 600;">1,010</td>
-            <td style="text-align: right; color: #64748b;">4,320</td>
-            <td style="text-align: right;">93</td>
-            <td style="text-align: right;">42</td>
-            <td style="text-align: right;">4</td>
             <td style="text-align: right;">0</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">13.8%</span></td>
-            <td style="text-align: center;"><a href="https://www.instagram.com/p/DQrzLyaiDjk/" target="_blank" class="post-link">View ↗</a></td>
+            <td style="text-align: right;"><span class="eng-pill eng-low">3.3%</span></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
+  <!-- KEY FINDINGS & STRATEGY -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Key Findings &amp; Next Month Strategic Recommendations</h2>
+      <span class="card-count">Actionable Takeaways</span>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-item">
+        <div class="insight-num">Action #1 - Format Focus</div>
+        <div class="insight-title">Double down on practical carousels (2x/week)</div>
+        <div class="insight-desc">Carousels achieved 9.25% engagement and 12.87 saves per 1,000 reach (5x higher than reels). Target saves per 1k reach above 6.0.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">Action #2 - Direct to Camera</div>
+        <div class="insight-title">Keep reels focused on Romany speaking to camera</div>
+        <div class="insight-desc">Face-led reel ("Busy business") achieved 12.6% engagement and 6 follows. Text/B-roll reels averaged 3.3% - 5.5%. Target reel engagement >8%.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">Action #3 - Comment Generation</div>
+        <div class="insight-title">End every caption with one specific prompt</div>
+        <div class="insight-desc">80% of all comments came from the 2 posts asking a personal question. Target 40+ comments next month.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-num">Action #4 - Storytelling</div>
+        <div class="insight-title">Introduce 1 milestone or client story every 2 weeks</div>
+        <div class="insight-desc">Personal journey posts generated 1,000 - 1,200 reach in the previous period. Target average reach back above 650.</div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<script>
+  function checkGate() {
+    const pass = document.getElementById('gate-pass').value.trim();
+    if (pass === 'FINANCE2026' || pass === 'tfw2026' || pass === 'needingadvice') {
+      sessionStorage.setItem('tfw_report_auth', 'true');
+      document.getElementById('gate').style.display = 'none';
+    } else {
+      document.getElementById('gate-error').style.display = 'block';
+    }
+  }
+
+  // Check on load
+  if (sessionStorage.getItem('tfw_report_auth') === 'true') {
+    document.getElementById('gate').style.display = 'none';
+  }
+
+  function switchReportPeriod(period, btn) {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    // Future expansion for period switching
+  }
+</script>
 
 </body>
 </html>
