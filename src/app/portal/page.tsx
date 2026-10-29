@@ -868,7 +868,7 @@ export default function UnifiedInfluencerPortal() {
           </button>
 
           <a
-            href="/report.html"
+            href="/report"
             target="_blank"
             rel="noopener noreferrer"
             className="pb-3.5 text-sm font-bold tracking-wide border-b-2 border-transparent text-[#ad9b58] hover:text-[#4c1315] transition flex items-center gap-1.5 font-serif-display whitespace-nowrap ml-auto cursor-pointer"
@@ -1486,7 +1486,7 @@ export default function UnifiedInfluencerPortal() {
                 </p>
               </div>
               <a
-                href="/report.html"
+                href="/report"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-[#ad9b58] hover:bg-[#c2ae63] text-[#4c1315] font-bold px-6 py-3.5 rounded-2xl text-sm font-body shadow transition flex items-center gap-2 whitespace-nowrap cursor-pointer shrink-0"
