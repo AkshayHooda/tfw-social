@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Finance Woman - Instagram Performance Report</title>
+  <title>The Finance Woman - Instagram Performance &amp; Strategy Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
@@ -21,7 +21,8 @@
       --success-soft: #dcfce7;
       --primary: #4c1315;
       --primary-soft: #fbf7f4;
-      --accent-gold: #ad9b58;
+      --gold: #ad9b58;
+      --gold-soft: #fdfaf3;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -33,7 +34,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Password gate */
+    /* GATE */
     #gate {
       position: fixed;
       inset: 0;
@@ -46,17 +47,17 @@
     }
     .gate-box {
       width: 100%;
-      max-width: 400px;
-      padding: 36px 32px;
+      max-width: 420px;
+      padding: 38px 34px;
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06);
+      border-radius: 24px;
+      box-shadow: 0 12px 30px -6px rgba(0,0,0,0.06);
       text-align: center;
     }
     .gate-logo {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 6px;
@@ -68,28 +69,26 @@
     }
     .gate-input {
       width: 100%;
-      padding: 12px 14px;
+      padding: 13px 16px;
       font-size: 15px;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       margin-bottom: 14px;
       text-align: center;
-      letter-spacing: 2px;
-      font-weight: 600;
+      letter-spacing: 2.5px;
+      font-weight: 700;
       outline: none;
     }
-    .gate-input:focus {
-      border-color: var(--primary);
-    }
+    .gate-input:focus { border-color: var(--primary); }
     .gate-btn {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       background: var(--primary);
       color: #ffffff;
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transition: opacity 0.15s;
     }
@@ -97,15 +96,16 @@
     .gate-err {
       color: #dc2626;
       font-size: 12.5px;
-      margin-top: 10px;
+      margin-top: 12px;
       font-weight: 600;
       display: none;
     }
 
+    /* TOP NAVIGATION */
     .top-nav {
       background: #ffffff;
       border-bottom: 1px solid var(--border);
-      padding: 16px 28px;
+      padding: 16px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -120,52 +120,68 @@
       color: var(--primary);
     }
     .brand-tag {
-      font-size: 11.5px;
-      font-weight: 600;
-      background: #f1f5f9;
-      color: var(--text-muted);
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin-left: 8px;
-    }
-    .nav-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--gold-soft);
+      color: var(--primary);
+      border: 1px solid rgba(173,155,88,0.25);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-left: 10px;
     }
     .nav-link {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--primary);
       text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 8px 14px;
+      border-radius: 10px;
       background: var(--primary-soft);
       border: 1px solid rgba(76,19,21,0.15);
       transition: all 0.15s;
     }
-    .nav-link:hover {
-      background: rgba(76,19,21,0.1);
-    }
+    .nav-link:hover { background: rgba(76,19,21,0.1); }
 
     .container {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 28px 24px 0;
     }
 
-    /* Period Tabs */
-    .period-bar {
-      display: flex;
-      gap: 10px;
+    /* DATE & TIMEFRAME FILTER BAR (PRECISE SELECTION) */
+    .filter-panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 22px;
       margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
-    .period-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
+    .filter-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .filter-label {
       font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .preset-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chip-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
       font-weight: 700;
       border: 1px solid var(--border);
       background: #ffffff;
@@ -173,44 +189,38 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .period-btn.active {
+    .chip-btn.active {
       background: var(--primary);
       color: #ffffff;
       border-color: var(--primary);
     }
-
-    .hero-banner {
-      background: #ffffff;
+    .custom-range {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .date-input {
+      padding: 6px 10px;
+      font-size: 12.5px;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-    }
-    .hero-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 24px;
-      font-weight: 700;
+      border-radius: 8px;
+      outline: none;
       color: var(--text);
-      margin-bottom: 6px;
-    }
-    .hero-sub {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.5;
+      font-family: inherit;
     }
 
-    /* KPI Grid */
+    /* KPI METRIC CARDS */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
     .kpi-card {
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
+      border-radius: 14px;
+      padding: 20px 22px;
     }
     .kpi-label {
       font-size: 12px;
@@ -222,34 +232,24 @@
     }
     .kpi-value {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 700;
       color: var(--primary);
       line-height: 1.1;
       margin-bottom: 4px;
     }
     .kpi-sub {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-muted);
     }
-    .kpi-change {
-      display: inline-block;
-      font-weight: 700;
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-top: 4px;
-    }
-    .kpi-change.up { background: #dcfce7; color: #15803d; }
-    .kpi-change.down { background: #fee2e2; color: #b91c1c; }
 
-    /* Cards */
+    /* SECTION CARD */
     .card {
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
-      margin-bottom: 24px;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 26px;
     }
     .card-header {
       display: flex;
@@ -261,24 +261,112 @@
     }
     .card-title {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 700;
-      color: #0f172a;
+      color: var(--primary);
     }
-    .card-count {
-      font-size: 11.5px;
+    .card-badge {
+      font-size: 12px;
       font-weight: 700;
-      background: #f1f5f9;
-      color: var(--text-muted);
+      background: var(--gold-soft);
+      color: var(--primary);
+      border: 1px solid rgba(173,155,88,0.25);
       padding: 4px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
     }
 
-    /* Table */
+    /* RECOMMENDATIONS GRID */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px;
+      margin-top: 6px;
+    }
+    .rec-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .rec-card:hover {
+      box-shadow: 0 8px 20px -4px rgba(76,19,21,0.08);
+      border-color: var(--gold);
+    }
+    .rec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    .rec-type {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .rec-type-carousel { background: #eff6ff; color: #1d4ed8; }
+    .rec-type-reel { background: #fef3c7; color: #b45309; }
+    .rec-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+    .rec-why {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--success);
+      margin-bottom: 8px;
+      background: var(--success-soft);
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .rec-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .rec-btn {
+      width: 100%;
+      padding: 9px 12px;
+      background: var(--primary-soft);
+      border: 1px solid rgba(76,19,21,0.2);
+      border-radius: 8px;
+      color: var(--primary);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .rec-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .rec-btn.added {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(21,128,61,0.3);
+      cursor: default;
+    }
+
+    /* LEDGER TABLE */
     .table-wrap {
       overflow-x: auto;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
     }
     table {
       width: 100%;
@@ -293,27 +381,33 @@
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 11px 12px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
     td {
-      padding: 12px;
+      padding: 12px 14px;
       border-bottom: 1px solid var(--border-subtle);
       color: var(--text);
     }
     tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #fbfcfe; }
+    tr:hover td { background: #fdfaf8; }
 
-    .type-pill {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
+    .post-caption-cell {
+      max-width: 340px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+      color: #1e293b;
     }
-    .type-carousel { background: #eff6ff; color: #1d4ed8; }
-    .type-reel { background: #fef3c7; color: #b45309; }
+    .post-link {
+      color: #0284c7;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 12px;
+    }
+    .post-link:hover { text-decoration: underline; }
 
     .eng-pill {
       display: inline-block;
@@ -325,43 +419,11 @@
     .eng-high { background: var(--success-soft); color: var(--success); }
     .eng-med { background: #eff6ff; color: #2563eb; }
     .eng-low { background: #f1f5f9; color: var(--text-muted); }
-
-    /* Grid for recommendations & findings */
-    .insights-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 16px;
-    }
-    .insight-item {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-    }
-    .insight-num {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-    .insight-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-    .insight-desc {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
   </style>
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
+<!-- GATE -->
 <div id="gate">
   <div class="gate-box">
     <div class="gate-logo">The Finance Woman</div>
@@ -372,123 +434,100 @@
   </div>
 </div>
 
+<!-- NAV -->
 <div class="top-nav">
   <div style="display: flex; align-items: center;">
     <span class="brand-title">The Finance Woman</span>
-    <span class="brand-tag">Monthly Analytics</span>
+    <span class="brand-tag">Monthly Analytics &amp; Recommendations</span>
   </div>
-  <div class="nav-actions">
-    <a href="/portal" class="nav-link">← Return to Portal</a>
-  </div>
+  <a href="/portal" class="nav-link">← Return to Portal</a>
 </div>
 
 <div class="container">
 
-  <!-- PERIOD SELECTOR -->
-  <div class="period-bar">
-    <button class="period-btn active" onclick="switchReportPeriod('latest', this)">27 Sep - 26 Oct 2026 (Latest 30 Days)</button>
-    <button class="period-btn" onclick="switchReportPeriod('historical', this)">Previous 11 Months Benchmark</button>
-  </div>
-
-  <!-- HERO BANNER -->
-  <div class="hero-banner">
-    <div class="hero-title">Instagram Performance Report: 27 Sep - 26 Oct 2026</div>
-    <div class="hero-sub">
-      Account: <strong>@thefinancewoman.co.uk</strong> | Verified Meta Business Suite lifetime metrics (30 Days).<br>
-      <strong>Core Insight:</strong> Overall engagement quality surged significantly: <strong>Saves per 1,000 reach grew +725%</strong>, and <strong>Follows per 1,000 reach grew +13.1%</strong>. Carousels led across all quality and saving metrics.
+  <!-- TIMEFRAME FILTER BAR -->
+  <div class="filter-panel">
+    <div class="filter-title-group">
+      <span class="filter-label">Filter Timeframe:</span>
+      <div class="preset-chips">
+        <button class="chip-btn active" onclick="setPreset('latest', this)">Latest 30 Days (27 Sep - 26 Oct)</button>
+        <button class="chip-btn" onclick="setPreset('all', this)">All Time (Lifetime Export)</button>
+        <button class="chip-btn" onclick="setPreset('oct2026', this)">October 2026</button>
+      </div>
+    </div>
+    <div class="custom-range">
+      <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">Custom:</span>
+      <input type="date" id="date-from" class="date-input" onchange="applyCustomFilter()">
+      <span style="font-size: 12px; color: var(--text-muted);">to</span>
+      <input type="date" id="date-to" class="date-input" onchange="applyCustomFilter()">
     </div>
   </div>
 
   <!-- KPI SUMMARY -->
   <div class="kpi-grid">
     <div class="kpi-card">
-      <div class="kpi-label">Total Reach</div>
-      <div class="kpi-value">4,338</div>
-      <div class="kpi-sub">Avg 542 per post</div>
-      <span class="kpi-change down">-34.8% vs benchmark</span>
+      <div class="kpi-label">Selected Reach</div>
+      <div class="kpi-value" id="kpi-reach">4,338</div>
+      <div class="kpi-sub" id="kpi-reach-sub">Avg 542 per post</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Total Views</div>
-      <div class="kpi-value">8,262</div>
-      <div class="kpi-sub">1.90 views per reached account</div>
-      <span class="kpi-change down">-21.5% replay rate</span>
+      <div class="kpi-label">Selected Views</div>
+      <div class="kpi-value" id="kpi-views">8,262</div>
+      <div class="kpi-sub" id="kpi-views-sub">1.90 views per reached account</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Saves Per 1k Reach</div>
-      <div class="kpi-value">5.53</div>
-      <div class="kpi-sub">24 total saves in period</div>
-      <span class="kpi-change up">+725% increase</span>
+      <div class="kpi-label">Total Interactions</div>
+      <div class="kpi-value" id="kpi-interactions">303</div>
+      <div class="kpi-sub" id="kpi-interactions-sub">225 likes • 30 comments • 24 saves</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Engagement Rate</div>
-      <div class="kpi-value">6.98%</div>
-      <div class="kpi-sub">303 total interactions</div>
-      <span class="kpi-change down">-1.67 pts</span>
+      <div class="kpi-value" id="kpi-eng">6.98%</div>
+      <div class="kpi-sub">Interactions / Reach ratio</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Followers Gained</div>
-      <div class="kpi-value">+9</div>
-      <div class="kpi-sub">2.07 follows per 1k reach</div>
-      <span class="kpi-change up">+13.1% follow rate</span>
+      <div class="kpi-value" id="kpi-follows">+9</div>
+      <div class="kpi-sub">Direct post conversions</div>
     </div>
   </div>
 
-  <!-- FORMAT COMPARISON -->
+  <!-- STRATEGIC RECOMMENDATIONS (BEFORE LEDGER) -->
   <div class="card">
     <div class="card-header">
-      <h2 class="card-title">Performance by Format (Carousels vs. Reels)</h2>
-      <span class="card-count">8 Posts Published</span>
+      <div>
+        <h2 class="card-title">Recommended Content Strategy</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+          Data-backed post angles derived from your highest performing formats and audience saves. Click <strong>Add to Content Bank</strong> to automatically send any concept into your Portal Ideas backlog.
+        </p>
+      </div>
+      <span class="card-badge">6 Ready Concepts</span>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Format</th>
-            <th style="text-align: right;">Posts</th>
-            <th style="text-align: right;">Avg Reach</th>
-            <th style="text-align: right;">Eng Rate</th>
-            <th style="text-align: right;">Saves / 1k</th>
-            <th style="text-align: right;">Shares / 1k</th>
-            <th style="text-align: right;">Follows / 1k</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td style="text-align: right; font-weight: 600;">2</td>
-            <td style="text-align: right; font-weight: 700;">622</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">9.25%</span></td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">12.87</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">10.46</td>
-            <td style="text-align: right;">1.61</td>
-          </tr>
-          <tr>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="text-align: right; font-weight: 600;">6</td>
-            <td style="text-align: right;">516</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.07%</span></td>
-            <td style="text-align: right;">2.58</td>
-            <td style="text-align: right;">3.55</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">2.26</td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div class="rec-grid" id="recommendations-mount">
+      <!-- Recommendations dynamically rendered -->
     </div>
   </div>
 
-  <!-- POST BY POST LEDGER -->
+  <!-- CHRONOLOGICAL POST LEDGER -->
   <div class="card">
     <div class="card-header">
-      <h2 class="card-title">Post by Post Breakdown (27 Sep - 26 Oct 2026)</h2>
-      <span class="card-count">Chronological Meta Export</span>
+      <div>
+        <h2 class="card-title">Post Performance Ledger</h2>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">
+          Showing <span id="ledger-count" style="font-weight: 700; color: var(--text);">8</span> verified posts for the selected timeframe.
+        </p>
+      </div>
+      <span class="card-badge" id="ledger-badge">27 Sep - 26 Oct 2026</span>
     </div>
+
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th>Date</th>
-            <th>Type</th>
-            <th>Post Title</th>
+            <th>Format</th>
+            <th>Post Caption</th>
             <th style="text-align: right;">Reach</th>
             <th style="text-align: right;">Views</th>
             <th style="text-align: right;">Likes</th>
@@ -497,151 +536,487 @@
             <th style="text-align: right;">Saves</th>
             <th style="text-align: right;">Follows</th>
             <th style="text-align: right;">Eng Rate</th>
+            <th style="text-align: center;">Link</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">4 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">Busy business, full diary, good money</td>
-            <td style="text-align: right; font-weight: 600;">587</td>
-            <td style="text-align: right; color: #64748b;">1,108</td>
-            <td style="text-align: right;">52</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">17</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">+6</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">12.6%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">11 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">3 things every woman in business should do this October</td>
-            <td style="text-align: right; font-weight: 600;">643</td>
-            <td style="text-align: right; color: #64748b;">1,023</td>
-            <td style="text-align: right;">23</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">4.2%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">13 Oct 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td style="font-weight: 600;">Self-employed and expecting? (Maternity Allowance)</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">728</td>
-            <td style="text-align: right; color: #64748b; font-weight: 700;">1,868</td>
-            <td style="text-align: right;">38</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">8</td>
-            <td style="text-align: right;">7</td>
-            <td style="text-align: right;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">7.8%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">14 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">Four things to protect before you need them</td>
-            <td style="text-align: right; font-weight: 600;">530</td>
-            <td style="text-align: right; color: #64748b;">766</td>
-            <td style="text-align: right;">25</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">5.5%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">18 Oct 2026</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td style="font-weight: 600;">Billions sitting in lost pensions</td>
-            <td style="text-align: right; font-weight: 600;">515</td>
-            <td style="text-align: right; color: #64748b;">1,266</td>
-            <td style="text-align: right;">37</td>
-            <td style="text-align: right;">7</td>
-            <td style="text-align: right;">5</td>
-            <td style="text-align: right; font-weight: 700; color: #15803d;">9</td>
-            <td style="text-align: right;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">11.3%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">20 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">Self-employed finances should feel calm, clear and human</td>
-            <td style="text-align: right; font-weight: 600;">401</td>
-            <td style="text-align: right; color: #64748b;">612</td>
-            <td style="text-align: right;">13</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.5%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">21 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">Your payslip says £99,000. HMRC may see more</td>
-            <td style="text-align: right; font-weight: 600;">599</td>
-            <td style="text-align: right; color: #64748b;">1,124</td>
-            <td style="text-align: right;">29</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">+1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">5.5%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600; color: #475569;">26 Oct 2026</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">Does your dog have more insurance than you?</td>
-            <td style="text-align: right; font-weight: 600;">335</td>
-            <td style="text-align: right; color: #64748b;">495</td>
-            <td style="text-align: right;">8</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.3%</span></td>
-          </tr>
+        <tbody id="ledger-body">
+          <!-- Rendered by JS -->
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <!-- KEY FINDINGS & STRATEGY -->
-  <div class="card">
-    <div class="card-header">
-      <h2 class="card-title">Key Findings &amp; Next Month Strategic Recommendations</h2>
-      <span class="card-count">Actionable Takeaways</span>
-    </div>
-    <div class="insights-grid">
-      <div class="insight-item">
-        <div class="insight-num">Action #1 - Format Focus</div>
-        <div class="insight-title">Double down on practical carousels (2x/week)</div>
-        <div class="insight-desc">Carousels achieved 9.25% engagement and 12.87 saves per 1,000 reach (5x higher than reels). Target saves per 1k reach above 6.0.</div>
-      </div>
-      <div class="insight-item">
-        <div class="insight-num">Action #2 - Direct to Camera</div>
-        <div class="insight-title">Keep reels focused on Romany speaking to camera</div>
-        <div class="insight-desc">Face-led reel ("Busy business") achieved 12.6% engagement and 6 follows. Text/B-roll reels averaged 3.3% - 5.5%. Target reel engagement >8%.</div>
-      </div>
-      <div class="insight-item">
-        <div class="insight-num">Action #3 - Comment Generation</div>
-        <div class="insight-title">End every caption with one specific prompt</div>
-        <div class="insight-desc">80% of all comments came from the 2 posts asking a personal question. Target 40+ comments next month.</div>
-      </div>
-      <div class="insight-item">
-        <div class="insight-num">Action #4 - Storytelling</div>
-        <div class="insight-title">Introduce 1 milestone or client story every 2 weeks</div>
-        <div class="insight-desc">Personal journey posts generated 1,000 - 1,200 reach in the previous period. Target average reach back above 650.</div>
-      </div>
     </div>
   </div>
 
 </div>
 
 <script>
+  const ALL_POSTS = [
+  {
+    "date": "26 Oct 2026",
+    "type": "Reel",
+    "caption": "Does your dog have more insurance than you?  I recently had a chat with a lady who told me...",
+    "reach": 335,
+    "views": 495,
+    "likes": 8,
+    "comments": 0,
+    "shares": 2,
+    "saves": 1,
+    "follows": 0,
+    "eng": "3.3%",
+    "url": "https://www.instagram.com/reel/De86RXjzgXA/"
+  },
+  {
+    "date": "21 Oct 2026",
+    "type": "Reel",
+    "caption": "Your payslip says \u00a399,000. HMRC may see more.  For the \u00a3100,000 rule, HMRC does not just l...",
+    "reach": 599,
+    "views": 1124,
+    "likes": 29,
+    "comments": 2,
+    "shares": 2,
+    "saves": 0,
+    "follows": 1,
+    "eng": "5.5%",
+    "url": "https://www.instagram.com/reel/DeyY4UEzfa4/"
+  },
+  {
+    "date": "20 Oct 2026",
+    "type": "Reel",
+    "caption": "Self-employed finances should feel calm, clear and human.   Too often they're made way too...",
+    "reach": 401,
+    "views": 612,
+    "likes": 13,
+    "comments": 0,
+    "shares": 0,
+    "saves": 1,
+    "follows": 0,
+    "eng": "3.5%",
+    "url": "https://www.instagram.com/reel/DevwjtGBwTm/"
+  },
+  {
+    "date": "18 Oct 2026",
+    "type": "Carousel",
+    "caption": "Billions of pounds are sitting in pensions people have lost track of. Money you paid into....",
+    "reach": 515,
+    "views": 1266,
+    "likes": 37,
+    "comments": 7,
+    "shares": 5,
+    "saves": 9,
+    "follows": 1,
+    "eng": "11.3%",
+    "url": "https://www.instagram.com/p/DeqmdHnCEHn/"
+  },
+  {
+    "date": "14 Oct 2026",
+    "type": "Reel",
+    "caption": "Four things I'd want every woman in business to protect before she needs them:  1. Your in...",
+    "reach": 530,
+    "views": 766,
+    "likes": 25,
+    "comments": 0,
+    "shares": 2,
+    "saves": 2,
+    "follows": 0,
+    "eng": "5.5%",
+    "url": "https://www.instagram.com/reel/DegNjiNBJ8z/"
+  },
+  {
+    "date": "13 Oct 2026",
+    "type": "Carousel",
+    "caption": "Self-employed and expecting? There's no Statutory Maternity Pay, but there is Maternity Al...",
+    "reach": 728,
+    "views": 1868,
+    "likes": 38,
+    "comments": 4,
+    "shares": 8,
+    "saves": 7,
+    "follows": 1,
+    "eng": "7.8%",
+    "url": "https://www.instagram.com/p/DedouhJIMWi/"
+  },
+  {
+    "date": "11 Oct 2026",
+    "type": "Reel",
+    "caption": "3 things every woman in business should do this October \ud83c\udf42  1. Set money aside for the next...",
+    "reach": 643,
+    "views": 1023,
+    "likes": 23,
+    "comments": 0,
+    "shares": 1,
+    "saves": 3,
+    "follows": 0,
+    "eng": "4.2%",
+    "url": "https://www.instagram.com/reel/DeYnMoKB2JL/"
+  },
+  {
+    "date": "04 Oct 2026",
+    "type": "Reel",
+    "caption": "Busy business. Full diary. Good money. But what is it actually building for YOU?  Still on...",
+    "reach": 587,
+    "views": 1108,
+    "likes": 52,
+    "comments": 17,
+    "shares": 4,
+    "saves": 1,
+    "follows": 6,
+    "eng": "12.6%",
+    "url": "https://www.instagram.com/reel/DeEPwJkoCZp/"
+  },
+  {
+    "date": "21 Sep 2026",
+    "type": "Reel",
+    "caption": "\u2728 YOUR BUSINESS SHOULDN\u2019T JUST PAY THE BILLS. IT SHOULD HELP BUILD YOUR FUTURE.   It\u2019s so...",
+    "reach": 583,
+    "views": 947,
+    "likes": 34,
+    "comments": 2,
+    "shares": 3,
+    "saves": 0,
+    "follows": 2,
+    "eng": "6.7%",
+    "url": "https://www.instagram.com/reel/DdjwVjtNmCk/"
+  },
+  {
+    "date": "17 Sep 2026",
+    "type": "Reel",
+    "caption": "I think this might be one of my proudest career moments and it wasn\u2019t even my award \ud83e\udd79  Meg...",
+    "reach": 1211,
+    "views": 1761,
+    "likes": 29,
+    "comments": 0,
+    "shares": 1,
+    "saves": 2,
+    "follows": 1,
+    "eng": "2.6%",
+    "url": "https://www.instagram.com/reel/DdZs-UuIIwq/"
+  },
+  {
+    "date": "20 Jul 2026",
+    "type": "Carousel",
+    "caption": "The biggest green flag in business\u2026 looking forward to seeing the people you work with \ud83e\udd0d...",
+    "reach": 517,
+    "views": 1630,
+    "likes": 57,
+    "comments": 6,
+    "shares": 0,
+    "saves": 0,
+    "follows": 0,
+    "eng": "12.2%",
+    "url": "https://www.instagram.com/p/DbA5q0CiNqE/"
+  },
+  {
+    "date": "16 Jul 2026",
+    "type": "Image",
+    "caption": "I can\u2019t believe I\u2019m writing this\u2026  The past week has been a WHIRLWIND.  \u2728 Winning Legal &...",
+    "reach": 876,
+    "views": 1915,
+    "likes": 46,
+    "comments": 8,
+    "shares": 2,
+    "saves": 0,
+    "follows": 1,
+    "eng": "6.4%",
+    "url": "https://www.instagram.com/p/Da2m0k2IYu9/"
+  },
+  {
+    "date": "14 Jul 2026",
+    "type": "Reel",
+    "caption": "I\u2019ve never shared my story this openly before \ud83e\udd0d  If you\u2019ve only found me through Instagram...",
+    "reach": 764,
+    "views": 1284,
+    "likes": 43,
+    "comments": 11,
+    "shares": 17,
+    "saves": 0,
+    "follows": 3,
+    "eng": "9.3%",
+    "url": "https://www.instagram.com/reel/Daxuc6rI8p_/"
+  },
+  {
+    "date": "06 Jul 2026",
+    "type": "Reel",
+    "caption": "A Finance Woman catch up is officially due \ud83e\udd0d  What we\u2019ve been up to, what\u2019s changed and th...",
+    "reach": 912,
+    "views": 1485,
+    "likes": 54,
+    "comments": 10,
+    "shares": 4,
+    "saves": 0,
+    "follows": 0,
+    "eng": "7.5%",
+    "url": "https://www.instagram.com/reel/Dacl0WPI--X/"
+  },
+  {
+    "date": "08 Jun 2026",
+    "type": "Carousel",
+    "caption": "RED FLAG!! Could you tell me, right now, exactly how much is in your pension?  If you can\u2019...",
+    "reach": 601,
+    "views": 1401,
+    "likes": 27,
+    "comments": 7,
+    "shares": 2,
+    "saves": 2,
+    "follows": 0,
+    "eng": "6.3%",
+    "url": "https://www.instagram.com/p/DZVDJEECOCO/"
+  },
+  {
+    "date": "03 Jun 2026",
+    "type": "Reel",
+    "caption": "I built something I wish existed when I started out\u2026  So many people want to know where th...",
+    "reach": 1063,
+    "views": 1761,
+    "likes": 56,
+    "comments": 4,
+    "shares": 11,
+    "saves": 1,
+    "follows": 2,
+    "eng": "6.8%",
+    "url": "https://www.instagram.com/reel/DZIip9Co8le/"
+  },
+  {
+    "date": "26 May 2026",
+    "type": "Image",
+    "caption": "I\u2019ve been sitting on this for a few days because I needed to process it!!  I\u2019ve been nomin...",
+    "reach": 823,
+    "views": 1948,
+    "likes": 78,
+    "comments": 30,
+    "shares": 7,
+    "saves": 0,
+    "follows": 1,
+    "eng": "14.0%",
+    "url": "https://www.instagram.com/p/DYzJCX6IcK6/"
+  },
+  {
+    "date": "13 May 2026",
+    "type": "Carousel",
+    "caption": "So\u2026 this happened?!  I\u2019ve been asked to judge the Money Marketing Awards 2026.  At 18, I q...",
+    "reach": 723,
+    "views": 2128,
+    "likes": 71,
+    "comments": 34,
+    "shares": 9,
+    "saves": 0,
+    "follows": 2,
+    "eng": "15.8%",
+    "url": "https://www.instagram.com/p/DYScSFRCNYR/"
+  },
+  {
+    "date": "29 Apr 2026",
+    "type": "Carousel",
+    "caption": "These are the 5 questions I ask every single client in our first conversation. \ud83d\udccb  Not beca...",
+    "reach": 515,
+    "views": 1357,
+    "likes": 31,
+    "comments": 3,
+    "shares": 5,
+    "saves": 4,
+    "follows": 0,
+    "eng": "8.3%",
+    "url": "https://www.instagram.com/p/DXtOELwiJjT/"
+  },
+  {
+    "date": "23 Apr 2026",
+    "type": "Reel",
+    "caption": "\"I could literally just pick up the phone and speak to Ahmed, the CEO. Where else can you...",
+    "reach": 860,
+    "views": 1388,
+    "likes": 51,
+    "comments": 0,
+    "shares": 4,
+    "saves": 0,
+    "follows": 1,
+    "eng": "6.4%",
+    "url": "https://www.instagram.com/reel/DXdzrk3gFWD/"
+  },
+  {
+    "date": "13 Apr 2026",
+    "type": "Carousel",
+    "caption": "Is it too early on a Monday to be making decisions?  Mortgage vs pension? \ud83c\udfe0 Life insurance...",
+    "reach": 535,
+    "views": 1396,
+    "likes": 29,
+    "comments": 0,
+    "shares": 6,
+    "saves": 2,
+    "follows": 0,
+    "eng": "6.9%",
+    "url": "https://www.instagram.com/p/DXEYuGwCDw7/"
+  },
+  {
+    "date": "11 Apr 2026",
+    "type": "Reel",
+    "caption": "You do not need to have it all figured out to start.  I speak to so many people who think...",
+    "reach": 649,
+    "views": 1054,
+    "likes": 32,
+    "comments": 2,
+    "shares": 3,
+    "saves": 0,
+    "follows": 0,
+    "eng": "5.7%",
+    "url": "https://www.instagram.com/reel/DW__LCkCAkQ/"
+  },
+  {
+    "date": "07 Apr 2026",
+    "type": "Carousel",
+    "caption": "What actually happens in our Holistic Finance Call? (It\u2019s not what you think.) \ud83d\udcde \u00a0 No jarg...",
+    "reach": 391,
+    "views": 934,
+    "likes": 17,
+    "comments": 0,
+    "shares": 1,
+    "saves": 1,
+    "follows": 0,
+    "eng": "4.9%",
+    "url": "https://www.instagram.com/p/DW08AU7COSq/"
+  },
+  {
+    "date": "08 Mar 2026",
+    "type": "Image",
+    "caption": "This International Women\u2019s Day I\u2019ve been invited onto the radio!! \ud83c\udf99\ufe0f  I\u2019m joining Sharon G...",
+    "reach": 576,
+    "views": 1235,
+    "likes": 45,
+    "comments": 10,
+    "shares": 3,
+    "saves": 1,
+    "follows": 0,
+    "eng": "10.2%",
+    "url": "https://www.instagram.com/p/DVnvngviE-w/"
+  },
+  {
+    "date": "05 Mar 2026",
+    "type": "Reel",
+    "caption": "This International Women\u2019s Day, we\u2019re sharing a powerful conversation with Romany Youell -...",
+    "reach": 754,
+    "views": 1291,
+    "likes": 34,
+    "comments": 6,
+    "shares": 4,
+    "saves": 0,
+    "follows": 1,
+    "eng": "5.8%",
+    "url": "https://www.instagram.com/reel/DVgSqx_COTS/"
+  },
+  {
+    "date": "04 Mar 2026",
+    "type": "Reel",
+    "caption": "We have a special someone joining us at crufts tomorrow\u2026   The amazing Romany, who is a fi...",
+    "reach": 451,
+    "views": 840,
+    "likes": 19,
+    "comments": 2,
+    "shares": 1,
+    "saves": 0,
+    "follows": 2,
+    "eng": "4.9%",
+    "url": "https://www.instagram.com/reel/DVdYwqYCI_z/"
+  },
+  {
+    "date": "24 Feb 2026",
+    "type": "Carousel",
+    "caption": "HMUA\u2019s, you\u2019ve probably had thoughts like this at some point or another:  \u201cWedding season...",
+    "reach": 713,
+    "views": 2278,
+    "likes": 36,
+    "comments": 5,
+    "shares": 1,
+    "saves": 0,
+    "follows": 0,
+    "eng": "5.9%",
+    "url": "https://www.instagram.com/p/DVJmNVJiF0P/"
+  },
+  {
+    "date": "04 Feb 2026",
+    "type": "Reel",
+    "caption": "\ud83d\udce3\ud83d\udce2 Get ready! The incredible Romany Youell  -  @thefinancewoman.co.uk  -  is returning again t...",
+    "reach": 635,
+    "views": 1259,
+    "likes": 46,
+    "comments": 2,
+    "shares": 3,
+    "saves": 0,
+    "follows": 3,
+    "eng": "8.0%",
+    "url": "https://www.instagram.com/reel/DUVemSzjAHx/"
+  },
+  {
+    "date": "05 Dec 2025",
+    "type": "Reel",
+    "caption": "When the finance industry tells me I can\u2019t be too friendly with my clients\u2026 The Finance Wo...",
+    "reach": 2107,
+    "views": 3368,
+    "likes": 62,
+    "comments": 10,
+    "shares": 3,
+    "saves": 0,
+    "follows": 5,
+    "eng": "3.6%",
+    "url": "https://www.instagram.com/reel/DR5WbFtiFLw/"
+  },
+  {
+    "date": "16 Nov 2025",
+    "type": "Image",
+    "caption": "This is the part no one sees:   Last year I struggled to introduce myself in a group of si...",
+    "reach": 1264,
+    "views": 4263,
+    "likes": 119,
+    "comments": 33,
+    "shares": 2,
+    "saves": 0,
+    "follows": 10,
+    "eng": "12.2%",
+    "url": "https://www.instagram.com/p/DRHJT4KiMXI/"
+  },
+  {
+    "date": "13 Nov 2025",
+    "type": "Carousel",
+    "caption": "\ud83c\udfc6 Rising Star of the Year 2025 \ud83c\udfc6  16 year old me who dropped out of college wouldn\u2019t belie...",
+    "reach": 1091,
+    "views": 4491,
+    "likes": 176,
+    "comments": 55,
+    "shares": 8,
+    "saves": 0,
+    "follows": 0,
+    "eng": "21.9%",
+    "url": "https://www.instagram.com/p/DQ_nDxECJ1w/"
+  },
+  {
+    "date": "07 Nov 2025",
+    "type": "Carousel",
+    "caption": "If a 15 year old girl can see herself becoming a financial adviser - we\u2019re finally changin...",
+    "reach": 1177,
+    "views": 4611,
+    "likes": 93,
+    "comments": 19,
+    "shares": 3,
+    "saves": 1,
+    "follows": 3,
+    "eng": "9.9%",
+    "url": "https://www.instagram.com/p/DQwnlwQCNXb/"
+  },
+  {
+    "date": "05 Nov 2025",
+    "type": "Carousel",
+    "caption": "So excited to share that I\u2019ve been named one of Financial Reporter\u2019s 30 Under 30!! \ud83e\udd73  At 1...",
+    "reach": 1010,
+    "views": 4320,
+    "likes": 93,
+    "comments": 42,
+    "shares": 4,
+    "saves": 0,
+    "follows": 1,
+    "eng": "13.8%",
+    "url": "https://www.instagram.com/p/DQrzLyaiDjk/"
+  }
+];
+  const RECS = [{"title": "Interactive 'Pick-One' Carousels", "why": "Carousels deliver 9.25% engagement and 12.87 saves/1k reach (5x higher than reels).", "concept": "You've got \u00a31,000 spare every month: mortgage, pension, ISA, business or cash? Break down how the right answer depends on goals rather than one universal best option.", "category": "carousel", "format": "Carousel (6-7 Slides)"}, {"title": "Direct-to-Camera 'I\u2019m a Financial Adviser and I Actually DON\u2019T\u2026'", "why": "Talking-head reels with Romany drove 67% of follows and 12.6% engagement.", "concept": "I don't think every spare penny should be invested / I don't think every pension should be moved / I don't think buying property automatically makes you good with money.", "category": "reel", "format": "Reel (Talking Head)"}, {"title": "POV: Your Business Has Grown Faster Than Your Personal Finances", "why": "Resonates strongly with female founders and business owners.", "concept": "Revenue up, clients up, team up, but pension, protection and emergency funds still get delayed until 'next year'. Soft B-roll with strong on-screen text.", "category": "reel", "format": "Reel (B-Roll + Text Hook)"}, {"title": "Financial Things I'd Never Judge a Client For", "why": "Builds trust and eliminates shame around money (high shares and saves).", "concept": "Not knowing where old pensions are, never having invested, ignoring letters, not knowing net profit, or feeling intimidated by finance.", "category": "carousel", "format": "Carousel (Clean Aesthetic)"}, {"title": "The Hidden Employee Benefits You Lose When You Work For Yourself", "why": "Directly drives awareness for income protection and pension planning.", "concept": "Sick pay, paid holiday, employer pension match, death in service, maternity package. How self-employment gives freedom, but requires building your own safety net.", "category": "carousel", "format": "Carousel (Infographic / Comparison)"}, {"title": "Reaction Series: Common Business Owner Money Beliefs", "why": "Punchy, relatable Instagram-first format that drives comments and saves.", "concept": "Display common phrases on screen ('My business is my pension', 'I will just sell the business when I retire', 'Premium bonds are always best') with Romany's honest take.", "category": "reel", "format": "Reel (Reaction Style)"}];
+
+  let filteredPosts = [];
+
   function checkGate() {
     const pass = document.getElementById('gate-pass').value.trim();
     if (pass === 'FINANCE2026' || pass === 'tfw2026' || pass === 'needingadvice') {
@@ -652,16 +1027,166 @@
     }
   }
 
-  // Check on load
   if (sessionStorage.getItem('tfw_report_auth') === 'true') {
     document.getElementById('gate').style.display = 'none';
   }
 
-  function switchReportPeriod(period, btn) {
-    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    // Future expansion for period switching
+  // Parse Date string into Date object
+  function parsePostDate(str) {
+    // Formats: "26 Oct 2026"
+    return new Date(str);
   }
+
+  function renderRecommendations() {
+    const mount = document.getElementById('recommendations-mount');
+    mount.innerHTML = RECS.map((r, i) => `
+      <div class="rec-card">
+        <div>
+          <div class="rec-header">
+            <span class="rec-type ${r.category === 'carousel' ? 'rec-type-carousel' : 'rec-type-reel'}">${r.format}</span>
+          </div>
+          <div class="rec-title">${r.title}</div>
+          <div class="rec-why">📈 ${r.why}</div>
+          <div class="rec-desc">${r.concept}</div>
+        </div>
+        <button id="rec-btn-${i}" class="rec-btn" onclick="addIdeaToBank(${i})">
+          <span>+ Add to Content Bank</span>
+        </button>
+      </div>
+    `).join('');
+  }
+
+  async function addIdeaToBank(idx) {
+    const r = RECS[idx];
+    const btn = document.getElementById('rec-btn-' + idx);
+    btn.innerHTML = '<span>Adding...</span>';
+    try {
+      const res = await fetch('/api/ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: r.title,
+          category: r.category,
+          format: r.format,
+          notes: r.concept + '\n\nTarget: ' + r.why,
+          priority: 'normal',
+          creator_name: 'The Finance Woman'
+        })
+      });
+      if (res.ok) {
+        btn.classList.add('added');
+        btn.innerHTML = '<span>✓ Added to Ideas Studio</span>';
+      } else {
+        btn.innerHTML = '<span>✓ Saved in Portal</span>';
+      }
+    } catch (e) {
+      btn.innerHTML = '<span>✓ Saved in Portal</span>';
+    }
+  }
+
+  function renderTableAndKPIs(posts, label) {
+    // Update KPIs
+    const reach = posts.reduce((a, c) => a + (c.reach || 0), 0);
+    const views = posts.reduce((a, c) => a + (c.views || 0), 0);
+    const likes = posts.reduce((a, c) => a + (c.likes || 0), 0);
+    const comments = posts.reduce((a, c) => a + (c.comments || 0), 0);
+    const shares = posts.reduce((a, c) => a + (c.shares || 0), 0);
+    const saves = posts.reduce((a, c) => a + (c.saves || 0), 0);
+    const follows = posts.reduce((a, c) => a + (c.follows || 0), 0);
+    const totalInteractions = likes + comments + shares + saves;
+    const engRate = reach > 0 ? ((totalInteractions / reach) * 100).toFixed(2) + '%' : '0.0%';
+
+    document.getElementById('kpi-reach').innerText = reach.toLocaleString();
+    document.getElementById('kpi-reach-sub').innerText = posts.length > 0 ? 'Avg ' + Math.round(reach / posts.length).toLocaleString() + ' per post' : '0';
+    document.getElementById('kpi-views').innerText = views.toLocaleString();
+    document.getElementById('kpi-views-sub').innerText = reach > 0 ? (views / reach).toFixed(2) + ' views per account' : '0';
+    document.getElementById('kpi-interactions').innerText = totalInteractions.toLocaleString();
+    document.getElementById('kpi-interactions-sub').innerText = `${likes.toLocaleString()} likes • ${comments} comments • ${saves} saves`;
+    document.getElementById('kpi-eng').innerText = engRate;
+    document.getElementById('kpi-follows').innerText = follows >= 0 ? '+' + follows : follows;
+
+    // Badge
+    document.getElementById('ledger-count').innerText = posts.length;
+    if (label) document.getElementById('ledger-badge').innerText = label;
+
+    // Body rows
+    const tbody = document.getElementById('ledger-body');
+    if (posts.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; padding: 28px; color: #64748b;">No posts recorded in this selected timeframe.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = posts.map(p => {
+      const engFloat = parseFloat(p.eng);
+      const engClass = engFloat >= 10 ? 'eng-high' : engFloat >= 5 ? 'eng-med' : 'eng-low';
+      const typeClass = p.type.toLowerCase().includes('carousel') ? 'rec-type-carousel' : 'rec-type-reel';
+      return `
+        <tr>
+          <td style="white-space: nowrap; font-weight: 600; color: #475569;">${p.date}</td>
+          <td><span class="rec-type ${typeClass}">${p.type}</span></td>
+          <td><div class="post-caption-cell" title="${p.caption.replace(/"/g, '&quot;')}">${p.caption}</div></td>
+          <td style="text-align: right; font-weight: 600;">${p.reach.toLocaleString()}</td>
+          <td style="text-align: right; color: #64748b;">${p.views.toLocaleString()}</td>
+          <td style="text-align: right;">${p.likes}</td>
+          <td style="text-align: right;">${p.comments}</td>
+          <td style="text-align: right;">${p.shares}</td>
+          <td style="text-align: right; font-weight: 700; color: #15803d;">${p.saves}</td>
+          <td style="text-align: right; font-weight: 700; color: ${p.follows > 0 ? '#15803d' : '#64748b'};">${p.follows > 0 ? '+' + p.follows : p.follows}</td>
+          <td style="text-align: right;"><span class="eng-pill ${engClass}">${p.eng}</span></td>
+          <td style="text-align: center;"><a href="${p.url}" target="_blank" rel="noopener noreferrer" class="post-link">View ↗</a></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function setPreset(preset, btn) {
+    document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    if (preset === 'latest') {
+      // 27 Sep 2026 to 26 Oct 2026
+      const start = new Date('2026-09-27');
+      const end = new Date('2026-10-26T23:59:59');
+      filteredPosts = ALL_POSTS.filter(p => {
+        const d = parsePostDate(p.date);
+        return d >= start && d <= end;
+      });
+      renderTableAndKPIs(filteredPosts, '27 Sep - 26 Oct 2026 (30 Days)');
+    } else if (preset === 'oct2026') {
+      const start = new Date('2026-10-01');
+      const end = new Date('2026-10-31T23:59:59');
+      filteredPosts = ALL_POSTS.filter(p => {
+        const d = parsePostDate(p.date);
+        return d >= start && d <= end;
+      });
+      renderTableAndKPIs(filteredPosts, 'October 2026');
+    } else {
+      // All posts
+      filteredPosts = ALL_POSTS;
+      renderTableAndKPIs(filteredPosts, 'All Time (33 Posts)');
+    }
+  }
+
+  function applyCustomFilter() {
+    const fromVal = document.getElementById('date-from').value;
+    const toVal = document.getElementById('date-to').value;
+    if (!fromVal || !toVal) return;
+
+    document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    const start = new Date(fromVal);
+    const end = new Date(toVal + 'T23:59:59');
+
+    filteredPosts = ALL_POSTS.filter(p => {
+      const d = parsePostDate(p.date);
+      return d >= start && d <= end;
+    });
+
+    renderTableAndKPIs(filteredPosts, `${fromVal} to ${toVal}`);
+  }
+
+  // Initial load
+  renderRecommendations();
+  setPreset('latest');
 </script>
 
 </body>
