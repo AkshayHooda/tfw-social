@@ -57,6 +57,7 @@ details summary{cursor:pointer;font-family:"Playfair Display",serif;font-size:20
 footer{font-size:12px;color:var(--mute);text-align:center;margin-top:30px}
 @media(max-width:640px){h1{font-size:24px}.hint{display:block}.bar{grid-template-columns:110px 1fr 46px}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -75,11 +76,13 @@ footer{font-size:12px;color:var(--mute);text-align:center;margin-top:30px}
 <header>
   <div>
     <h1>The Finance Woman</h1>
-    <div style="font-weight:600;margin-top:2px">Instagram Monthly Report</div>
+    <div style="font-weight:600;margin-top:2px" id="rtitle">Instagram Monthly Report</div>
     <div class="sub" id="meta"></div>
   </div>
   <div class="btns">
-    <label class="btn primary">Load new Meta CSV<input type="file" id="csv" accept=".csv" hidden></label>
+    <select class="btn" id="range" aria-label="Time frame"><option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option></select>
+    <input class="btn" type="date" id="endDate" aria-label="Period end date">
+    <label class="btn primary">Load Report / Export<input type="file" id="csv" accept=".csv, .xlsx, .xls, .html, .htm" hidden></label>
     <a class="btn" href="/portal">Return to Portal</a>
   </div>
 </header>
@@ -114,7 +117,7 @@ footer{font-size:12px;color:var(--mute);text-align:center;margin-top:30px}
 </div>
 
 <div class="card">
-  <h2>Recommendations for next month</h2>
+  <h2 id="rechead">Recommendations for next month</h2>
   <div class="tw"><table class="recs" id="recs" style="min-width:560px"></table></div>
 </div>
 
@@ -151,19 +154,8 @@ const CONFIG={
   nextReport:"end of November 2026"
 };
 /* previous-period posts are only needed as totals */
-let PREV={posts:2,views:2708,reach:1794,likes:63,comments:2,shares:4,saves:2,follows:3};
-let PREVLABEL='previous 30 days (28 Aug to 26 Sep)';
-let POSTS=[
- {date:"2026-10-04",type:"Reel",title:"Busy business, full diary, good money",reach:587,views:1108,likes:52,comments:17,shares:4,saves:1,follows:6},
- {date:"2026-10-11",type:"Reel",title:"3 things every woman in business should do this October",reach:643,views:1023,likes:23,comments:0,shares:1,saves:3,follows:0},
- {date:"2026-10-13",type:"Carousel",title:"Self-employed and expecting? (Maternity Allowance)",reach:728,views:1868,likes:38,comments:4,shares:8,saves:7,follows:1},
- {date:"2026-10-14",type:"Reel",title:"Four things to protect before you need them",reach:530,views:766,likes:25,comments:0,shares:2,saves:2,follows:0},
- {date:"2026-10-18",type:"Carousel",title:"Billions sitting in lost pensions",reach:515,views:1266,likes:37,comments:7,shares:5,saves:9,follows:1},
- {date:"2026-10-20",type:"Reel",title:"Self-employed finances should feel calm, clear and human",reach:401,views:612,likes:13,comments:0,shares:0,saves:1,follows:0},
- {date:"2026-10-21",type:"Reel",title:"Your payslip says £99,000. HMRC may see more",reach:599,views:1124,likes:29,comments:2,shares:2,saves:0,follows:1},
- {date:"2026-10-26",type:"Reel",title:"Does your dog have more insurance than you?",reach:335,views:495,likes:8,comments:0,shares:2,saves:1,follows:0}
-];
-
+let ALL=[{"date": "2025-11-05", "type": "Carousel", "title": "So excited to share that I’ve been named one of Financial Reporter’s 3", "reach": 1010, "views": 4320, "likes": 93, "comments": 42, "shares": 4, "saves": 0, "follows": 1}, {"date": "2025-11-07", "type": "Carousel", "title": "If a 15 year old girl can see herself becoming a financial adviser - w", "reach": 1177, "views": 4611, "likes": 93, "comments": 19, "shares": 3, "saves": 1, "follows": 3}, {"date": "2025-11-13", "type": "Carousel", "title": "🏆 Rising Star of the Year 2025 🏆", "reach": 1091, "views": 4491, "likes": 176, "comments": 55, "shares": 8, "saves": 0, "follows": 0}, {"date": "2025-11-16", "type": "Image", "title": "This is the part no one sees: ", "reach": 1264, "views": 4263, "likes": 119, "comments": 33, "shares": 2, "saves": 0, "follows": 10}, {"date": "2025-12-05", "type": "Reel", "title": "When the finance industry tells me I can’t be too friendly with my cli", "reach": 2107, "views": 3368, "likes": 62, "comments": 10, "shares": 3, "saves": 0, "follows": 5}, {"date": "2026-02-04", "type": "Reel", "title": "📣📢 Get ready! The incredible Romany Youell  -  @thefinancewoman.co.uk  -  ", "reach": 635, "views": 1259, "likes": 46, "comments": 2, "shares": 3, "saves": 0, "follows": 3}, {"date": "2026-02-24", "type": "Carousel", "title": "HMUA’s, you’ve probably had thoughts like this at some point or anothe", "reach": 713, "views": 2278, "likes": 36, "comments": 5, "shares": 1, "saves": 0, "follows": 0}, {"date": "2026-03-04", "type": "Reel", "title": "We have a special someone joining us at crufts tomorrow… ", "reach": 451, "views": 840, "likes": 19, "comments": 2, "shares": 1, "saves": 0, "follows": 2}, {"date": "2026-03-05", "type": "Reel", "title": "This International Women’s Day, we’re sharing a powerful conversation ", "reach": 754, "views": 1291, "likes": 34, "comments": 6, "shares": 4, "saves": 0, "follows": 1}, {"date": "2026-03-08", "type": "Image", "title": "This International Women’s Day I’ve been invited onto the radio!! 🎙️", "reach": 576, "views": 1235, "likes": 45, "comments": 10, "shares": 3, "saves": 1, "follows": 0}, {"date": "2026-04-07", "type": "Carousel", "title": "What actually happens in our Holistic Finance Call? (It’s not what you", "reach": 391, "views": 934, "likes": 17, "comments": 0, "shares": 1, "saves": 1, "follows": 0}, {"date": "2026-04-11", "type": "Reel", "title": "You do not need to have it all figured out to start.", "reach": 649, "views": 1054, "likes": 32, "comments": 2, "shares": 3, "saves": 0, "follows": 0}, {"date": "2026-04-13", "type": "Carousel", "title": "Is it too early on a Monday to be making decisions?", "reach": 535, "views": 1396, "likes": 29, "comments": 0, "shares": 6, "saves": 2, "follows": 0}, {"date": "2026-04-23", "type": "Reel", "title": "\"I could literally just pick up the phone and speak to Ahmed, the CEO.", "reach": 860, "views": 1388, "likes": 51, "comments": 0, "shares": 4, "saves": 0, "follows": 1}, {"date": "2026-04-29", "type": "Carousel", "title": "These are the 5 questions I ask every single client in our first conve", "reach": 515, "views": 1357, "likes": 31, "comments": 3, "shares": 5, "saves": 4, "follows": 0}, {"date": "2026-05-13", "type": "Carousel", "title": "So… this happened?!", "reach": 723, "views": 2128, "likes": 71, "comments": 34, "shares": 9, "saves": 0, "follows": 2}, {"date": "2026-05-26", "type": "Image", "title": "I’ve been sitting on this for a few days because I needed to process i", "reach": 823, "views": 1948, "likes": 78, "comments": 30, "shares": 7, "saves": 0, "follows": 1}, {"date": "2026-06-03", "type": "Reel", "title": "I built something I wish existed when I started out…", "reach": 1063, "views": 1761, "likes": 56, "comments": 4, "shares": 11, "saves": 1, "follows": 2}, {"date": "2026-06-08", "type": "Carousel", "title": "RED FLAG!!", "reach": 601, "views": 1401, "likes": 27, "comments": 7, "shares": 2, "saves": 2, "follows": 0}, {"date": "2026-07-06", "type": "Reel", "title": "A Finance Woman catch up is officially due 🤍", "reach": 912, "views": 1485, "likes": 54, "comments": 10, "shares": 4, "saves": 0, "follows": 0}, {"date": "2026-07-14", "type": "Reel", "title": "I’ve never shared my story this openly before 🤍", "reach": 764, "views": 1284, "likes": 43, "comments": 11, "shares": 17, "saves": 0, "follows": 3}, {"date": "2026-07-16", "type": "Image", "title": "I can’t believe I’m writing this…", "reach": 876, "views": 1915, "likes": 46, "comments": 8, "shares": 2, "saves": 0, "follows": 1}, {"date": "2026-07-20", "type": "Carousel", "title": "The biggest green flag in business… looking forward to seeing the peop", "reach": 517, "views": 1630, "likes": 57, "comments": 6, "shares": 0, "saves": 0, "follows": 0}, {"date": "2026-09-17", "type": "Reel", "title": "I think this might be one of my proudest career moments and it wasn’t ", "reach": 1211, "views": 1761, "likes": 29, "comments": 0, "shares": 1, "saves": 2, "follows": 1}, {"date": "2026-09-21", "type": "Reel", "title": "✨ YOUR BUSINESS SHOULDN’T JUST PAY THE BILLS. IT SHOULD HELP BUILD YOU", "reach": 583, "views": 947, "likes": 34, "comments": 2, "shares": 3, "saves": 0, "follows": 2}, {"date": "2026-10-04", "type": "Reel", "title": "Busy business, full diary, good money", "reach": 587, "views": 1108, "likes": 52, "comments": 17, "shares": 4, "saves": 1, "follows": 6}, {"date": "2026-10-11", "type": "Reel", "title": "3 things every woman in business should do this October", "reach": 643, "views": 1023, "likes": 23, "comments": 0, "shares": 1, "saves": 3, "follows": 0}, {"date": "2026-10-13", "type": "Carousel", "title": "Self-employed and expecting? (Maternity Allowance)", "reach": 728, "views": 1868, "likes": 38, "comments": 4, "shares": 8, "saves": 7, "follows": 1}, {"date": "2026-10-14", "type": "Reel", "title": "Four things to protect before you need them", "reach": 530, "views": 766, "likes": 25, "comments": 0, "shares": 2, "saves": 2, "follows": 0}, {"date": "2026-10-18", "type": "Carousel", "title": "Billions sitting in lost pensions", "reach": 515, "views": 1266, "likes": 37, "comments": 7, "shares": 5, "saves": 9, "follows": 1}, {"date": "2026-10-20", "type": "Reel", "title": "Self-employed finances should feel calm, clear and human", "reach": 401, "views": 612, "likes": 13, "comments": 0, "shares": 0, "saves": 1, "follows": 0}, {"date": "2026-10-21", "type": "Reel", "title": "Your payslip says £99,000. HMRC may see more", "reach": 599, "views": 1124, "likes": 29, "comments": 2, "shares": 2, "saves": 0, "follows": 1}, {"date": "2026-10-26", "type": "Reel", "title": "Does your dog have more insurance than you?", "reach": 335, "views": 495, "likes": 8, "comments": 0, "shares": 2, "saves": 1, "follows": 0}];
+let POSTS=[],PREV={},PREVLABEL='',PERIOD_DAYS=30;
 /* ===== helpers ===== */
 const $=id=>document.getElementById(id);
 const fmt=n=>Math.round(n).toLocaleString('en-GB');
@@ -172,21 +164,38 @@ const dstr=s=>new Date(s+"T12:00:00").toLocaleDateString('en-GB',{day:'numeric',
 const inter=p=>p.likes+p.comments+p.shares+p.saves;
 const er=p=>p.reach?inter(p)/p.reach*100:0;
 function sum(rs){const t={posts:rs.length,views:0,reach:0,likes:0,comments:0,shares:0,saves:0,follows:0};rs.forEach(p=>{for(const k of ['views','reach','likes','comments','shares','saves','follows'])t[k]+=p[k]});return t}
-function rates(t){const I=t.likes+t.comments+t.shares+t.saves;return{I,avgR:t.reach/t.posts,er:I/t.reach*100,sv:t.saves/t.reach*1000,sh:t.shares/t.reach*1000,fo:t.follows/t.reach*1000,vpr:t.views/t.reach}}
-const pct=(a,b)=>b?(a-b)/b*100:0;
-function badge(ch,suffix='%',goodUp=true,amberSmall=0){const cls=Math.abs(ch)<amberSmall?'flat':((ch>=0)===goodUp?'up':'down');return `<span class="badge ${cls}">${ch>=0?'+':''}${f1(ch)}${suffix}</span>`}
+function rates(t){const I=t.likes+t.comments+t.shares+t.saves,r=t.reach||0,d=(a,b)=>b?a/b:0;return{I,avgR:d(r,t.posts),er:d(I,r)*100,sv:d(t.saves,r)*1000,sh:d(t.shares,r)*1000,fo:d(t.follows,r)*1000,vpr:d(t.views,r)}}
+const pct=(a,b)=>b?(a-b)/b*100:null;
+function badge(ch,suffix='%',goodUp=true,amberSmall=0){if(ch===null||!isFinite(ch))return '<span class="badge flat">no posts to compare</span>';const cls=Math.abs(ch)<amberSmall?'flat':((ch>=0)===goodUp?'up':'down');return `<span class="badge ${cls}">${ch>=0?'+':''}${f1(ch)}${suffix}</span>`}
 
 /* ===== render ===== */
+function applyPeriod(){
+ PERIOD_DAYS=+$('range').value;const end=$('endDate').value;
+ const e=new Date(end+'T12:00:00'),st=new Date(e);st.setDate(st.getDate()-(PERIOD_DAYS-1));
+ const ps=new Date(st);ps.setDate(ps.getDate()-PERIOD_DAYS);const pe=new Date(st);pe.setDate(pe.getDate()-1);
+ const iso=x=>x.toISOString().slice(0,10),S=iso(st),PS=iso(ps),PE=iso(pe);
+ POSTS=ALL.filter(p=>p.date>=S&&p.date<=end);PREV=sum(ALL.filter(p=>p.date>=PS&&p.date<=PE));
+ CONFIG.periodStart=S;CONFIG.periodEnd=end;
+ const name=PERIOD_DAYS===7?'week':PERIOD_DAYS===30?'month':'quarter';
+ PREVLABEL=`previous ${PERIOD_DAYS} days (${dstr(PS)} to ${dstr(PE)})`;
+ $('rtitle').textContent=`Instagram ${PERIOD_DAYS===7?'Weekly':PERIOD_DAYS===30?'Monthly':'Quarterly'} Report`;
+ $('rechead').textContent=`Recommendations for next ${name}`;
+ render();
+}
 function render(){
+ if(!POSTS.length){['kpis','totals','fmt','fmtnote','chart','posts','findings','recs'].forEach(i=>$(i).innerHTML='');
+  $('intro').innerHTML=`No posts were published between ${dstr(CONFIG.periodStart)} and ${dstr(CONFIG.periodEnd)}. Choose a longer time frame or a different end date.`;
+  $('meta').textContent=`${CONFIG.account} · ${dstr(CONFIG.periodStart)} to ${dstr(CONFIG.periodEnd)} · Source: ${CONFIG.source}`;return}
  const T=sum(POSTS),R=rates(T),P=rates(PREV);
  $('meta').textContent=`${CONFIG.account} · ${dstr(CONFIG.periodStart)} to ${dstr(CONFIG.periodEnd)} ${CONFIG.periodEnd.slice(0,4)} · Prepared ${CONFIG.prepared} · Source: ${CONFIG.source}`;
- $('intro').innerHTML=`Covers lifetime metrics for the <b>${T.posts} posts</b> published ${dstr(CONFIG.periodStart)} to ${dstr(CONFIG.periodEnd)}, compared with the ${PREV.posts} posts in the ${PREVLABEL}.<br><br><b>In one line:</b> total reach ${T.reach>PREV.reach?'rose':'fell'} ${f1(Math.abs(pct(T.reach,PREV.reach)))}% (${fmt(PREV.reach)} to ${fmt(T.reach)}) and interactions ${f1(pct(R.I,PREV.likes+PREV.comments+PREV.shares+PREV.saves))}%, from ${PREV.posts} posts to ${T.posts}. Reach per post ${R.avgR<P.avgR?'fell':'rose'} ${f1(Math.abs(pct(R.avgR,P.avgR)))}%, while saves per 1k reach went from ${f2(P.sv)} to ${f2(R.sv)} and follows per 1k reach from ${f2(P.fo)} to ${f2(R.fo)}.`;
+ const mv=(a,b)=>{const c=pct(a,b);return c===null?'n/a':`${c>=0?'rose':'fell'} ${f1(Math.abs(c))}%`};
+ $('intro').innerHTML=`Covers lifetime metrics for the <b>${T.posts} post${T.posts>1?'s':''}</b> published ${dstr(CONFIG.periodStart)} to ${dstr(CONFIG.periodEnd)}, compared with the ${PREV.posts} post${PREV.posts===1?'':'s'} in the ${PREVLABEL}.<br><br>`+(PREV.posts?`<b>In one line:</b> total reach ${mv(T.reach,PREV.reach)} (${fmt(PREV.reach)} to ${fmt(T.reach)}) and interactions ${mv(R.I,P.I)} (${fmt(P.I)} to ${fmt(R.I)}), from ${PREV.posts} post${PREV.posts===1?'':'s'} to ${T.posts}. Engagement rate went from ${f2(P.er)}% to ${f2(R.er)}%, and reach per post ${mv(R.avgR,P.avgR)}.`:`<b>No posts were published in the ${PREVLABEL}</b>, so this period has nothing to compare against. Figures below are this period only.`);
  const k=[
-  ['Posts published',fmt(T.posts),`previous 30 days: ${PREV.posts}`,badge(pct(T.posts,PREV.posts))],
+  ['Posts published',fmt(T.posts),`previous ${PERIOD_DAYS} days: ${PREV.posts}`,badge(pct(T.posts,PREV.posts))],
   ['Total reach',fmt(T.reach),`previous ${fmt(PREV.reach)} · avg ${fmt(R.avgR)} per post (was ${fmt(P.avgR)})`,badge(pct(T.reach,PREV.reach))],
   ['Total interactions',fmt(R.I),`previous ${fmt(P.I)}`,badge(pct(R.I,P.I))],
   ['Total views',fmt(T.views),`previous ${fmt(PREV.views)}`,badge(pct(T.views,PREV.views))],
-  ['Engagement rate',f2(R.er)+'%',`${fmt(R.I)} interactions (previous ${f2(P.er)}%)`,badge(R.er-P.er,' pts',true,3)],
+  ['Engagement rate',f2(R.er)+'%',`${fmt(R.I)} interactions (previous ${f2(P.er)}%)`,badge(PREV.posts?R.er-P.er:null,' pts',true,3)],
   ['Saves',fmt(T.saves),`previous ${PREV.saves} · ${f2(R.sv)} per 1k reach`,badge(pct(T.saves,PREV.saves))],
   ['Shares',fmt(T.shares),`previous ${PREV.shares} · ${f2(R.sh)} per 1k reach`,badge(pct(T.shares,PREV.shares))],
   ['Comments',fmt(T.comments),`previous ${PREV.comments}`,badge(pct(T.comments,PREV.comments))],
@@ -211,24 +220,24 @@ function render(){
 
  // findings (rule based)
  const best=POSTS.reduce((a,b)=>er(b)>er(a)?b:a), topRe=POSTS.reduce((a,b)=>b.reach>a.reach?b:a), topSv=POSTS.reduce((a,b)=>b.saves>a.saves?b:a);
- const reels=POSTS.filter(p=>p.type==='Reel'),weakReels=reels.filter(p=>er(p)<=5.5).length;
- const cm=[...POSTS].sort((a,b)=>b.comments-a.comments),top2=cm[0].comments+(cm[1]?cm[1].comments:0);
+ const reels=POSTS.filter(p=>p.type==='Reel'),reelMin=reels.length?Math.min(...reels.map(er)):0,weakReels=reels.filter(p=>er(p)<=5.5).length;
+ const cm=[...POSTS].sort((a,b)=>b.comments-a.comments),top2=cm[0].comments+(cm[1]?cm[1].comments:0),nTop=Math.min(2,POSTS.length);
  const F=[
-  `<b>Reach per post ${R.avgR<P.avgR?'fell':'rose'} ${f1(Math.abs(pct(R.avgR,P.avgR)))}%</b> (${fmt(P.avgR)} to ${fmt(R.avgR)}).`,
+  PREV.posts?`<b>Reach per post ${mv(R.avgR,P.avgR)}</b> (${fmt(P.avgR)} to ${fmt(R.avgR)}).`:'',
   `<b>Output:</b> ${T.posts} posts against ${PREV.posts} in the ${PREVLABEL}. Total reach ${fmt(PREV.reach)} to ${fmt(T.reach)}, interactions ${fmt(PREV.likes+PREV.comments+PREV.shares+PREV.saves)} to ${fmt(R.I)}.`,
   `<b>Saves:</b> ${PREV.saves} to ${T.saves}. <b>Comments:</b> ${PREV.comments} to ${T.comments}. <b>Follows:</b> ${PREV.follows} to ${T.follows}.`,
   `<b>Highest engagement:</b> "${best.title}" at ${f1(er(best))}%, with ${best.comments} comments and ${best.follows} of the ${T.follows} follows.`,
   `<b>Highest reach:</b> "${topRe.title}" (${fmt(topRe.reach)}). <b>Most saves:</b> "${topSv.title}" (${topSv.saves}).`,
   reels.length?`<b>${weakReels} of ${reels.length} reels</b> scored 5.5% engagement or less.`:'',
-  T.comments?`<b>Two posts produced ${Math.round(top2/T.comments*100)}% of all comments.</b>`:''
+  T.comments&&POSTS.length>2?`<b>Two posts produced ${Math.round(top2/T.comments*100)}% of all comments.</b>`:''
  ].filter(Boolean);
  $('findings').innerHTML=F.map(x=>`<li>${x}</li>`).join('');
 
  // recommendations
  const recs=[
   ['Publish 2 practical carousels a week (dated, checklist or "what changes" format)',C?`Carousels: ${f2(C.r.er)}% engagement, ${f2(C.r.sv)} saves per 1k reach`:'Carousels lead on saves','Saves per 1k reach above 6'],
-  ['Keep reels for Romany speaking to camera',`Best reel: ${f1(er(best))}% engagement. Other reels ranged ${f1(Math.min(...reels.map(er)))}% to 5.5%`,'Reel engagement rate above 8%'],
-  ['End every caption with one specific question',`${T.comments?Math.round(top2/T.comments*100):0}% of comments came from 2 posts`,'40+ comments in the month'],
+  ['Keep reels for Romany speaking to camera',`Best reel: ${f1(er(best))}% engagement. Lowest reel this period: ${f1(reelMin)}%`,'Reel engagement rate above 8%'],
+  ['End every caption with one specific question',`${T.comments?Math.round(top2/T.comments*100):0}% of comments came from the top ${nTop} post${nTop>1?'s':''}`,PERIOD_DAYS===7?'10+ comments in the week':PERIOD_DAYS===30?'40+ comments in the month':'120+ comments in the quarter'],
   ['Add one personal or milestone story every two weeks','Milestone posts reached 1,010 to 1,264 in the previous period','Average reach above 650'],
   ['Test one fixed posting slot for 4 weeks (e.g. Tue, Thu, Sun at 7:30am UK)','Posting times vary too much to judge timing','Compare reach by slot after 4 weeks'],
   ['Add a "send this to someone who..." line on shareable carousels',`Shares per 1k reach: ${f2(R.sh)} (previous ${f2(P.sh)})`,'Shares per 1k reach above 7']
@@ -241,7 +250,8 @@ function render(){
   'Reach per post is lower partly because the comparison period included a personal milestone reel (1,211 reach).',
   'Reach is added up per post, so people who saw several posts are counted more than once.',
   'Not included: Stories, profile visits, link clicks, follower count, demographics, Facebook.',
-  'Meta timestamps may be in Pacific time, so check posting times against the scheduler.'
+  'Meta timestamps may be in Pacific time, so check posting times against the scheduler.',
+  'Figures are lifetime totals at export date. Posts from the last few days have had less time to collect views, so short time frames (especially 7 days) can understate the latest period. Export a few days after the period ends for a fair comparison.'
  ].map(x=>`<li>${x}</li>`).join('');
  $('foot').textContent=`Next report: ${CONFIG.nextReport}`;
 }
@@ -270,22 +280,120 @@ function parseCSV(t){const rows=[];let r=[],c='',q=false;for(let i=0;i<t.length;
  if(q){if(ch=='"'&&t[i+1]=='"'){c+='"';i++}else if(ch=='"')q=false;else c+=ch}
  else if(ch=='"')q=true;else if(ch==','){r.push(c);c=''}else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[i+1]=='\n')i++;r.push(c);rows.push(r);r=[];c=''}else c+=ch}
  if(c||r.length){r.push(c);rows.push(r)}return rows}
-$('csv').onchange=e=>{const file=e.target.files[0];if(!file)return;const rd=new FileReader();
- rd.onload=()=>{try{
-  const rows=parseCSV(rd.result.replace(/^﻿/,'')).filter(r=>r.length>5);const h=rows[0];const ix=n=>h.indexOf(n);
-  const all=rows.slice(1).map(r=>{const [m,d,y]=r[ix('Publish time')].split(' ')[0].split('/');const n=x=>+(r[ix(x)]||0);
-   return{date:`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`,type:r[ix('Post type')].replace('IG ','').replace(/^./,s=>s.toUpperCase()),
-   title:(r[ix('Description')]||'').split('\n')[0].slice(0,70),reach:n('Reach'),views:n('Views'),likes:n('Likes'),comments:n('Comments'),shares:n('Shares'),saves:n('Saves'),follows:n('Follows')}}).sort((a,b)=>a.date<b.date?-1:1);
-  const end=prompt('Report period END date (YYYY-MM-DD):',all[all.length-1].date);if(!end)return;
-  const st=new Date(end+'T12:00:00');st.setDate(st.getDate()-29);const start=prompt('Report period START date (YYYY-MM-DD):',st.toISOString().slice(0,10));if(!start)return;
-  POSTS=all.filter(p=>p.date>=start&&p.date<=end);const ps=new Date(start+'T12:00:00');ps.setDate(ps.getDate()-30);const pss=ps.toISOString().slice(0,10);const prev=all.filter(p=>p.date<start&&p.date>=pss);PREVLABEL=`previous 30 days (${dstr(pss)} to ${dstr(prev.length?prev[prev.length-1].date:start)})`;
-  if(!POSTS.length||!prev.length){alert('Need posts in both the report period and before it.');return}
-  PREV=sum(prev);CONFIG.periodStart=start;CONFIG.periodEnd=end;
-  CONFIG.prepared=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});CONFIG.source=`Meta Business Suite post export (${file.name})`;
-  render();
- }catch(err){alert('Could not read this CSV. Use the Meta Business Suite post-level export.')}};
- rd.readAsText(file)};
+$('csv').onchange = e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const name = file.name.toLowerCase();
 
+  // 1. HTML REPORT LOADER
+  if (name.endsWith('.html') || name.endsWith('.htm')) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      try {
+        const txt = rd.result;
+        const m = txt.match(/let ALL=(\[.*?\]);/s);
+        if (m) {
+          ALL = JSON.parse(m[1]);
+          CONFIG.source = `Loaded report file (${file.name})`;
+          CONFIG.prepared = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+          $('endDate').value = ALL[ALL.length - 1].date;
+          applyPeriod();
+          return;
+        }
+        alert('Could not find data array in HTML file.');
+      } catch (err) {
+        alert('Error parsing HTML file: ' + err.message);
+      }
+    };
+    rd.readAsText(file);
+    return;
+  }
+
+  // 2. EXCEL (.XLSX / .XLS) LOADER
+  if (name.endsWith('.xlsx') || name.endsWith('.xls')) {
+    const rd = new FileReader();
+    rd.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(sheet, {header: 1});
+        processTableRows(rows, file.name);
+      } catch (err) {
+        alert('Error parsing Excel file. Ensure it is a Meta Business Suite post export.');
+      }
+    };
+    rd.readAsArrayBuffer(file);
+    return;
+  }
+
+  // 3. CSV LOADER
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const rows = parseCSV(rd.result.replace(/^\uFEFF/, '')).filter(r => r.length > 5);
+      processTableRows(rows, file.name);
+    } catch (err) {
+      alert('Could not read this CSV. Use the Meta Business Suite post-level export.');
+    }
+  };
+  rd.readAsText(file);
+};
+
+function processTableRows(rows, fileName) {
+  const h = rows[0].map(x => String(x || '').trim());
+  const ix = n => h.findIndex(col => col.toLowerCase().includes(n.toLowerCase()));
+  const pubIdx = ix('Publish time') >= 0 ? ix('Publish time') : ix('Date');
+  const typeIdx = ix('Post type') >= 0 ? ix('Post type') : ix('Type');
+  const descIdx = ix('Description') >= 0 ? ix('Description') : ix('Title');
+  const reachIdx = ix('Reach');
+  const viewsIdx = ix('Views') >= 0 ? ix('Views') : ix('Impressions');
+  const likesIdx = ix('Likes');
+  const commIdx = ix('Comments');
+  const sharesIdx = ix('Shares');
+  const savesIdx = ix('Saves');
+  const followsIdx = ix('Follows');
+
+  const parsed = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r || r.length < 5) continue;
+    const rawDate = String(r[pubIdx] || '');
+    let dateStr = '';
+    if (rawDate.includes('/')) {
+      const parts = rawDate.split(' ')[0].split('/');
+      dateStr = `${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+    } else if (rawDate.includes('-')) {
+      dateStr = rawDate.split(' ')[0];
+    } else {
+      dateStr = rawDate;
+    }
+    const n = idx => idx >= 0 ? +(r[idx] || 0) : 0;
+    parsed.push({
+      date: dateStr,
+      type: String(r[typeIdx] || 'Post').replace('IG ', '').replace(/^./, s => s.toUpperCase()),
+      title: String(r[descIdx] || '').split('\n')[0].slice(0, 70),
+      reach: n(reachIdx),
+      views: n(viewsIdx),
+      likes: n(likesIdx),
+      comments: n(commIdx),
+      shares: n(sharesIdx),
+      saves: n(savesIdx),
+      follows: n(followsIdx)
+    });
+  }
+  if (!parsed.length) {
+    alert('No post rows found in export file.');
+    return;
+  }
+  parsed.sort((a, b) => a.date < b.date ? -1 : 1);
+  ALL = parsed;
+  CONFIG.prepared = new Date().toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'});
+  CONFIG.source = `Export file (${fileName})`;
+  $('endDate').value = ALL[ALL.length - 1].date;
+  applyPeriod();
+}
+$('range').onchange=applyPeriod;$('endDate').onchange=applyPeriod;
 
 function checkGate() {
   const pass = document.getElementById('gate-pass').value.trim();
@@ -300,7 +408,7 @@ if (sessionStorage.getItem('tfw_report_auth') === 'true') {
   document.getElementById('gate').style.display = 'none';
 }
 
-render();
+$('endDate').value=CONFIG.periodEnd;applyPeriod();
 </script>
 </body>
 </html>
