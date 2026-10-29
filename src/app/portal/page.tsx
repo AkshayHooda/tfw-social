@@ -41,6 +41,105 @@ import { ContentCalendar } from '@/components/portal/ContentCalendar';
 import { IdeasStudio } from '@/components/portal/IdeasStudio';
 import { TemplateVault } from '@/components/portal/TemplateVault';
 
+const TOP_PUBLISHED_PERFORMERS = [
+  {
+    "rank": 1,
+    "title": "\ud83c\udfc6 Rising Star of the Year 2025",
+    "caption": "16 year old me who dropped out of college wouldn't believe this...",
+    "type": "Carousel",
+    "date": "13 Nov 2025",
+    "metric_highlight": "21.9% Engagement",
+    "badge": "#1 Highest Engagement",
+    "reach": 1091,
+    "views": 4491,
+    "likes": 176,
+    "comments": 55,
+    "saves": 8,
+    "shares": 0,
+    "url": "https://www.instagram.com/p/DQ_nDxECJ1w/"
+  },
+  {
+    "rank": 2,
+    "title": "When the Finance Industry Tells Me I Can't",
+    "caption": "Breaking stereotypes and showing how financial advice can be human...",
+    "type": "Reel",
+    "date": "05 Dec 2025",
+    "metric_highlight": "2,107 Reach (Viral)",
+    "badge": "#1 Highest Reach",
+    "reach": 2107,
+    "views": 6128,
+    "likes": 64,
+    "comments": 10,
+    "saves": 0,
+    "shares": 3,
+    "url": "https://www.instagram.com/reel/DR5WbFtiFLw/"
+  },
+  {
+    "rank": 3,
+    "title": "Billions Sitting in Lost Pensions",
+    "caption": "Here is how to find your lost pensions with the free tracing tool...",
+    "type": "Carousel",
+    "date": "18 Oct 2026",
+    "metric_highlight": "9 Saves (11.3% Eng)",
+    "badge": "#1 Most Saved",
+    "reach": 515,
+    "views": 1266,
+    "likes": 37,
+    "comments": 7,
+    "saves": 9,
+    "shares": 5,
+    "url": "https://www.instagram.com/p/DBR-b2nsu3_/"
+  },
+  {
+    "rank": 4,
+    "title": "Self-Employed and Expecting? (Maternity Allowance)",
+    "caption": "There is no Statutory Maternity Pay from an employer, but there is Maternity Allowance...",
+    "type": "Carousel",
+    "date": "13 Oct 2026",
+    "metric_highlight": "728 Reach \u2022 8 Shares",
+    "badge": "Top Month Reach",
+    "reach": 728,
+    "views": 1868,
+    "likes": 38,
+    "comments": 4,
+    "saves": 7,
+    "shares": 8,
+    "url": "https://www.instagram.com/p/DBG0E-aMv2n/"
+  },
+  {
+    "rank": 5,
+    "title": "Busy Business. Full Diary. Good Money.",
+    "caption": "Romany speaking direct to camera on setting up a business that supports your life...",
+    "type": "Reel",
+    "date": "04 Oct 2026",
+    "metric_highlight": "12.6% Eng \u2022 +6 Follows",
+    "badge": "Top Follow Converter",
+    "reach": 587,
+    "views": 1108,
+    "likes": 52,
+    "comments": 17,
+    "saves": 1,
+    "shares": 4,
+    "url": "https://www.instagram.com/reel/DAthg-XMi1J/"
+  },
+  {
+    "rank": 6,
+    "title": "This is the Part No One Sees",
+    "caption": "Last year I struggled to introduce myself in a group of six. Now speaking on stages...",
+    "type": "Image",
+    "date": "16 Nov 2025",
+    "metric_highlight": "1,264 Reach \u2022 12.2% Eng",
+    "badge": "Top Founder Story",
+    "reach": 1264,
+    "views": 4263,
+    "likes": 119,
+    "comments": 33,
+    "saves": 0,
+    "shares": 2,
+    "url": "https://www.instagram.com/p/DRHJT4KiMXI/"
+  }
+];
+
 export default function UnifiedInfluencerPortal() {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -1495,6 +1594,77 @@ export default function UnifiedInfluencerPortal() {
                 <ExternalLink className="w-4 h-4" />
               </a>
             </div>
+
+            {/* TOP PERFORMING PUBLISHED POSTS SECTION */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#4c1315]/15 shadow-sm space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#4c1315]/10 pb-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Award className="w-5 h-5 text-[#ad9b58]" />
+                    <h3 className="text-xl font-serif-display font-bold text-[#4c1315]">
+                      Top Performing Published Posts
+                    </h3>
+                  </div>
+                  <p className="text-xs font-body text-[#4c1315]/70 mt-1">
+                    Your highest converting broadcasts ranked by verified engagement rate, saves, and viral reach.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider bg-[#ad9b58]/15 text-[#4c1315] px-3 py-1 rounded-full">
+                    Audited Meta Business Data
+                  </span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {TOP_PUBLISHED_PERFORMERS.map((post) => (
+                  <div
+                    key={post.rank}
+                    className="bg-[#fbf7f4]/60 hover:bg-[#fbf7f4] border border-[#4c1315]/10 hover:border-[#ad9b58] rounded-2xl p-5 transition flex flex-col justify-between shadow-xs group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#4c1315] text-[#fbf7ee]">
+                          {post.badge}
+                        </span>
+                        <span className="text-[11px] font-semibold text-[#4c1315]/60 font-body">
+                          {post.date}
+                        </span>
+                      </div>
+
+                      <h4 className="font-serif-display font-bold text-base text-[#280c0d] group-hover:text-[#4c1315] transition mb-1 line-clamp-1">
+                        {post.title}
+                      </h4>
+                      <p className="text-xs text-[#4c1315]/80 font-body line-clamp-2 mb-4">
+                        {post.caption}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-[#4c1315]/10 flex items-center justify-between text-xs">
+                      <div className="space-y-0.5">
+                        <div className="text-[13px] font-bold text-emerald-800">
+                          {post.metric_highlight}
+                        </div>
+                        <div className="text-[11px] text-[#4c1315]/60 font-body">
+                          {post.reach.toLocaleString()} Reach • {post.views.toLocaleString()} Views
+                        </div>
+                      </div>
+
+                      <a
+                        href={post.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-xl bg-white border border-[#4c1315]/15 text-[#4c1315] hover:bg-[#4c1315] hover:text-white transition flex items-center justify-center cursor-pointer shadow-xs"
+                        title="View live post on Instagram"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* 4 CORE EXECUTIVE STATUS CARDS */}
             <section className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
               {/* Card 1: In Creation / Pending */}
