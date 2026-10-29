@@ -1,802 +1,306 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Finance Woman: Instagram Performance Report</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --border-subtle: #f1f5f9;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --text-soft: #94a3b8;
-      --success: #15803d;
-      --success-soft: #dcfce7;
-      --primary: #4c1315;
-      --primary-soft: #fbf7f4;
-      --gold: #ad9b58;
-      --gold-soft: #fdfaf3;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      line-height: 1.6;
-      padding-bottom: 80px;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* GATE */
-    #gate {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 20px;
-    }
-    .gate-box {
-      width: 100%;
-      max-width: 420px;
-      padding: 38px 34px;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      box-shadow: 0 12px 30px -6px rgba(0,0,0,0.06);
-      text-align: center;
-    }
-    .gate-logo {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 6px;
-    }
-    .gate-sub {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-    }
-    .gate-input {
-      width: 100%;
-      padding: 13px 16px;
-      font-size: 15px;
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 14px;
-      text-align: center;
-      letter-spacing: 2.5px;
-      font-weight: 700;
-      outline: none;
-    }
-    .gate-input:focus { border-color: var(--primary); }
-    .gate-btn {
-      width: 100%;
-      padding: 13px;
-      background: var(--primary);
-      color: #ffffff;
-      font-size: 14.5px;
-      font-weight: 700;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
-    .gate-btn:hover { opacity: 0.92; }
-    .gate-err {
-      color: #dc2626;
-      font-size: 12.5px;
-      margin-top: 12px;
-      font-weight: 600;
-      display: none;
-    }
-
-    /* TOP NAVIGATION */
-    .top-nav {
-      background: #ffffff;
-      border-bottom: 1px solid var(--border);
-      padding: 16px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .brand-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--primary);
-    }
-    .brand-tag {
-      font-size: 12px;
-      font-weight: 700;
-      background: var(--gold-soft);
-      color: var(--primary);
-      border: 1px solid rgba(173,155,88,0.25);
-      padding: 3px 10px;
-      border-radius: 999px;
-      margin-left: 10px;
-    }
-    .nav-link {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--primary);
-      text-decoration: none;
-      padding: 8px 14px;
-      border-radius: 10px;
-      background: var(--primary-soft);
-      border: 1px solid rgba(76,19,21,0.15);
-      transition: all 0.15s;
-    }
-    .nav-link:hover { background: rgba(76,19,21,0.1); }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 24px 0;
-    }
-
-    .report-header {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px 32px;
-      margin-bottom: 28px;
-    }
-    .doc-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 14px;
-      line-height: 1.25;
-    }
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-      font-size: 13px;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 16px;
-    }
-    .meta-item strong {
-      color: var(--text);
-    }
-
-    /* SECTION CARD */
-    .section-card {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px 32px;
-      margin-bottom: 28px;
-    }
-    .section-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 21px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-bottom: 12px;
-    }
-
-    .takeaway-banner {
-      background: var(--gold-soft);
-      border-left: 4px solid var(--gold);
-      padding: 14px 18px;
-      border-radius: 0 10px 10px 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: #3b2f0a;
-      margin-top: 18px;
-    }
-
-    /* TABLE */
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13.5px;
-      text-align: left;
-    }
-    th {
-      background: #f8fafc;
-      color: var(--text-muted);
-      font-weight: 700;
-      font-size: 11.5px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-      color: var(--text);
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #fdfaf8; }
-
-    .type-pill {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .type-carousel { background: #eff6ff; color: #1d4ed8; }
-    .type-reel { background: #fef3c7; color: #b45309; }
-
-    .eng-pill {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 11.5px;
-    }
-    .eng-high { background: var(--success-soft); color: var(--success); }
-    .eng-med { background: #eff6ff; color: #2563eb; }
-    .eng-low { background: #f1f5f9; color: var(--text-muted); }
-
-    .highlight-pos {
-      color: var(--success);
-      font-weight: 700;
-    }
-    .highlight-neg {
-      color: #b91c1c;
-      font-weight: 700;
-    }
-
-    ul.bullet-list {
-      padding-left: 20px;
-      margin-top: 10px;
-    }
-    ul.bullet-list li {
-      margin-bottom: 10px;
-      font-size: 14px;
-      color: var(--text);
-      line-height: 1.6;
-    }
-    ul.bullet-list li strong {
-      color: var(--primary);
-    }
-
-    .performers-box {
-      margin-top: 18px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      font-size: 13px;
-    }
-    .performers-group h4 {
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
-      color: var(--primary);
-    }
-    .performers-group ul {
-      padding-left: 18px;
-      color: var(--text-muted);
-    }
-    .performers-group ul li {
-      margin-bottom: 4px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Instagram Monthly Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--burg:#4b1314;--burg2:#6d2224;--cream:#f8f2ee;--card:#fff;--ink:#2b1a1a;--mute:#7a6a68;--line:#eadfda;--good:#2f7d4f;--goodbg:#e6f3ea;--bad:#a8322d;--badbg:#f8e3e1;--amb:#946200;--ambbg:#fbefd5;--terr:#b45a3c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+h1,h2{font-family:"Playfair Display",Georgia,serif;color:var(--burg);margin:0}
+h1{font-size:30px}
+h2{font-size:22px;margin-bottom:14px}
+.sub{color:var(--mute);font-size:13px;margin-top:4px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:#fff;color:var(--burg);padding:9px 14px;border-radius:10px;font:500 13px Inter,sans-serif;cursor:pointer;text-decoration:none}
+.btn.primary{background:var(--burg);color:#fff;border-color:var(--burg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}
+.lead{font-size:16px}
+.lead b{color:var(--burg)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.kpi .l{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.kpi .v{font-family:"Playfair Display",serif;font-size:30px;color:var(--burg);line-height:1.2;margin:4px 0}
+.kpi .s{font-size:12px;color:var(--mute)}
+.badge{display:inline-block;margin-top:8px;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.up{background:var(--goodbg);color:var(--good)}.down{background:var(--badbg);color:var(--bad)}.flat{background:var(--ambbg);color:var(--amb)}
+.strip{font-size:14px;color:var(--ink)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px}
+.hint{display:none;font-size:12px;color:var(--mute);margin:6px 0 0}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
+th,td{padding:9px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:#fbf7f5;cursor:pointer;user-select:none}
+td:first-child,th:first-child,td.t,th.t{text-align:left}
+td.t{white-space:normal;min-width:170px}
+tr:last-child td{border-bottom:0}
+.hi{background:var(--goodbg);color:var(--good);font-weight:600;border-radius:6px}
+.lo{background:var(--badbg);color:var(--bad);font-weight:600;border-radius:6px}
+.tag{font-size:12px;padding:2px 8px;border-radius:6px;background:#efe6f5;color:#5a2d82}
+.tag.reel{background:#fbefd5;color:#8a5a00}.tag.carousel{background:#e5eefb;color:#1f4f9a}.tag.image{background:#e6f3ea;color:#2f7d4f}
+.note{font-size:13px;color:var(--mute);margin-top:10px}
+.chart{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:minmax(120px,240px) 1fr 52px;gap:10px;align-items:center;font-size:12.5px}
+.bar .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .track{background:#f3ebe7;border-radius:6px;height:14px}
+.bar .fill{height:14px;border-radius:6px}
+.legend{font-size:12px;color:var(--mute);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 12px;vertical-align:middle}
+ol.find{margin:0;padding-left:20px}ol.find li{margin-bottom:8px}
+.recs td{white-space:normal;text-align:left;vertical-align:top}
+.recs td:first-child{font-weight:600;color:var(--burg);width:28px}
+details summary{cursor:pointer;font-family:"Playfair Display",serif;font-size:20px;color:var(--burg)}
+footer{font-size:12px;color:var(--mute);text-align:center;margin-top:30px}
+@media(max-width:640px){h1{font-size:24px}.hint{display:block}.bar{grid-template-columns:110px 1fr 46px}}
+</style>
 </head>
 <body>
 
-<!-- GATE -->
-<div id="gate">
-  <div class="gate-box">
-    <div class="gate-logo">The Finance Woman</div>
-    <div class="gate-sub">Enter passcode to view private performance analytics</div>
-    <input type="password" id="gate-pass" class="gate-input" placeholder="PASSCODE" autofocus onkeydown="if(event.key==='Enter') checkGate()">
-    <button class="gate-btn" onclick="checkGate()">Access Report</button>
-    <div id="gate-error" class="gate-err">Incorrect passcode. Please try again.</div>
+<!-- PASSWORD GATE -->
+<div id="gate" style="position:fixed;inset:0;background:#ffffff;display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;">
+  <div style="width:100%;max-width:400px;padding:36px 32px;background:#ffffff;border:1px solid #eadfda;border-radius:20px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.06);text-align:center;">
+    <div style="font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:700;color:#4b1314;margin-bottom:6px;">The Finance Woman</div>
+    <div style="font-size:13px;color:#7a6a68;margin-bottom:24px;">Enter passcode to view monthly report</div>
+    <input type="password" id="gate-pass" style="width:100%;padding:12px 14px;font-size:15px;border:1.5px solid #eadfda;border-radius:10px;margin-bottom:14px;text-align:center;letter-spacing:2px;font-weight:600;outline:none;" placeholder="PASSCODE" autofocus onkeydown="if(event.key==='Enter') checkGate()">
+    <button onclick="checkGate()" style="width:100%;padding:12px;background:#4b1314;color:#ffffff;font-size:14px;font-weight:700;border:none;border-radius:10px;cursor:pointer;">Access Report</button>
+    <div id="gate-error" style="color:#dc2626;font-size:12.5px;margin-top:10px;font-weight:600;display:none;">Incorrect passcode. Please try again.</div>
   </div>
 </div>
 
-<!-- NAV -->
-<div class="top-nav">
-  <div style="display: flex; align-items: center;">
-    <span class="brand-title">The Finance Woman</span>
-    <span class="brand-tag">Performance Report</span>
+<div class="wrap">
+<header>
+  <div>
+    <h1>The Finance Woman</h1>
+    <div style="font-weight:600;margin-top:2px">Instagram Monthly Report</div>
+    <div class="sub" id="meta"></div>
   </div>
-  <a href="/portal" class="nav-link">← Return to Portal</a>
+  <div class="btns">
+    <label class="btn primary">Load new Meta CSV<input type="file" id="csv" accept=".csv" hidden></label>
+    <a class="btn" href="/portal">Return to Portal</a>
+  </div>
+</header>
+
+<div class="card lead" id="intro"></div>
+<div class="kpis" id="kpis"></div>
+<div class="card strip" id="totals"></div>
+
+<div class="card">
+  <h2>Performance by format</h2>
+  <div class="tw"><table id="fmt"></table></div>
+  <p class="hint">Scroll sideways to see all columns →</p>
+  <p class="note" id="fmtnote"></p>
 </div>
 
-<div class="container">
+<div class="card">
+  <h2>Engagement rate by post</h2>
+  <div class="chart" id="chart"></div>
+  <div class="legend"><i style="background:#1f4f9a"></i>Carousel<i style="background:#c08a2a"></i>Reel<i style="background:#2f7d4f"></i>Image</div>
+</div>
 
-  <!-- HEADER -->
-  <header class="report-header">
-    <h1 class="doc-title">The Finance Woman: Instagram Performance Report</h1>
-    <div class="meta-grid">
-      <div class="meta-item"><strong>Account:</strong> @thefinancewoman.co.uk</div>
-      <div class="meta-item"><strong>Reporting period:</strong> 27 Sep to 26 Oct 2026 (30 days)</div>
-      <div class="meta-item"><strong>Comparison period:</strong> 5 Nov 2025 to 26 Sep 2026</div>
-      <div class="meta-item"><strong>Data source:</strong> Meta Business Suite post export</div>
-      <div class="meta-item"><strong>Prepared:</strong> 29 October 2026</div>
-    </div>
-  </header>
+<div class="card">
+  <h2>Post by post</h2>
+  <div class="tw"><table id="posts"></table></div>
+  <p class="hint">Scroll sideways to see all columns →</p>
+  <p class="note">Lifetime figures per post. Tap a column heading to sort. Green marks the best result in each column, red the weakest.</p>
+</div>
 
-  <!-- 1. SUMMARY -->
-  <section class="section-card">
-    <h2 class="section-title">1. Summary</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th style="text-align: right;">This period</th>
-            <th style="text-align: right;">Previous 11 months (per post avg)</th>
-            <th style="text-align: right;">Change</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Posts published</td>
-            <td style="text-align: right; font-weight: 600;">8</td>
-            <td style="text-align: right; color: var(--text-muted);">25</td>
-            <td style="text-align: right; color: var(--text-muted);">n/a</td>
-          </tr>
-          <tr>
-            <td>Total views</td>
-            <td style="text-align: right; font-weight: 600;">8,262</td>
-            <td style="text-align: right; color: var(--text-muted);">50,345</td>
-            <td style="text-align: right; color: var(--text-muted);">n/a</td>
-          </tr>
-          <tr>
-            <td>Total reach</td>
-            <td style="text-align: right; font-weight: 600;">4,338</td>
-            <td style="text-align: right; color: var(--text-muted);">20,801</td>
-            <td style="text-align: right; color: var(--text-muted);">n/a</td>
-          </tr>
-          <tr>
-            <td>Average reach per post</td>
-            <td style="text-align: right; font-weight: 600;">542</td>
-            <td style="text-align: right; color: var(--text-muted);">832</td>
-            <td style="text-align: right;" class="highlight-neg">-34.8%</td>
-          </tr>
-          <tr>
-            <td>Engagement rate</td>
-            <td style="text-align: right; font-weight: 600;">6.98%</td>
-            <td style="text-align: right; color: var(--text-muted);">8.65%</td>
-            <td style="text-align: right;" class="highlight-neg">-1.67 pts</td>
-          </tr>
-          <tr>
-            <td>Saves per 1,000 reach</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">5.53</td>
-            <td style="text-align: right; color: var(--text-muted);">0.67</td>
-            <td style="text-align: right;" class="highlight-pos">+722%</td>
-          </tr>
-          <tr>
-            <td>Shares per 1,000 reach</td>
-            <td style="text-align: right; font-weight: 600;">5.53</td>
-            <td style="text-align: right; color: var(--text-muted);">5.14</td>
-            <td style="text-align: right;" class="highlight-pos">+7.6%</td>
-          </tr>
-          <tr>
-            <td>Follows per 1,000 reach</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">2.07</td>
-            <td style="text-align: right; color: var(--text-muted);">1.83</td>
-            <td style="text-align: right;" class="highlight-pos">+13.6%</td>
-          </tr>
-          <tr>
-            <td>Views per account reached</td>
-            <td style="text-align: right; font-weight: 600;">1.90</td>
-            <td style="text-align: right; color: var(--text-muted);">2.42</td>
-            <td style="text-align: right;" class="highlight-neg">-21.3%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="takeaway-banner">
-      In one line: fewer people are seeing each post, but the people who do are saving, sharing and following at a higher rate than before.
-    </div>
-  </section>
+<div class="card">
+  <h2>Key findings</h2>
+  <ol class="find" id="findings"></ol>
+</div>
 
-  <!-- 2. TOTALS FOR THE PERIOD -->
-  <section class="section-card">
-    <h2 class="section-title">2. Totals for the period</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="text-align: right;">Views</th>
-            <th style="text-align: right;">Reach</th>
-            <th style="text-align: right;">Likes</th>
-            <th style="text-align: right;">Comments</th>
-            <th style="text-align: right;">Shares</th>
-            <th style="text-align: right;">Saves</th>
-            <th style="text-align: right;">Follows</th>
-            <th style="text-align: right;">Total interactions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="text-align: right; font-weight: 700; color: var(--primary);">8,262</td>
-            <td style="text-align: right; font-weight: 700; color: var(--primary);">4,338</td>
-            <td style="text-align: right;">225</td>
-            <td style="text-align: right;">30</td>
-            <td style="text-align: right;">24</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">24</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">9</td>
-            <td style="text-align: right; font-weight: 700; color: var(--primary);">303</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<div class="card">
+  <h2>Recommendations for next month</h2>
+  <div class="tw"><table class="recs" id="recs" style="min-width:560px"></table></div>
+</div>
 
-  <!-- 3. PERFORMANCE BY FORMAT -->
-  <section class="section-card">
-    <h2 class="section-title">3. Performance by format</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Format</th>
-            <th style="text-align: right;">Posts</th>
-            <th style="text-align: right;">Avg reach</th>
-            <th style="text-align: right;">Engagement rate</th>
-            <th style="text-align: right;">Saves per 1k reach</th>
-            <th style="text-align: right;">Shares per 1k reach</th>
-            <th style="text-align: right;">Follows per 1k reach</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td style="text-align: right; font-weight: 600;">2</td>
-            <td style="text-align: right; font-weight: 700;">622</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">9.25%</span></td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">12.87</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">10.46</td>
-            <td style="text-align: right;">1.61</td>
-          </tr>
-          <tr>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="text-align: right; font-weight: 600;">6</td>
-            <td style="text-align: right;">516</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">6.07%</span></td>
-            <td style="text-align: right;">2.58</td>
-            <td style="text-align: right;">3.55</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">2.26</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="font-size: 13px; color: var(--text-muted); margin-top: 14px; font-style: italic;">
-      Reading: carousels lead on every quality measure except follows. Carousels save at 5x the reel rate and share at 3x the reel rate. Reels bring slightly more follows per person reached.
-    </div>
-  </section>
+<div class="card">
+  <details>
+    <summary>How we calculate</summary>
+    <div class="tw" style="margin-top:12px"><table style="min-width:420px">
+      <tr><th class="t">Measure</th><th class="t">Formula</th></tr>
+      <tr><td>Interactions</td><td class="t">Likes + Comments + Shares + Saves</td></tr>
+      <tr><td>Engagement rate</td><td class="t">Interactions ÷ Reach × 100</td></tr>
+      <tr><td>Average reach per post</td><td class="t">Total reach ÷ Number of posts</td></tr>
+      <tr><td>Saves, shares, follows per 1k reach</td><td class="t">Metric ÷ Reach × 1,000</td></tr>
+      <tr><td>Views per account reached</td><td class="t">Views ÷ Reach</td></tr>
+      <tr><td>% change</td><td class="t">(This period − Previous) ÷ Previous × 100</td></tr>
+    </table></div>
+    <p class="note" id="example"></p>
+  </details>
+</div>
 
-  <!-- 4. POST BY POST -->
-  <section class="section-card">
-    <h2 class="section-title">4. Post by post</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Format</th>
-            <th>Post</th>
-            <th style="text-align: right;">Reach</th>
-            <th style="text-align: right;">Views</th>
-            <th style="text-align: right;">Likes</th>
-            <th style="text-align: right;">Comments</th>
-            <th style="text-align: right;">Shares</th>
-            <th style="text-align: right;">Saves</th>
-            <th style="text-align: right;">Follows</th>
-            <th style="text-align: right;">Eng. rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">4 Oct</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td style="font-weight: 600;">Busy business, full diary, good money</td>
-            <td style="text-align: right; font-weight: 600;">587</td>
-            <td style="text-align: right; color: var(--text-muted);">1,108</td>
-            <td style="text-align: right;">52</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">17</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">6</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">12.6%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">11 Oct</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>3 things every woman in business should do this October</td>
-            <td style="text-align: right; font-weight: 600;">643</td>
-            <td style="text-align: right; color: var(--text-muted);">1,023</td>
-            <td style="text-align: right;">23</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">3</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">4.2%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">13 Oct</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td style="font-weight: 600;">Self-employed and expecting? (Maternity Allowance)</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">728</td>
-            <td style="text-align: right; color: var(--text-muted); font-weight: 700;">1,868</td>
-            <td style="text-align: right;">38</td>
-            <td style="text-align: right;">4</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">8</td>
-            <td style="text-align: right;">7</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">7.8%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">14 Oct</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>Four things to protect before you need them</td>
-            <td style="text-align: right; font-weight: 600;">530</td>
-            <td style="text-align: right; color: var(--text-muted);">766</td>
-            <td style="text-align: right;">25</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">5.5%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">18 Oct</td>
-            <td><span class="type-pill type-carousel">Carousel</span></td>
-            <td style="font-weight: 600;">Billions sitting in lost pensions</td>
-            <td style="text-align: right; font-weight: 600;">515</td>
-            <td style="text-align: right; color: var(--text-muted);">1,266</td>
-            <td style="text-align: right;">37</td>
-            <td style="text-align: right;">7</td>
-            <td style="text-align: right;">5</td>
-            <td style="text-align: right; font-weight: 700; color: var(--success);">9</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-high">11.3%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">20 Oct</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>Self-employed finances should feel calm, clear and human</td>
-            <td style="text-align: right; font-weight: 600;">401</td>
-            <td style="text-align: right; color: var(--text-muted);">612</td>
-            <td style="text-align: right;">13</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.5%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">21 Oct</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>Your payslip says £99,000. HMRC may see more</td>
-            <td style="text-align: right; font-weight: 600;">599</td>
-            <td style="text-align: right; color: var(--text-muted);">1,124</td>
-            <td style="text-align: right;">29</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;"><span class="eng-pill eng-med">5.5%</span></td>
-          </tr>
-          <tr>
-            <td style="white-space: nowrap; font-weight: 600;">26 Oct</td>
-            <td><span class="type-pill type-reel">Reel</span></td>
-            <td>Does your dog have more insurance than you?</td>
-            <td style="text-align: right; font-weight: 600;">335</td>
-            <td style="text-align: right; color: var(--text-muted);">495</td>
-            <td style="text-align: right;">8</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;">2</td>
-            <td style="text-align: right;">1</td>
-            <td style="text-align: right;">0</td>
-            <td style="text-align: right;"><span class="eng-pill eng-low">3.3%</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="card">
+  <h2>Notes and limits</h2>
+  <ul class="note" style="margin:0;padding-left:18px" id="limits"></ul>
+</div>
 
-    <div class="performers-box">
-      <div class="performers-group">
-        <h4>Top performers</h4>
-        <ul>
-          <li><strong>Highest reach:</strong> Maternity Allowance carousel (728)</li>
-          <li><strong>Highest engagement:</strong> "Busy business" reel (12.6%, 17 comments, 6 of the month's 9 follows)</li>
-          <li><strong>Most saves:</strong> Lost pensions carousel (9)</li>
-        </ul>
-      </div>
-      <div class="performers-group">
-        <h4>Lowest performers</h4>
-        <ul>
-          <li>"Dog insurance" reel: 335 reach, 3.3% engagement</li>
-          <li>"Calm, clear and human" reel: 401 reach, 3.5% engagement, 0 shares</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. KEY FINDINGS -->
-  <section class="section-card">
-    <h2 class="section-title">5. Key findings</h2>
-    <ul class="bullet-list">
-      <li><strong>Reach per post fell 34.8%</strong> (832 to 542). The previous period was lifted by award and personal milestone posts (Rising Star 2025, 30 Under 30), which reached around 1,000 to 1,200 each. This period was entirely educational.</li>
-      <li><strong>Saves rose from 0.67 to 5.53 per 1,000 reach.</strong> 24 saves this month against 14 in the previous 11 months combined. Practical, reference-style carousels are building lasting value.</li>
-      <li><strong>Four of six reels scored 5.5% engagement or less.</strong> Reels without Romany speaking, or without a direct question, are the weakest content on the account.</li>
-      <li><strong>One reel produced 67% of the month's follows.</strong> "Busy business" (Romany on camera, a personal question) brought 6 of 9 follows and 17 of 30 comments.</li>
-      <li><strong>Comments are concentrated.</strong> 2 posts produced 24 of 30 comments (80%). Most posts ask no question.</li>
-    </ul>
-  </section>
-
-  <!-- 6. RECOMMENDATIONS -->
-  <section class="section-card">
-    <h2 class="section-title">6. Recommendations</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 40px;">#</th>
-            <th>Action</th>
-            <th>Why (from the data)</th>
-            <th>Target for next month</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight: 700;">1</td>
-            <td style="font-weight: 600;">Publish 2 practical carousels a week (dated, checklist or "what changes" format)</td>
-            <td style="color: var(--text-muted);">Carousels: 9.25% engagement, 12.87 saves per 1k reach</td>
-            <td style="font-weight: 700; color: var(--success);">Saves per 1k reach above 6</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700;">2</td>
-            <td style="font-weight: 600;">Keep reels only where Romany speaks to camera</td>
-            <td style="color: var(--text-muted);">Face-led reel: 12.6% engagement and 6 follows. Text or B-roll reels: 3.3% to 5.5%</td>
-            <td style="font-weight: 700; color: var(--success);">Reel engagement rate above 8%</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700;">3</td>
-            <td style="font-weight: 600;">End every caption with one specific question</td>
-            <td style="color: var(--text-muted);">80% of comments came from 2 posts that asked something personal</td>
-            <td style="font-weight: 700; color: var(--success);">40+ comments in the month</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700;">4</td>
-            <td style="font-weight: 600;">Add one personal or story post every two weeks</td>
-            <td style="color: var(--text-muted);">Milestone posts drove the higher reach in the previous period</td>
-            <td style="font-weight: 700; color: var(--success);">Average reach back above 650</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700;">5</td>
-            <td style="font-weight: 600;">Fix posting time for a 4-week test (e.g. Tue, Thu, Sun at 7:30am UK)</td>
-            <td style="color: var(--text-muted);">Posting times ranged widely, so timing cannot currently be assessed</td>
-            <td style="font-weight: 700; color: var(--success);">Compare reach by slot after 4 weeks</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700;">6</td>
-            <td style="font-weight: 600;">Add a "send this to" prompt on shareable carousels</td>
-            <td style="color: var(--text-muted);">Shares per 1k reach rose only 7.6%</td>
-            <td style="font-weight: 700; color: var(--success);">Shares per 1k reach above 7</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- 7. HOW THE NUMBERS ARE CALCULATED -->
-  <section class="section-card">
-    <h2 class="section-title">7. How the numbers are calculated</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Measure</th>
-            <th>Formula</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight: 600;">Interactions</td>
-            <td>Likes + Comments + Shares + Saves</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Engagement rate</td>
-            <td>Interactions / Reach * 100</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Average reach per post</td>
-            <td>Total reach / Number of posts</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Saves per 1,000 reach</td>
-            <td>Saves / Reach * 1,000</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Shares per 1,000 reach</td>
-            <td>Shares / Reach * 1,000</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Follows per 1,000 reach</td>
-            <td>Follows / Reach * 1,000</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Views per account reached</td>
-            <td>Views / Reach</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 600;">Percentage change</td>
-            <td>(This period - Previous period) / Previous period * 100</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">
-      Example: engagement rate this period = 303 / 4,338 * 100 = <strong>6.98%</strong>.
-    </div>
-  </section>
-
-  <!-- 8. NOTES AND LIMITS -->
-  <section class="section-card">
-    <h2 class="section-title">8. Notes and limits</h2>
-    <ul class="bullet-list">
-      <li><strong>Small sample:</strong> 8 posts in the period. Treat the findings as direction, not proof.</li>
-      <li><strong>Reach is per post:</strong> total reach adds each post's reach, so people who saw several posts are counted more than once. It is not unique accounts reached.</li>
-      <li><strong>Not included in this export:</strong> Stories, profile visits, link clicks, follower count, audience demographics and Facebook data.</li>
-      <li><strong>Budget posts:</strong> posts published after 26 October, including the Budget 2026 carousels, are not in this export and will appear in next month's report.</li>
-      <li><strong>Time zone:</strong> Meta export timestamps may be in Pacific time rather than UK time, so posting times should be checked against the scheduler before drawing timing conclusions.</li>
-    </ul>
-  </section>
-
+<footer id="foot"></footer>
 </div>
 
 <script>
-  function checkGate() {
-    const pass = document.getElementById('gate-pass').value.trim();
-    if (pass === 'FINANCE2026' || pass === 'tfw2026' || pass === 'needingadvice') {
-      sessionStorage.setItem('tfw_report_auth', 'true');
-      document.getElementById('gate').style.display = 'none';
-    } else {
-      document.getElementById('gate-error').style.display = 'block';
-    }
-  }
+/* ===== DATA: replace by loading a new Meta CSV, or edit here ===== */
+const CONFIG={
+  account:"@thefinancewoman.co.uk",
+  periodStart:"2026-09-27", periodEnd:"2026-10-26",
+  prepared:"29 October 2026", source:"Meta Business Suite post export (27 October 2026)",
+  nextReport:"end of November 2026"
+};
+/* previous-period posts are only needed as totals */
+let PREV={posts:2,views:2708,reach:1794,likes:63,comments:2,shares:4,saves:2,follows:3};
+let PREVLABEL='previous 30 days (28 Aug to 26 Sep)';
+let POSTS=[
+ {date:"2026-10-04",type:"Reel",title:"Busy business, full diary, good money",reach:587,views:1108,likes:52,comments:17,shares:4,saves:1,follows:6},
+ {date:"2026-10-11",type:"Reel",title:"3 things every woman in business should do this October",reach:643,views:1023,likes:23,comments:0,shares:1,saves:3,follows:0},
+ {date:"2026-10-13",type:"Carousel",title:"Self-employed and expecting? (Maternity Allowance)",reach:728,views:1868,likes:38,comments:4,shares:8,saves:7,follows:1},
+ {date:"2026-10-14",type:"Reel",title:"Four things to protect before you need them",reach:530,views:766,likes:25,comments:0,shares:2,saves:2,follows:0},
+ {date:"2026-10-18",type:"Carousel",title:"Billions sitting in lost pensions",reach:515,views:1266,likes:37,comments:7,shares:5,saves:9,follows:1},
+ {date:"2026-10-20",type:"Reel",title:"Self-employed finances should feel calm, clear and human",reach:401,views:612,likes:13,comments:0,shares:0,saves:1,follows:0},
+ {date:"2026-10-21",type:"Reel",title:"Your payslip says £99,000. HMRC may see more",reach:599,views:1124,likes:29,comments:2,shares:2,saves:0,follows:1},
+ {date:"2026-10-26",type:"Reel",title:"Does your dog have more insurance than you?",reach:335,views:495,likes:8,comments:0,shares:2,saves:1,follows:0}
+];
 
-  if (sessionStorage.getItem('tfw_report_auth') === 'true') {
+/* ===== helpers ===== */
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('en-GB');
+const f2=n=>n.toFixed(2), f1=n=>n.toFixed(1);
+const dstr=s=>new Date(s+"T12:00:00").toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+const inter=p=>p.likes+p.comments+p.shares+p.saves;
+const er=p=>p.reach?inter(p)/p.reach*100:0;
+function sum(rs){const t={posts:rs.length,views:0,reach:0,likes:0,comments:0,shares:0,saves:0,follows:0};rs.forEach(p=>{for(const k of ['views','reach','likes','comments','shares','saves','follows'])t[k]+=p[k]});return t}
+function rates(t){const I=t.likes+t.comments+t.shares+t.saves;return{I,avgR:t.reach/t.posts,er:I/t.reach*100,sv:t.saves/t.reach*1000,sh:t.shares/t.reach*1000,fo:t.follows/t.reach*1000,vpr:t.views/t.reach}}
+const pct=(a,b)=>b?(a-b)/b*100:0;
+function badge(ch,suffix='%',goodUp=true,amberSmall=0){const cls=Math.abs(ch)<amberSmall?'flat':((ch>=0)===goodUp?'up':'down');return `<span class="badge ${cls}">${ch>=0?'+':''}${f1(ch)}${suffix}</span>`}
+
+/* ===== render ===== */
+function render(){
+ const T=sum(POSTS),R=rates(T),P=rates(PREV);
+ $('meta').textContent=`${CONFIG.account} · ${dstr(CONFIG.periodStart)} to ${dstr(CONFIG.periodEnd)} ${CONFIG.periodEnd.slice(0,4)} · Prepared ${CONFIG.prepared} · Source: ${CONFIG.source}`;
+ $('intro').innerHTML=`Covers lifetime metrics for the <b>${T.posts} posts</b> published ${dstr(CONFIG.periodStart)} to ${dstr(CONFIG.periodEnd)}, compared with the ${PREV.posts} posts in the ${PREVLABEL}.<br><br><b>In one line:</b> total reach ${T.reach>PREV.reach?'rose':'fell'} ${f1(Math.abs(pct(T.reach,PREV.reach)))}% (${fmt(PREV.reach)} to ${fmt(T.reach)}) and interactions ${f1(pct(R.I,PREV.likes+PREV.comments+PREV.shares+PREV.saves))}%, from ${PREV.posts} posts to ${T.posts}. Reach per post ${R.avgR<P.avgR?'fell':'rose'} ${f1(Math.abs(pct(R.avgR,P.avgR)))}%, while saves per 1k reach went from ${f2(P.sv)} to ${f2(R.sv)} and follows per 1k reach from ${f2(P.fo)} to ${f2(R.fo)}.`;
+ const k=[
+  ['Posts published',fmt(T.posts),`previous 30 days: ${PREV.posts}`,badge(pct(T.posts,PREV.posts))],
+  ['Total reach',fmt(T.reach),`previous ${fmt(PREV.reach)} · avg ${fmt(R.avgR)} per post (was ${fmt(P.avgR)})`,badge(pct(T.reach,PREV.reach))],
+  ['Total interactions',fmt(R.I),`previous ${fmt(P.I)}`,badge(pct(R.I,P.I))],
+  ['Total views',fmt(T.views),`previous ${fmt(PREV.views)}`,badge(pct(T.views,PREV.views))],
+  ['Engagement rate',f2(R.er)+'%',`${fmt(R.I)} interactions (previous ${f2(P.er)}%)`,badge(R.er-P.er,' pts',true,3)],
+  ['Saves',fmt(T.saves),`previous ${PREV.saves} · ${f2(R.sv)} per 1k reach`,badge(pct(T.saves,PREV.saves))],
+  ['Shares',fmt(T.shares),`previous ${PREV.shares} · ${f2(R.sh)} per 1k reach`,badge(pct(T.shares,PREV.shares))],
+  ['Comments',fmt(T.comments),`previous ${PREV.comments}`,badge(pct(T.comments,PREV.comments))],
+  ['Follows from posts',fmt(T.follows),`previous ${PREV.follows} · ${f2(R.fo)} per 1k reach`,badge(pct(T.follows,PREV.follows))]
+ ];
+ $('kpis').innerHTML=k.map(x=>`<div class="kpi"><div class="l">${x[0]}</div><div class="v">${x[1]}</div><div class="s">${x[2]}</div>${x[3]}</div>`).join('');
+ $('totals').innerHTML=`<b>This period in total:</b> ${fmt(T.views)} views · ${fmt(T.reach)} reach · ${fmt(T.likes)} likes · ${fmt(T.comments)} comments · ${fmt(T.shares)} shares · ${fmt(T.saves)} saves · ${fmt(T.follows)} follows · ${fmt(R.I)} interactions`;
+
+ // formats
+ const types=[...new Set(POSTS.map(p=>p.type))];
+ const FR={};types.forEach(t=>{const s=sum(POSTS.filter(p=>p.type===t));FR[t]={s,r:rates(s)}});
+ $('fmt').innerHTML=`<tr><th>Format</th><th>Posts</th><th>Avg reach</th><th>Eng. rate</th><th>Saves/1k</th><th>Shares/1k</th><th>Follows/1k</th></tr>`+
+  types.map(t=>`<tr><td><span class="tag ${t.toLowerCase()}">${t}</span></td><td>${FR[t].s.posts}</td><td>${fmt(FR[t].r.avgR)}</td><td>${f2(FR[t].r.er)}%</td><td>${f2(FR[t].r.sv)}</td><td>${f2(FR[t].r.sh)}</td><td>${f2(FR[t].r.fo)}</td></tr>`).join('');
+ const C=FR.Carousel,Rl=FR.Reel;
+ $('fmtnote').textContent=(C&&Rl)?`Carousels saved at ${f1(C.r.sv/Rl.r.sv)}x the reel rate (${f2(C.r.sv)} vs ${f2(Rl.r.sv)} per 1k reach) and shared at ${f1(C.r.sh/Rl.r.sh)}x (${f2(C.r.sh)} vs ${f2(Rl.r.sh)}). Reels brought ${Rl.r.fo>C.r.fo?'more':'fewer'} follows per person reached (${f2(Rl.r.fo)} vs ${f2(C.r.fo)}).`:'';
+
+ // chart
+ const mx=Math.max(...POSTS.map(er));const col={Carousel:'#1f4f9a',Reel:'#c08a2a',Image:'#2f7d4f'};
+ $('chart').innerHTML=[...POSTS].sort((a,b)=>er(b)-er(a)).map(p=>`<div class="bar"><span class="n" title="${p.title}">${p.title}</span><div class="track"><div class="fill" style="width:${er(p)/mx*100}%;background:${col[p.type]||'#888'}"></div></div><b>${f1(er(p))}%</b></div>`).join('');
+
+ renderPosts('date',1);
+
+ // findings (rule based)
+ const best=POSTS.reduce((a,b)=>er(b)>er(a)?b:a), topRe=POSTS.reduce((a,b)=>b.reach>a.reach?b:a), topSv=POSTS.reduce((a,b)=>b.saves>a.saves?b:a);
+ const reels=POSTS.filter(p=>p.type==='Reel'),weakReels=reels.filter(p=>er(p)<=5.5).length;
+ const cm=[...POSTS].sort((a,b)=>b.comments-a.comments),top2=cm[0].comments+(cm[1]?cm[1].comments:0);
+ const F=[
+  `<b>Reach per post ${R.avgR<P.avgR?'fell':'rose'} ${f1(Math.abs(pct(R.avgR,P.avgR)))}%</b> (${fmt(P.avgR)} to ${fmt(R.avgR)}).`,
+  `<b>Output:</b> ${T.posts} posts against ${PREV.posts} in the ${PREVLABEL}. Total reach ${fmt(PREV.reach)} to ${fmt(T.reach)}, interactions ${fmt(PREV.likes+PREV.comments+PREV.shares+PREV.saves)} to ${fmt(R.I)}.`,
+  `<b>Saves:</b> ${PREV.saves} to ${T.saves}. <b>Comments:</b> ${PREV.comments} to ${T.comments}. <b>Follows:</b> ${PREV.follows} to ${T.follows}.`,
+  `<b>Highest engagement:</b> "${best.title}" at ${f1(er(best))}%, with ${best.comments} comments and ${best.follows} of the ${T.follows} follows.`,
+  `<b>Highest reach:</b> "${topRe.title}" (${fmt(topRe.reach)}). <b>Most saves:</b> "${topSv.title}" (${topSv.saves}).`,
+  reels.length?`<b>${weakReels} of ${reels.length} reels</b> scored 5.5% engagement or less.`:'',
+  T.comments?`<b>Two posts produced ${Math.round(top2/T.comments*100)}% of all comments.</b>`:''
+ ].filter(Boolean);
+ $('findings').innerHTML=F.map(x=>`<li>${x}</li>`).join('');
+
+ // recommendations
+ const recs=[
+  ['Publish 2 practical carousels a week (dated, checklist or "what changes" format)',C?`Carousels: ${f2(C.r.er)}% engagement, ${f2(C.r.sv)} saves per 1k reach`:'Carousels lead on saves','Saves per 1k reach above 6'],
+  ['Keep reels for Romany speaking to camera',`Best reel: ${f1(er(best))}% engagement. Other reels ranged ${f1(Math.min(...reels.map(er)))}% to 5.5%`,'Reel engagement rate above 8%'],
+  ['End every caption with one specific question',`${T.comments?Math.round(top2/T.comments*100):0}% of comments came from 2 posts`,'40+ comments in the month'],
+  ['Add one personal or milestone story every two weeks','Milestone posts reached 1,010 to 1,264 in the previous period','Average reach above 650'],
+  ['Test one fixed posting slot for 4 weeks (e.g. Tue, Thu, Sun at 7:30am UK)','Posting times vary too much to judge timing','Compare reach by slot after 4 weeks'],
+  ['Add a "send this to someone who..." line on shareable carousels',`Shares per 1k reach: ${f2(R.sh)} (previous ${f2(P.sh)})`,'Shares per 1k reach above 7']
+ ];
+ $('recs').innerHTML=`<tr><th class="t">#</th><th class="t">Action</th><th class="t">Why (from the data)</th><th class="t">Target</th></tr>`+recs.map((r,i)=>`<tr><td>${i+1}</td><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+ $('example').textContent=`Example: ${fmt(R.I)} ÷ ${fmt(T.reach)} × 100 = ${f2(R.er)}% engagement rate.`;
+ $('limits').innerHTML=[
+  `Small sample: ${T.posts} posts this period and ${PREV.posts} in the comparison period, so large percentage changes come from small starting numbers.`,
+  'Reach per post is lower partly because the comparison period included a personal milestone reel (1,211 reach).',
+  'Reach is added up per post, so people who saw several posts are counted more than once.',
+  'Not included: Stories, profile visits, link clicks, follower count, demographics, Facebook.',
+  'Meta timestamps may be in Pacific time, so check posting times against the scheduler.'
+ ].map(x=>`<li>${x}</li>`).join('');
+ $('foot').textContent=`Next report: ${CONFIG.nextReport}`;
+}
+
+let sortKey='date',sortDir=1;
+function renderPosts(key,dir){
+ sortKey=key;sortDir=dir;
+ const cols=[['date','Date'],['type','Type'],['title','Post'],['reach','Reach'],['views','Views'],['likes','Likes'],['comments','Comments'],['shares','Shares'],['saves','Saves'],['follows','Follows'],['er','Eng. rate']];
+ const val=(p,k)=>k==='er'?er(p):p[k];
+ const rows=[...POSTS].sort((a,b)=>{const x=val(a,key),y=val(b,key);return (x>y?1:x<y?-1:0)*dir});
+ const num=['reach','views','likes','comments','shares','saves','follows','er'];
+ const mx={},mn={};num.forEach(k=>{const v=POSTS.map(p=>val(p,k));mx[k]=Math.max(...v);mn[k]=Math.min(...v)});
+ const hiOnly=['comments','shares','saves','follows'];
+ $('posts').innerHTML='<tr>'+cols.map(c=>`<th class="${c[0]==='title'||c[0]==='type'?'t':''}" data-k="${c[0]}">${c[1]}${c[0]===key?(dir>0?' ↑':' ↓'):''}</th>`).join('')+'</tr>'+
+ rows.map(p=>'<tr>'+cols.map(c=>{const k=c[0];
+   if(k==='date')return `<td>${dstr(p.date)}</td>`;
+   if(k==='type')return `<td class="t"><span class="tag ${p.type.toLowerCase()}">${p.type}</span></td>`;
+   if(k==='title')return `<td class="t">${p.title}</td>`;
+   const v=val(p,k);let cl='';if(v===mx[k]&&v>0)cl='hi';else if(v===mn[k]&&!hiOnly.includes(k))cl='lo';
+   return `<td><span class="${cl}" style="padding:1px 5px">${k==='er'?f1(v)+'%':(k==='follows'&&v>0?'+':'')+fmt(v)}</span></td>`}).join('')+'</tr>').join('');
+ document.querySelectorAll('#posts th').forEach(th=>th.onclick=()=>renderPosts(th.dataset.k,th.dataset.k===sortKey?-sortDir:(th.dataset.k==='date'||th.dataset.k==='title'||th.dataset.k==='type'?1:-1)));
+}
+
+/* ===== Load a new Meta Business Suite CSV (post-level export) ===== */
+function parseCSV(t){const rows=[];let r=[],c='',q=false;for(let i=0;i<t.length;i++){const ch=t[i];
+ if(q){if(ch=='"'&&t[i+1]=='"'){c+='"';i++}else if(ch=='"')q=false;else c+=ch}
+ else if(ch=='"')q=true;else if(ch==','){r.push(c);c=''}else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[i+1]=='\n')i++;r.push(c);rows.push(r);r=[];c=''}else c+=ch}
+ if(c||r.length){r.push(c);rows.push(r)}return rows}
+$('csv').onchange=e=>{const file=e.target.files[0];if(!file)return;const rd=new FileReader();
+ rd.onload=()=>{try{
+  const rows=parseCSV(rd.result.replace(/^﻿/,'')).filter(r=>r.length>5);const h=rows[0];const ix=n=>h.indexOf(n);
+  const all=rows.slice(1).map(r=>{const [m,d,y]=r[ix('Publish time')].split(' ')[0].split('/');const n=x=>+(r[ix(x)]||0);
+   return{date:`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`,type:r[ix('Post type')].replace('IG ','').replace(/^./,s=>s.toUpperCase()),
+   title:(r[ix('Description')]||'').split('\n')[0].slice(0,70),reach:n('Reach'),views:n('Views'),likes:n('Likes'),comments:n('Comments'),shares:n('Shares'),saves:n('Saves'),follows:n('Follows')}}).sort((a,b)=>a.date<b.date?-1:1);
+  const end=prompt('Report period END date (YYYY-MM-DD):',all[all.length-1].date);if(!end)return;
+  const st=new Date(end+'T12:00:00');st.setDate(st.getDate()-29);const start=prompt('Report period START date (YYYY-MM-DD):',st.toISOString().slice(0,10));if(!start)return;
+  POSTS=all.filter(p=>p.date>=start&&p.date<=end);const ps=new Date(start+'T12:00:00');ps.setDate(ps.getDate()-30);const pss=ps.toISOString().slice(0,10);const prev=all.filter(p=>p.date<start&&p.date>=pss);PREVLABEL=`previous 30 days (${dstr(pss)} to ${dstr(prev.length?prev[prev.length-1].date:start)})`;
+  if(!POSTS.length||!prev.length){alert('Need posts in both the report period and before it.');return}
+  PREV=sum(prev);CONFIG.periodStart=start;CONFIG.periodEnd=end;
+  CONFIG.prepared=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});CONFIG.source=`Meta Business Suite post export (${file.name})`;
+  render();
+ }catch(err){alert('Could not read this CSV. Use the Meta Business Suite post-level export.')}};
+ rd.readAsText(file)};
+
+
+function checkGate() {
+  const pass = document.getElementById('gate-pass').value.trim();
+  if (pass === 'FINANCE2026' || pass === 'tfw2026' || pass === 'needingadvice') {
+    sessionStorage.setItem('tfw_report_auth', 'true');
     document.getElementById('gate').style.display = 'none';
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
   }
-</script>
+}
+if (sessionStorage.getItem('tfw_report_auth') === 'true') {
+  document.getElementById('gate').style.display = 'none';
+}
 
+render();
+</script>
 </body>
 </html>
