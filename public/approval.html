@@ -294,15 +294,113 @@
       color: var(--accent);
       background: #fffbeb;
     }
+  
+    /* COMMENTS & FEEDBACK SECTION */
+    .comments-section {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border);
+    }
+    .comments-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .comments-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .comment-bubble {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #1e293b;
+    }
+    .comment-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .comment-input-row {
+      display: flex;
+      gap: 8px;
+    }
+    .comment-input {
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      background: #ffffff;
+      color: #0f172a;
+      outline: none;
+      font-family: inherit;
+    }
+    .comment-input:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+    }
+    .comment-textarea {
+      width: 100%;
+      min-height: 60px;
+      resize: vertical;
+    }
+    .btn-submit-comment {
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      align-self: flex-end;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease;
+    }
+    .btn-submit-comment:hover {
+      background: #1e293b;
+    }
+    .btn-submit-comment:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
   </style>
 </head>
 <body>
 
 <div class="container">
   <header>
-    <div class="badge">ROSEMOUNT FINANCIAL SOLUTIONS (IFA) LTD - FCA 535515</div>
+    <div class="badge" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0;">CONTENT REVIEW &amp; APPROVAL</div>
     <h1>The Finance Woman - Content Approval Portal</h1>
-    <p class="subtitle">Appointed Representative of Rosemount Financial Solutions (IFA) Ltd | Zero dates included</p>
+    <p class="subtitle">Executive Content Review &amp; Approval System | All Assets &amp; Disclosures Included</p>
   </header>
 
   <!-- TAB SWITCHER -->
@@ -332,7 +430,7 @@
     </div>
     <div>
       <span id="tab-status-desc" style="font-size: 13px; color: var(--muted); font-weight: 500;">
-        Viewing 7 posts pending Rosemount sign-off
+        Viewing posts pending review and approval
       </span>
     </div>
   </div>
@@ -357,7 +455,7 @@ const PENDING_POSTS = [
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/ibt/carousels/post3/IBT_post3_slide_6_HD-HJm1pXH0lPWkXaYTt0sPtyONac2ew6.png",
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/ibt/carousels/post3/IBT_post3_slide_7_HD-gN9WAOibANCIvmP0ZecLrQHIbqNyec.png"
     ],
-    "status_tag": "Pending Romany & Rosemount Approval",
+    "status_tag": "Pending Approval",
     "caption": "If you run a business with your partner, have this conversation before you need to have it.\n\nSix questions we'd ask any couple in business together:\n\n1. What happens if one of you can't work?\nTwo incomes, one business. If either of you is off, the household and the company both feel it.\n\n2. Who actually owns what?\nShares, the house, savings. Make sure you both know, and that it's written down.\n\n3. Are you both building a pension, or just one of you?\nIt's common for one partner's pension to quietly fall behind.\n\n4. Does all your wealth sit inside the same business?\nYour income, savings and future can all depend on one company.\n\n5. What happens if one of you wants to step back?\nRetirement, parental leave or just slowing down. Plan it before it happens.\n\n6. Would the household cope if one income stopped tomorrow?\n\nThis isn't a scary chat. It's the one that means you never have to have the scary one. We've been in business together since 2008, and we've had it ourselves.\n\nHow many could you two answer today? Take the free Couples Finance Score (5 minutes) via the link in bio.\n\nFollow for more on running a business, and a life, together.\n\n\u26a0\ufe0f Regulatory Notice: General information only and does not constitute personal financial, investment or tax advice. The Finance Woman is a trading style of NeedingAdvice.co.uk Ltd, an Appointed Representative of Rosemount Financial Solutions (IFA) Ltd, authorised and regulated by the Financial Conduct Authority (FCA 535515).\n\n#InBusinessTogether #CoDirectorCouple #FamilyBusinessUK #LtdCompanyDirector #SmallBusinessOwnersUK"
   },
   {
@@ -368,7 +466,7 @@ const PENDING_POSTS = [
     "video_url": "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw/reels/TFW_Reel_Runway_RisingStar_Instagram_1080x1920_v3.mp4",
     "cover_url": "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw/reels/TFW_Reel_Runway_RisingStar_Cover_v3.png",
     "slides": [],
-    "status_tag": "Pending Romany & Rosemount Approval",
+    "status_tag": "Pending Approval",
     "caption": "Not all angels get to walk the runway... some of us have to take to the stage \ud83e\udd0d\n\nI still can't watch this back without feeling it all over again. The moment they read my name for Rising Star (Advice) at the Women in Financial Advice Awards, I genuinely couldn't move.\n\nThat 16 year old who left college with no plan had no idea this was coming. And the best part of this job isn't the stage. It's helping women who run their own businesses build wealth that's actually theirs.\n\nIf you're a female founder and your money still feels like the last thing on your list, send me a DM with the word CHECKUP and let's start there.\n\n\u26a0\ufe0f Regulatory Notice: General information only and does not constitute personal financial, investment or tax advice. The Finance Woman is a trading style of NeedingAdvice.co.uk Ltd, an Appointed Representative of Rosemount Financial Solutions (IFA) Ltd, authorised and regulated by the Financial Conduct Authority (FCA 535515).\n\n#womeninbusiness #femalefounders #risingstar #thefinancewoman #financialadviser"
   },
   {
@@ -386,8 +484,8 @@ const PENDING_POSTS = [
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/pay_yourself_order/Slide_06_1080x1350-u2zM5ruQW2kEtdlVjJSnNTZ3gI06jR.jpg",
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/pay_yourself_order/Slide_07_1080x1350-5KyT5fHwj3k8zP3ubAp8gd82gjUGcm.jpg"
     ],
-    "status_tag": "Pending Rosemount Review (Aesthetic Update)",
-    "note": "Note: This content and copy was previously approved by Rosemount. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
+    "status_tag": "Pending Approval (Aesthetic Update)",
+    "note": "Note: This content and copy was previously approved. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
     "caption": "Nobody tells you this: when money lands in your account, the order it moves in matters more than the amount.\n\nWhen you run your own business, income arrives in lumps. Without a plan, it quietly disappears into the next bill, the next client, or the next \"I deserve this\".\n\nHere is the exact order I follow when I get paid:\n\n1. Tax goes first. A set share of every payment moves into its own tax pot before I touch anything else.\n2. Pay yourself the same amount, on the same day. The rest stays in the business.\n3. Fill two safety nets: one for the business, and one for you personally.\n4. Pay your future self. Nobody pays into your pension for you, so set up regular payments into your pension and ISA.\n5. Then spend what is left, guilt free. That is your actual budget.\n\nYour personal order might look slightly different to mine, and that is completely fine. What matters is that you have one in place.\n\nIf you run your own business and managing your money feels like another unpaid job, start with my Free Self-Employed Financial Checkup. It takes under 5 minutes and you do not need any paperwork.\n\nDrop the word CHECKUP in the comments or head to the link in my bio \u2728\n\n#WomenInBusiness #SelfEmployedUK #UKBusinessOwner #MoneyHabits #FinancialPlanning #FemaleFounders\n\nTax treatment depends on individual circumstances and may change. The value of investments can go down as well as up. Check the details of any existing pension before moving it, as you could lose valuable benefits. General information, not personal advice."
   },
   {
@@ -404,8 +502,8 @@ const PENDING_POSTS = [
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/accountant_vs_adviser/Slide_05_1080x1350-1AAh13glX93eRnV87fyqiRAgiKCOto.jpg",
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/accountant_vs_adviser/Slide_06_1080x1350-XXUSLBxjlS6hBZZYUBzTsS4mGv80Ut.jpg"
     ],
-    "status_tag": "Pending Rosemount Review (Aesthetic Update)",
-    "note": "Note: This content and copy was previously approved by Rosemount. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
+    "status_tag": "Pending Approval (Aesthetic Update)",
+    "note": "Note: This content and copy was previously approved. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
     "caption": "I bet you didn't know this: your accountant and your financial adviser do different jobs.\n\nYour accountant looks back. Tax returns, accounts and HMRC deadlines. They make sure what already happened is right.\n\nYour financial adviser looks ahead. Pensions, protection and growing your money. We plan for what happens next.\n\nThey don't compete. When they talk to each other, your tax and your plans line up and nothing falls through the gap. For example, how you pay into a pension from your business can affect your tax, so it helps when both sides know the plan.\n\nWe work with over 50 accountants all over the UK, so although we don't advise on tax, we know a lot about it!\n\nWant to see where your plans stand? Take my Free Self-Employed Financial Checkup. It takes under 5 minutes and you do not need any documents.\nDM me the word CHECKUP or take it here: go.selfemployedhelp.co.uk\n\nPrefer to talk it through? Book a free call: tidycal.com/romany\n\n#WomenInBusiness #SelfEmployedUK #Accountant #FinancialAdviser #FinancialPlanning\n\nGeneral information, not personal advice. We don't give tax advice; your accountant does. Tax rules depend on your circumstances and can change.\nThe value of pensions and investments can go down as well as up, so you may get back less than you put in. You can't usually take money from a pension until age 55 (57 from 6 April 2028)."
   },
   {
@@ -424,8 +522,8 @@ const PENDING_POSTS = [
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/pensions_vs_isas/Slide_07_1080x1350-XqpW7mZH861WzOj13cs7bA7H8iohCp.jpg",
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/pensions_vs_isas/Slide_08_1080x1350-CfAFYuTuAt5TZ9v5kyPMFFPFP6lQia.jpg"
     ],
-    "status_tag": "Pending Rosemount Review (Aesthetic Update)",
-    "note": "Note: This content and copy was previously approved by Rosemount. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
+    "status_tag": "Pending Approval (Aesthetic Update)",
+    "note": "Note: This content and copy was previously approved. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
     "caption": "I have a question: ISA or pension, which one wins?\n\nOne of the biggest myths I hear is that ISAs always beat pensions, and that a pension is just savings locked away. Neither is true.\n\nA pension and a stocks and shares ISA can hold the same investments. How they grow depends on what you invest in, not the type of account.\n\nThe difference is how tax works:\n1. Going in: pensions get tax relief. Pay in \u00a380 and basic rate relief makes it \u00a3100. Higher and additional rate taxpayers can claim even more back through Self Assessment.\n2. Getting at it: most ISAs can be accessed at any time. Most pensions can only be taken from age 55 (rising to 57 on 6 April 2028).\n3. Coming out: usually up to 25% of a pension is tax-free (capped at \u00a3268,275). The rest is taxed as income. ISA withdrawals are completely tax-free.\n\nSo which one wins? Often, both. Use ISAs for money you might need before retirement, and pensions for serious tax efficiency for the long run.\n\nWant to see where your setup stands? Drop the word CHECKUP for my Free Self-Employed Financial Checkup.\n\n#PensionsUK #ISA #InvestingUK #SelfEmployedFinance #WomenInBusiness\n\nGeneral information, not personal advice. The value of investments and pensions can go down as well as up. Tax treatment depends on individual circumstances and may change."
   },
   {
@@ -442,8 +540,8 @@ const PENDING_POSTS = [
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/productive_habits/Slide_05_1080x1350-19L0bKWSdecx8es2XsidgZaT1OMRZH.jpg",
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/productive_habits/Slide_06_1080x1350-i1drwbnJDei4YR50KtzDGH9BpybuXA.jpg"
     ],
-    "status_tag": "Pending Rosemount Review (Aesthetic Update)",
-    "note": "Note: This content and copy was previously approved by Rosemount. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
+    "status_tag": "Pending Approval (Aesthetic Update)",
+    "note": "Note: This content and copy was previously approved. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
     "caption": "Nobody tells you this: some money habits feel productive, but they only waste your time.\n\n1. Watching finance reels every night. You pick up lots of tips, but none of them are about your own money.\n2. Checking your balance every day. Looking at the number does not change it. One proper check each month does far more.\n3. Just talking about it. Saying \"I must look at my pension\" for a year is not a plan. A date in your diary is.\n4. Chasing the best savings rate every week. Moving \u00a35,000 for 0.1% more earns you about \u00a35 a year. Your time is worth more than that.\n\nWhich one are you guilty of? Tell me in the comments.\n\nWhat actually works is one clear start. Take my Free Self-Employed Financial Checkup. It is free, takes under five minutes and you do not need any documents. You get scores for your pension, protection and mortgage, plus your next steps.\nDM me the word CHECKUP or take it here: go.selfemployedhelp.co.uk\n\n#WomenInBusiness #SelfEmployedUK #MoneyHabits #FinancialPlanning #TheFinanceWoman\n\nGeneral information, not personal advice. Tax treatment depends on individual circumstances and may change. The value of investments can go down as well as up, so you may get back less than you put in."
   },
   {
@@ -460,8 +558,8 @@ const PENDING_POSTS = [
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/mtd_hmrc/Slide_05_1080x1350-SoPrsbR4JksPhLdjrNdskQCRjDLyZm.jpg",
       "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/tfw-carousels-redesign/mtd_hmrc/Slide_06_1080x1350-s4ldS04lCti4p6sEMauwZjRQHxy0cg.jpg"
     ],
-    "status_tag": "Pending Rosemount Review (Aesthetic Update)",
-    "note": "Note: This content and copy was previously approved by Rosemount. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
+    "status_tag": "Pending Approval (Aesthetic Update)",
+    "note": "Note: This content and copy was previously approved. We have updated the visual structure and alternating background colours (Burgundy, Olive, Warm Nude, Soft Peach) across the feed to ensure variety.",
     "caption": "Me finding out HMRC now wants to hear from me four times a year \ud83d\ude05\n\nMaking Tax Digital started on 6 April 2026. If you're a sole trader or landlord with qualifying income over \u00a350,000 in 2024/25 (that's before expenses), you now keep digital records and send quarterly updates using MTD-compatible software.\n\nYear-end final declaration? That replaces your self assessment tax return.\n\nSwipe through for the dates, thresholds, and software you need to know about.\n\nWe work with over 50 accountants all over the UK, so although we don't advise on this, we know a lot about it! \ud83e\udd0d\n\n#TheFinanceWoman #MakingTaxDigital #MTDforITSA #HMRC #UKSmallBusiness #SoleTrader #SelfEmployed #UKTax #WomenInBusiness"
   },
   {
@@ -472,7 +570,7 @@ const PENDING_POSTS = [
     "video_url": "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/ibt/reels/IBT_reel_After_the_Budget_HD-MWI4QNEkpLbH5uJcuW4KkJRuzSiAFx.mp4",
     "cover_url": "https://l0ak7qk0adhuxj3w.public.blob.vercel-storage.com/ibt/reels/IBT_reel_After_the_Budget_cover-W9sHz9Ci6q1Q6dKwhIqnhPXbKEeEvM.png",
     "slides": [],
-    "status_tag": "Pending Rosemount Review (Budget Topical)",
+    "status_tag": "Pending Approval (Budget Topical)",
     "note": "Topical post-Budget Reel filmed on location by Damian (In Business Together). Covers director company-paid life insurance, income protection, and pensions, concluding with the Couples Finance Score.",
     "caption": "The Budget happened. Now what? \ud83e\udd14\n\nIf you're a couple running a business together, it probably felt like nothing went your way on Wednesday.\n\nBut there are still things your company may be able to pay for, such as:\n\u2714\ufe0f Life insurance\n\u2714\ufe0f Income protection\n\u2714\ufe0f Pension contributions\n\nPlenty of business owners don't know these options exist, or haven't looked at them as a couple.\n\nWant to know where you two stand? Take the free Couples Finance Score. 5 minutes. Link in bio, or go to inbusinesstogether.co.uk/score\nThis checkup is for guidance only and is not financial advice.\n\nFollow for more \ud83d\udc49 @inbusinesstogether\n\nBusiness protection and personal protection policies have no cash-in value at any time and cover will cease if premiums are not maintained.\nTax treatment depends on individual circumstances and may change in the future.\n\ninbusinesstogether.co.uk is a trading style of NeedingAdvice.co.uk Ltd, an appointed representative of Rosemount Financial Solutions (IFA) Ltd, authorised and regulated by the Financial Conduct Authority. FCA reference 535515.\n\n#Budget2026 #AutumnBudget #SmallBusinessUK #CouplesInBusiness #LimitedCompanyDirector #BusinessProtection #IncomeProtection #UKBusinessOwners"
   }
@@ -496,7 +594,7 @@ function switchMainTab(tab) {
 
   if (tab === 'pending') {
     subFilters.style.display = 'none';
-    statusDesc.innerText = 'Viewing ' + PENDING_POSTS.length + ' posts pending Rosemount sign-off';
+    statusDesc.innerText = 'Viewing ' + PENDING_POSTS.length + ' posts pending review & approval';
   } else {
     subFilters.style.display = 'flex';
     statusDesc.innerText = 'Viewing ' + APPROVED_POSTS.length + ' compliance-approved posts';
@@ -563,7 +661,7 @@ function render(items) {
         <div class="post-title-wrap">
           <span class="post-title">Post ${p.num}: ${p.title}</span>
           <span class="status-badge ${activeTab === 'approved' ? (p.live_url ? 'status-published' : 'status-approved') : 'status-pending'}">
-            ${activeTab === 'approved' ? (p.live_url ? 'Live on Instagram (Approved)' : 'Approved by Rosemount') : 'For Approval'}
+            ${activeTab === 'approved' ? (p.live_url ? 'Live on Instagram (Approved)' : 'Approved') : 'For Approval'}
           </span>
         </div>
         <div class="post-meta">
@@ -608,12 +706,154 @@ function render(items) {
               <button class="btn" onclick="navigator.clipboard.writeText(decodeURIComponent('${encodeURIComponent(p.caption)}')); alert('Caption copied!');">Copy Full Caption</button>
             </div>
             <div class="caption-box">${p.caption}</div>
+
+            <!-- COMMENTS & CHANGE REQUESTS SECTION -->
+            <div class="comments-section" id="comments-section-${p.num}">
+              <div class="comments-header">
+                <span class="comments-title">
+                  💬 Review Comments &amp; Change Requests
+                </span>
+                <span id="comment-count-${p.num}" style="font-size: 11.5px; color: var(--muted); font-weight: 600;">
+                  ${(window.APP_COMMENTS && window.APP_COMMENTS[p.num]) ? window.APP_COMMENTS[p.num].length + ' comments' : 'No comments yet'}
+                </span>
+              </div>
+
+              <!-- List of existing comments -->
+              <div class="comment-list" id="comment-list-${p.num}">
+                ${renderPostComments(p.num)}
+              </div>
+
+              <!-- Comment form for anyone who opens the portal -->
+              <div class="comment-form">
+                <div class="comment-input-row">
+                  <input type="text" id="comment-author-${p.num}" class="comment-input" style="flex: 1;" placeholder="Your Name or Initial (optional)" />
+                  <select id="comment-type-${p.num}" class="comment-input" style="width: auto; font-size: 12px; font-weight: 500;">
+                    <option value="changes_requested">✏️ Request Changes</option>
+                    <option value="comment">💬 General Comment</option>
+                    <option value="approved_note">✅ Approval Note</option>
+                  </select>
+                </div>
+                <textarea id="comment-text-${p.num}" class="comment-input comment-textarea" placeholder="Add your notes or requested changes for this post..."></textarea>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span id="comment-status-${p.num}" style="font-size: 12px; font-weight: 500; color: #16a34a;"></span>
+                  <button type="button" class="btn-submit-comment" onclick="submitComment(${p.num}, decodeURIComponent('${encodeURIComponent(p.title)}'))">
+                    <span>Send Comment</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   `).join('');
 }
+
+
+// Global comment store
+window.APP_COMMENTS = {};
+
+async function fetchApprovalComments() {
+  try {
+    const res = await fetch('/api/approval-feedback', { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const map = {};
+    (data.comments || []).forEach(c => {
+      const num = Number(c.postNum);
+      if (!map[num]) map[num] = [];
+      map[num].push(c);
+    });
+    window.APP_COMMENTS = map;
+    // Re-render comments on active cards
+    Object.keys(map).forEach(num => {
+      const listEl = document.getElementById('comment-list-' + num);
+      const countEl = document.getElementById('comment-count-' + num);
+      if (listEl) listEl.innerHTML = renderPostComments(num);
+      if (countEl) countEl.innerText = map[num].length + ' comment' + (map[num].length > 1 ? 's' : '');
+    });
+  } catch (err) {
+    console.warn('Could not fetch comments:', err);
+  }
+}
+
+function renderPostComments(postNum) {
+  const comments = (window.APP_COMMENTS && window.APP_COMMENTS[postNum]) || [];
+  if (!comments.length) {
+    return '<p style="font-size: 12px; color: var(--muted); font-style: italic; margin: 4px 0 8px;">No comments or change requests added yet. Add yours below.</p>';
+  }
+  return comments.map(c => `
+    <div class="comment-bubble">
+      <div class="comment-meta">
+        <span><strong>${escapeHtml(c.reviewerName || 'Reviewer')}</strong> ${c.actionRequested === 'changes_requested' ? '<span style="color:#b45309;background:#fef3c7;padding:2px 6px;border-radius:4px;font-size:10.5px;">Changes Requested</span>' : (c.actionRequested === 'approved_note' ? '<span style="color:#15803d;background:#dcfce7;padding:2px 6px;border-radius:4px;font-size:10.5px;">Approved with Note</span>' : '<span style="color:#0369a1;background:#e0f2fe;padding:2px 6px;border-radius:4px;font-size:10.5px;">Comment</span>')}</span>
+        <span>${formatCommentDate(c.createdAt)}</span>
+      </div>
+      <div style="white-space: pre-wrap; line-height: 1.45;">${escapeHtml(c.comment)}</div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.innerText = text || '';
+  return div.innerHTML;
+}
+
+function formatCommentDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+
+async function submitComment(postNum, postTitle) {
+  const textInput = document.getElementById('comment-text-' + postNum);
+  const authorInput = document.getElementById('comment-author-' + postNum);
+  const typeInput = document.getElementById('comment-type-' + postNum);
+  const statusEl = document.getElementById('comment-status-' + postNum);
+  const commentText = (textInput ? textInput.value : '').trim();
+
+  if (!commentText) {
+    alert('Please enter your comment or change request before submitting.');
+    return;
+  }
+
+  const payload = {
+    postNum: postNum,
+    postTitle: postTitle,
+    reviewerName: (authorInput && authorInput.value.trim()) || 'Reviewer',
+    comment: commentText,
+    actionRequested: (typeInput && typeInput.value) || 'changes_requested'
+  };
+
+  if (statusEl) statusEl.innerText = 'Submitting...';
+
+  try {
+    const res = await fetch('/api/approval-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to submit comment');
+    const data = await res.json();
+    
+    // Clear textarea
+    if (textInput) textInput.value = '';
+    if (statusEl) {
+      statusEl.innerText = '✓ Comment saved!';
+      setTimeout(() => { statusEl.innerText = ''; }, 3000);
+    }
+
+    // Refresh comments list
+    await fetchApprovalComments();
+  } catch (err) {
+    console.error(err);
+    if (statusEl) statusEl.innerText = '⚠️ Error saving comment. Please try again.';
+  }
+}
+
+// Fetch comments right after initial load
+fetchApprovalComments();
 
 // Initial render with For Approval (Pending) in front
 switchMainTab('pending');
